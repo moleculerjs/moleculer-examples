@@ -1,11 +1,17 @@
 const ServiceBroker = require("moleculer").ServiceBroker;
+const MemoryCacher = require("moleculer").Cachers.Memory;
 
 const winston = require("winston");
 winston.level = 'debug';
 
 const broker = new ServiceBroker({
-	logger: console, // winston,
-	logLevel: "debug"
+	//cacher: MemoryCacher,
+	//metrics: true,
+	//statistics: true,
+
+	logger: console,
+	//logger: winston,
+	logLevel: "debug",
 });
 
 broker.loadServices(__dirname + "/../services");

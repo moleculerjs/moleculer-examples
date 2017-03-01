@@ -7,7 +7,7 @@ function generateFakeData(count) {
 		let item = {
 			id: i + 1,
 			post: fake.random.number(1, 10),
-			author: fake.random.number(1, 10),
+			user: fake.random.number(1, 10),
 			content: fake.lorem.paragraph()
 		};
 
@@ -18,7 +18,7 @@ function generateFakeData(count) {
 }
 
 module.exports = {
-	name: "users",
+	name: "comments",
 
 	actions: {
 

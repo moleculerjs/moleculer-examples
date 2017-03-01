@@ -22,6 +22,7 @@
   "homepage": "https://github.com/ice-services/moleculer-examples#readme",
   "dependencies": {
     "bluebird": "3.4.7",
+    "body-parser": "1.16.1",
     "eslint": "3.16.1",
     "express": "4.14.1",
     "fakerator": "0.3.0",

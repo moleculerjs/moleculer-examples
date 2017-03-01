@@ -1,12 +1,14 @@
-const fake = require("fakerator")();
+const _ 		= require("lodash");
+const fake 		= require("fakerator")();
 
 function generateFakeData(count) {
 	let rows = [];
 
 	for(let i = 0; i < count; i++) {
-		let item = fake.entity.user();
+		let user = fake.entity.user();
+		let item = _.pick(user, ["id", "userName", "email", "name", "avatar", "dob", "password", "status"]);
 		item.id = i + 1;
-		item.author = fake.random.number(1, 10);
+		item.name = `${user.firstName} ${user.lastName}`;
 
 		rows.push(item);
 	}
@@ -19,6 +21,31 @@ module.exports = {
 
 	actions: {
 
+		list: {
+			cache: true,
+			handler(ctx) {
+				// Clone the local list
+				let users = _.cloneDeep(this.rows);
+				return users;
+			}
+		},		
+
+		get: {
+			cache: {
+				keys: ["id"]
+			},
+
+			handler(ctx) {
+				return this.findByID(ctx.params.id);
+			}
+		}
+
+	},
+
+	methods: {
+		findByID(id) {
+			return _.cloneDeep(this.rows.find(item => item.id == id));
+		}
 	},
 
 	created() {
