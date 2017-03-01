@@ -1,0 +1,32 @@
+{
+  "name": "moleculer-examples",
+  "version": "1.0.0",
+  "description": "Examples for Moleculer framework",
+  "scripts": {
+    "blog": "node blog/index.js",
+    "blog-dev": "nodemon blog/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ice-services/moleculer-examples.git"
+  },
+  "keywords": [
+    "microservices",
+    "examples"
+  ],
+  "author": "Ice Services",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ice-services/moleculer-examples/issues"
+  },
+  "homepage": "https://github.com/ice-services/moleculer-examples#readme",
+  "dependencies": {
+    "bluebird": "3.4.7",
+    "eslint": "3.16.1",
+    "express": "4.14.1",
+    "fakerator": "0.3.0",
+    "lodash": "4.17.4",
+    "moleculer": "ice-services/moleculer",
+    "winston": "2.3.1"
+  }
+}
