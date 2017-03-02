@@ -1,6 +1,6 @@
 FROM node:6.10-alpine
 
-RUN addgroup -S node && adduser -S -g node node
+RUN addgroup -S mol && adduser -S -g mol mol
 
 ENV HOME=/home/node
 ENV NODE_ENV production
@@ -11,11 +11,11 @@ ADD https://github.com/Yelp/dumb-init/releases/download/v1.1.1/dumb-init_1.1.1_a
 
 WORKDIR $HOME/app
 
-RUN chown -R node:node $HOME/* /usr/local/ && \
+RUN chown -R mol:mol $HOME/* /usr/local/ && \
     chmod +x /usr/local/bin/dumb-init && \
     npm cache clean && \
     npm install --silent --progress=false --production && \
-    chown -R node:node $HOME/*
+    chown -R mol:mol $HOME/*
 
 # RUN apk add --no-cache --virtual .app-deps python make g++ \
 #   && yarn --pure-lockfile \
@@ -24,7 +24,7 @@ RUN chown -R node:node $HOME/* /usr/local/ && \
 
 COPY . $HOME/app/
 
-USER node
+USER mol
 
 EXPOSE 3000
 
