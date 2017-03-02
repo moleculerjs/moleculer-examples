@@ -5,7 +5,8 @@ RUN addgroup -S mol && adduser -S -g mol mol
 ENV HOME=/home/node
 ENV NODE_ENV production
 
-COPY package.json npm-shrinkwrap.json yarn.lock $HOME/app/
+COPY package.json $HOME/app/
+# COPY package.json npm-shrinkwrap.json yarn.lock $HOME/app/
 
 ADD https://github.com/Yelp/dumb-init/releases/download/v1.1.1/dumb-init_1.1.1_amd64 /usr/local/bin/dumb-init
 
