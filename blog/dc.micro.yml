@@ -29,7 +29,7 @@ services:
       MOL_NODE_ID: "node-posts"
       MOL_SERVICES: posts.service
 
-      MOL_LOGLEVEL: debug
+      MOL_LOGLEVEL: info
       MOL_TRANSPORTER: nats 
       MOL_NATS_URI: nats://nats:4222      
     links:
@@ -45,7 +45,7 @@ services:
       MOL_NODE_ID: "node-users"
       MOL_SERVICES: users.service
 
-      MOL_LOGLEVEL: debug
+      MOL_LOGLEVEL: info
       MOL_TRANSPORTER: nats 
       MOL_NATS_URI: nats://nats:4222      
     links:
