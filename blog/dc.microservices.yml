@@ -1,15 +1,33 @@
 version: "2.0"
 
 services:
+
+  api:
+    image: moleculer-blog
+    expose:
+      - "4000"
+    ports:
+      - "4000:40002"
+    environment:
+      MOL_LOGLEVEL: info
+      MOL_APIGW_PORT: 4000
+      MOL_TRANSPORTER: nats 
+      MOL_NATS_URI: nats://nats:4222      
+    links:
+      - nats
+      - redis
+    depends_on:
+      - nats
+      - redis
+
   nats:
-    build:
-      context: "./nats"
+    image: nats
     expose:
       - "4222"
     ports:
       - "4222:4222"
       - "8222:8222"
-    hostname: nats-server
+    # hostname: nats-server
 
   redis:
     image: redis:alpine
@@ -17,4 +35,4 @@ services:
       - "6379"
     ports:
       - "6379:6379"
-    hostname: redis-server
+    # hostname: redis-server

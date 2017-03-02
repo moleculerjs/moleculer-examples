@@ -3,9 +3,11 @@ FROM node:6.10-alpine
 RUN addgroup -S mol && adduser -S -g mol mol
 
 ENV HOME=/home/node
-
 ENV NODE_ENV=production 
-ENV MOL_APIGW_PORT=3000
+
+# API gateway settings
+# ====================
+# ENV MOL_APIGW_PORT=3000
 
 # Transporter settings
 # ================
@@ -35,7 +37,7 @@ RUN apk add --no-cache --virtual git && \
 	chown -R mol:mol $HOME/* /usr/local/ && \
     chmod +x /usr/local/bin/dumb-init && \
 #    npm cache clean && \
-    npm install --progress=false --production && \
+    npm install --silent --progress=false --production && \
     chown -R mol:mol $HOME/*
 
 # RUN apk add --no-cache --virtual .app-deps python make g++ \
