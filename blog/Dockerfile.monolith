@@ -3,7 +3,19 @@ FROM node:6.10-alpine
 RUN addgroup -S mol && adduser -S -g mol mol
 
 ENV HOME=/home/node
-ENV NODE_ENV production
+
+ENV NODE_ENV=production ENV MOL_APIGW_PORT=3000
+
+# Transporter settings
+# ================
+# ENV MOL_TRANSPORTER=nats ENV MOL_NATS_URI=nats://nats:4222
+# ENV MOL_TRANSPORTER=mqtt ENV MOL_MQTT_URI=mqtt://mqtt
+
+# Cacher settings
+# ================
+# ENV MOL_CACHER=memory
+# ENV MOL_CACHER=redis ENV MOL_REDIS_URI=redis://redis
+
 
 COPY package.json $HOME/app/
 # COPY package.json npm-shrinkwrap.json yarn.lock $HOME/app/
@@ -15,8 +27,8 @@ WORKDIR $HOME/app
 RUN apk add --no-cache --virtual .app-deps python make g++ git && \
 	chown -R mol:mol $HOME/* /usr/local/ && \
     chmod +x /usr/local/bin/dumb-init && \
+#    npm cache clean && \
     npm install --silent --progress=false --production && \
-    npm cache clean && \
     chown -R mol:mol $HOME/*
 
 # RUN apk add --no-cache --virtual .app-deps python make g++ \
@@ -24,12 +36,12 @@ RUN apk add --no-cache --virtual .app-deps python make g++ git && \
 #   && yarn cache clean \
 #   && apk del .app-deps
 
-COPY monolith $HOME/app/
-COPY services $HOME/app/services/
-COPY assets $HOME/app/assets/
+COPY index.js $HOME/app/
+COPY services $HOME/app/
+COPY assets $HOME/app/
 
 USER mol
 
-EXPOSE 4000
+EXPOSE $MOL_APIGW_PORT
 
 CMD ["dumb-init", "npm", "start"]

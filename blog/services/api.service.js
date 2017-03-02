@@ -7,7 +7,6 @@
 "use strict";
 
 const _ = require("lodash");
-const path = require("path");
 const chalk = require("chalk");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -22,7 +21,7 @@ module.exports = function() {
 
 		// API gateway settings
 		settings: {
-			port: process.env.API_GATEWAY_PORT || 4000
+			port: process.env.MOL_APIGW_PORT || 4000
 		},
 		
 		created() {
