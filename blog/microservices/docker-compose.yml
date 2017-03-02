@@ -1,0 +1,20 @@
+version: "2.0"
+
+services:
+  nats:
+    build:
+      context: "./nats"
+    expose:
+      - "4222"
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    hostname: nats-server
+
+  redis:
+    image: redis:alpine
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    hostname: redis-server
