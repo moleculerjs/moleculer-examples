@@ -100,6 +100,6 @@ module.exports = {
 
 	created() {
 		this.logger.debug("Generate fake data...");
-		this.rows = generateFakeData(1);
+		this.rows = generateFakeData(5);
 	}
 };
