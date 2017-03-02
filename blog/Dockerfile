@@ -51,6 +51,4 @@ COPY assets $HOME/app/assets/
 
 USER mol
 
-EXPOSE $MOL_APIGW_PORT
-
 CMD ["dumb-init", "npm", "start"]
