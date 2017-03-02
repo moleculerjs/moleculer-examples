@@ -6,6 +6,7 @@
 
 "use strict";
 
+const os = require("os");
 const ServiceBroker = require("moleculer").ServiceBroker;
 const Cachers = require("moleculer").Cachers;
 const Transporters = require("moleculer").Transporters;
@@ -35,7 +36,7 @@ let transporter = getTransporter();
 
 // Create broker
 const broker = new ServiceBroker({
-	nodeID: process.env.MOL_NODE_ID,
+	nodeID: process.env.MOL_NODE_ID + "-" + os.hostname().toLowerCase(),
 
 	cacher,
 	transporter,
