@@ -7,7 +7,7 @@ services:
     expose:
       - "4000"
     ports:
-      - "4000:40002"
+      - "4000:4000"
     environment:
       MOL_LOGLEVEL: info
       MOL_APIGW_PORT: 4000
