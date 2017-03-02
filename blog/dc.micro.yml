@@ -54,6 +54,8 @@ services:
     depends_on:
       - nats
       - redis
+    mode: replicated
+    replicas: 2
 
   comments:
     image: moleculer-blog
