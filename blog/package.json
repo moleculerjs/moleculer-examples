@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "docker:build": "docker build -t blog-monolith -f ./Dockerfile.monolith .",
-    "docker:run": "docker run --rm -it -p 4000:4000 blog-monolith"
+    "docker:build": "docker build -t moleculer-blog .",
+    "docker:run": "docker run --rm -it -p 3000:3000 moleculer-blog"
   },
   "author": "Ice Services",
   "license": "MIT",
