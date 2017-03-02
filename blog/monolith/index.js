@@ -2,7 +2,7 @@ const ServiceBroker = require("moleculer").ServiceBroker;
 const MemoryCacher = require("moleculer").Cachers.Memory;
 
 const winston = require("winston");
-winston.level = 'debug';
+winston.level = "debug";
 
 const broker = new ServiceBroker({
 	//cacher: MemoryCacher,
@@ -14,6 +14,9 @@ const broker = new ServiceBroker({
 	logLevel: "debug",
 });
 
-broker.loadServices(__dirname + "/../services");
+if (process.env.NODE_ENV == "production")
+	broker.loadServices();
+else
+	broker.loadServices(__dirname + "/../services");
 
 broker.start();
