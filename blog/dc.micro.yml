@@ -9,8 +9,67 @@ services:
     ports:
       - "4000:4000"
     environment:
+      MOL_SERVICES: api.service
+
       MOL_LOGLEVEL: info
       MOL_APIGW_PORT: 4000
+      MOL_TRANSPORTER: nats 
+      MOL_NATS_URI: nats://nats:4222      
+    links:
+      - nats
+      - redis
+    depends_on:
+      - nats
+      - redis
+
+  posts:
+    image: moleculer-blog
+    expose:
+      - "4000"
+    ports:
+      - "4000:4000"
+    environment:
+      MOL_SERVICES: posts.service
+
+      MOL_LOGLEVEL: info
+      MOL_TRANSPORTER: nats 
+      MOL_NATS_URI: nats://nats:4222      
+    links:
+      - nats
+      - redis
+    depends_on:
+      - nats
+      - redis
+
+  users:
+    image: moleculer-blog
+    expose:
+      - "4000"
+    ports:
+      - "4000:4000"
+    environment:
+      MOL_SERVICES: users.service
+
+      MOL_LOGLEVEL: info
+      MOL_TRANSPORTER: nats 
+      MOL_NATS_URI: nats://nats:4222      
+    links:
+      - nats
+      - redis
+    depends_on:
+      - nats
+      - redis
+
+  comments:
+    image: moleculer-blog
+    expose:
+      - "4000"
+    ports:
+      - "4000:4000"
+    environment:
+      MOL_SERVICES: comments.service
+
+      MOL_LOGLEVEL: info
       MOL_TRANSPORTER: nats 
       MOL_NATS_URI: nats://nats:4222      
     links:
