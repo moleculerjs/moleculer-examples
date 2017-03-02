@@ -24,10 +24,12 @@ RUN apk add --no-cache --virtual .app-deps python make g++ git && \
 #   && yarn cache clean \
 #   && apk del .app-deps
 
-COPY . $HOME/app/
+COPY monolith $HOME/app/
+COPY services $HOME/app/services/
+COPY assets $HOME/app/assets/
 
 USER mol
 
-EXPOSE 3000
+EXPOSE 4000
 
 CMD ["dumb-init", "npm", "start"]

@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Blog examples for Moleculer framework",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node monolith/index.js",
+    "dev": "nodemon monolith/index.js",
+    "docker:build": "docker build -t blog-monolith -f ./Dockerfile.monolith .",
+    "docker:run": "docker run --rm -it blog-monolith"
   },
   "author": "Ice Services",
   "license": "MIT",

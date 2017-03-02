@@ -14,9 +14,6 @@ const broker = new ServiceBroker({
 	logLevel: "debug",
 });
 
-if (process.env.NODE_ENV == "production")
-	broker.loadServices();
-else
-	broker.loadServices(__dirname + "/../services");
+broker.loadServices();
 
 broker.start();

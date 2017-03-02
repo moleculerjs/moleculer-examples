@@ -27,7 +27,7 @@ module.exports = function() {
 			}));
 			this.app.use(bodyParser.json());
 
-			this.app.use(express["static"](path.join(__dirname, "..", "assets")));
+			this.app.use(express["static"]("./assets"));
 
 			this.app.set("etag", true);
 		},
