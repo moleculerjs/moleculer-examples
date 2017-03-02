@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Blog examples for Moleculer framework",
   "scripts": {
-    "start": "node blog/index.js",
-    "dev": "nodemon blog/index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "Ice Services",
   "license": "MIT",
