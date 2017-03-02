@@ -4,17 +4,23 @@ RUN addgroup -S mol && adduser -S -g mol mol
 
 ENV HOME=/home/node
 
-ENV NODE_ENV=production ENV MOL_APIGW_PORT=3000
+ENV NODE_ENV=production 
+ENV MOL_APIGW_PORT=3000
 
 # Transporter settings
 # ================
-# ENV MOL_TRANSPORTER=nats ENV MOL_NATS_URI=nats://nats:4222
-# ENV MOL_TRANSPORTER=mqtt ENV MOL_MQTT_URI=mqtt://mqtt
+# ENV MOL_TRANSPORTER=nats 
+# ENV MOL_NATS_URI=nats://nats:4222
+
+# ENV MOL_TRANSPORTER=mqtt 
+# ENV MOL_MQTT_URI=mqtt://mqtt
 
 # Cacher settings
 # ================
 # ENV MOL_CACHER=memory
-# ENV MOL_CACHER=redis ENV MOL_REDIS_URI=redis://redis
+
+# ENV MOL_CACHER=redis 
+# ENV MOL_REDIS_URI=redis://redis
 
 
 COPY package.json $HOME/app/
