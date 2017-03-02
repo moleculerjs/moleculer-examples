@@ -6,7 +6,7 @@
     "start": "node index.js",
     "dev": "nodemon monolith/index.js",
     "docker:build": "docker build -t blog-monolith -f ./Dockerfile.monolith .",
-    "docker:run": "docker run --rm -it blog-monolith"
+    "docker:run": "docker run --rm -it -p 4000:4000 blog-monolith"
   },
   "author": "Ice Services",
   "license": "MIT",
