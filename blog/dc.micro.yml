@@ -9,6 +9,7 @@ services:
     ports:
       - "4000:4000"
     environment:
+      MOL_NODE_ID: "node-api"
       MOL_SERVICES: api.service
 
       MOL_LOGLEVEL: info
@@ -25,6 +26,7 @@ services:
   posts:
     image: moleculer-blog
     environment:
+      MOL_NODE_ID: "node-posts"
       MOL_SERVICES: posts.service
 
       MOL_LOGLEVEL: info
@@ -40,6 +42,7 @@ services:
   users:
     image: moleculer-blog
     environment:
+      MOL_NODE_ID: "node-users"
       MOL_SERVICES: users.service
 
       MOL_LOGLEVEL: info
@@ -55,6 +58,7 @@ services:
   comments:
     image: moleculer-blog
     environment:
+      MOL_NODE_ID: "node-comments"
       MOL_SERVICES: comments.service
 
       MOL_LOGLEVEL: info

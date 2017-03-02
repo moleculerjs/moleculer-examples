@@ -35,10 +35,13 @@ let transporter = getTransporter();
 
 // Create broker
 const broker = new ServiceBroker({
+	nodeID: process.env.MOL_NODE_ID,
+
 	cacher,
 	transporter,
-	//metrics: true,
-	//statistics: true,
+	
+	metrics: process.env.MOL_METRICS,
+	statistics: process.env.MOL_STATISTICS,
 
 	logger: console,
 	//logger: winston,
