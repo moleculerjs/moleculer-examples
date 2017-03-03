@@ -45,8 +45,8 @@ services:
     depends_on:
       - nats
       - redis
-    deploy:
-      replicas: 2
+    #deploy:
+    #  replicas: 2
 
   comments:
     image: moleculer-blog
