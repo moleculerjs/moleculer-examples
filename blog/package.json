@@ -5,12 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "docker:build": "docker build -t moleculer-blog .",
-    "docker:run": "docker run --rm -it -p 3000:3000 moleculer-blog",
-
-    "dc:mono": "docker-compose -f dc.mono.yml -d up",
-    "dc:micro": "docker-compose -f dc.micro.yml -d up",
-    "dc:mixed": "docker-compose -f dc.mixed.ym -d upl"
+    "docker:build": "docker build -t moleculer-blog ."
   },
   "author": "Ice Services",
   "license": "MIT",
