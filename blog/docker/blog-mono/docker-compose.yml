@@ -5,6 +5,7 @@ services:
   main:
     build:
       context: "../../"
+    image: moleculer-blog
     expose:
       - "3000"
     ports:
