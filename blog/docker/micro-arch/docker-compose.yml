@@ -1,4 +1,4 @@
-version: "2.0"
+version: "3.0"
 
 services:
 
@@ -11,11 +11,8 @@ services:
     environment:
       MOL_NODE_ID: "node-api"
       MOL_SERVICES: api.service
-
-      MOL_LOGLEVEL: info
       MOL_APIGW_PORT: 4000
-      MOL_TRANSPORTER: nats 
-      MOL_NATS_URI: nats://nats:4222      
+    env_file: micro.env
     links:
       - nats
       - redis
@@ -28,10 +25,7 @@ services:
     environment:
       MOL_NODE_ID: "node-posts"
       MOL_SERVICES: posts.service
-
-      MOL_LOGLEVEL: info
-      MOL_TRANSPORTER: nats 
-      MOL_NATS_URI: nats://nats:4222      
+    env_file: micro.env
     links:
       - nats
       - redis
@@ -44,26 +38,22 @@ services:
     environment:
       MOL_NODE_ID: "node-users"
       MOL_SERVICES: users.service
-
-      MOL_LOGLEVEL: info
-      MOL_TRANSPORTER: nats 
-      MOL_NATS_URI: nats://nats:4222      
+    env_file: micro.env
     links:
       - nats
       - redis
     depends_on:
       - nats
       - redis
+    deploy:
+      replicas: 2
 
   comments:
     image: moleculer-blog
     environment:
       MOL_NODE_ID: "node-comments"
       MOL_SERVICES: comments.service
-
-      MOL_LOGLEVEL: info
-      MOL_TRANSPORTER: nats 
-      MOL_NATS_URI: nats://nats:4222      
+    env_file: micro.env
     links:
       - nats
       - redis
