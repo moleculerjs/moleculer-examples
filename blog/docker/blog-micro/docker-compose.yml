@@ -19,6 +19,12 @@ services:
     depends_on:
       - nats
       - redis
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=api"
+      - "traefik.port=4000"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=PathPrefix:/"
 
   posts:
     image: moleculer-blog
@@ -77,3 +83,13 @@ services:
     ports:
       - "6379:6379"
     # hostname: redis-server
+
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG --docker.exposedbydefault=false
+    ports:
+      - "88:80"
+      - "8888:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
