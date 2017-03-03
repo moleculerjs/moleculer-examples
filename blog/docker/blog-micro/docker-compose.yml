@@ -4,10 +4,10 @@ services:
 
   api:
     image: moleculer-blog
-    expose:
-      - "4000"
-    ports:
-      - "4000:4000"
+    #expose:
+    #  - "4000"
+    #ports:
+    #  - "4000:4000"
     environment:
       MOL_NODE_ID: "node-api"
       MOL_SERVICES: api.service
