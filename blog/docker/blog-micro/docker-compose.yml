@@ -12,7 +12,7 @@ services:
       MOL_NODE_ID: "node-api"
       MOL_SERVICES: api.service
       MOL_APIGW_PORT: 4000
-    env_file: micro.env
+    env_file: env
     links:
       - nats
       - redis
@@ -25,7 +25,7 @@ services:
     environment:
       MOL_NODE_ID: "node-posts"
       MOL_SERVICES: posts.service
-    env_file: micro.env
+    env_file: env
     links:
       - nats
       - redis
@@ -38,7 +38,7 @@ services:
     environment:
       MOL_NODE_ID: "node-users"
       MOL_SERVICES: users.service
-    env_file: micro.env
+    env_file: env
     links:
       - nats
       - redis
@@ -53,7 +53,7 @@ services:
     environment:
       MOL_NODE_ID: "node-comments"
       MOL_SERVICES: comments.service
-    env_file: micro.env
+    env_file: env
     links:
       - nats
       - redis
