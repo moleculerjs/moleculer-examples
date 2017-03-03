@@ -1,7 +1,0 @@
-version: "2"
-services:
-  monolith:
-    build: .
-    image: moleculer-demo/blog-monolith
-    ports:
-      - "3000:3000"
