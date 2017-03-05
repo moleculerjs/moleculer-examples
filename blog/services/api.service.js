@@ -92,6 +92,8 @@ module.exports = function() {
 				});
 
 				this.logger.debug("");
+				this.logger.debug("  Example: " + chalk.white.bold(`http://localhost:${this.settings.port}/api/posts.list?limit=5`));
+				this.logger.debug("");
 				this.logger.debug("--------------------------------------------------");
 				this.logger.debug("");
 			});
