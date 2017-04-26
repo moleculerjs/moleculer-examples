@@ -12,9 +12,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const url = require("url");
 
-const { Context } = require("moleculer");
-const Promise = require("bluebird");
-
 module.exports = function() {
 	return {
 		name: "api",
