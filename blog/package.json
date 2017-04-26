@@ -1,6 +1,6 @@
 {
   "name": "moleculer-examples",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Blog examples for Moleculer framework",
   "scripts": {
     "start": "node index.js",
@@ -11,10 +11,10 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "3.5.0",
-    "body-parser": "1.17.0",
+    "body-parser": "1.17.1",
     "chalk": "1.1.3",
-    "eslint": "3.17.0",
-    "express": "4.15.0",
+    "eslint": "3.19.0",
+    "express": "4.15.2",
     "fakerator": "0.3.0",
     "lodash": "4.17.4",
     "moleculer": "ice-services/moleculer",
