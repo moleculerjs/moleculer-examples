@@ -37,11 +37,14 @@ module.exports = {
 			return Promise.resolve()
 				.then(() => {
 					// Create fake posts
-					return Promise.all(_.times(10, () => {
+					return Promise.all(_.times(20, () => {
 						let fakePost = fake.entity.post();
 						return this.adapter.insert({
 							title: fakePost.title,
-							content: fakePost.content
+							content: fakePost.content,
+							category: "General",
+							likes: fake.random.number(100),
+							createdAt: fakePost.created
 						});
 					})).then(() => {
 						this.adapter.findAll({}).then(res => console.log(`Generated ${res.length} posts!`));

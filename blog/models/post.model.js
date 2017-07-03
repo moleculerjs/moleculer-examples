@@ -11,6 +11,14 @@ let PostSchema = new Schema({
 	content: {
 		type: String,
 		trim: true
+	},
+	likes: {
+		type: Number,
+		default: 0
+	},
+	category: {
+		type: String,
+		trim: true
 	}
 }, {
 	timestamps: true
