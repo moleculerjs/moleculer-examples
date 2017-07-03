@@ -11,9 +11,6 @@ const ServiceBroker = require("moleculer").ServiceBroker;
 const Cachers = require("moleculer").Cachers;
 const Transporters = require("moleculer").Transporters;
 
-// const winston = require("winston");
-// winston.level = "debug";
-
 function getCacher() {
 	switch(process.env.MOL_CACHER) {
 	case "memory": return new Cachers.Memory();
