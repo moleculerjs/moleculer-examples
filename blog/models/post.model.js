@@ -16,6 +16,11 @@ let PostSchema = new Schema({
 		type: Number,
 		default: 0
 	},
+	author: {
+		type: Schema.Types.ObjectId,
+		ref: "User",
+		required: "Please fill in an author ID",
+	},
 	category: {
 		type: String,
 		trim: true
