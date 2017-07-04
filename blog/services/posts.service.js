@@ -14,12 +14,12 @@ module.exports = {
 	model: Post,
 
 	settings: {
-		fields: "_id title content author likes createdAt",
+		fields: "_id title content author likes category createdAt",
 		populates: {
 			"author": {
 				action: "users.model",
 				params: {
-					fields: "username fullName email"
+					fields: "username fullName email avatar"
 				}
 			}
 		}
