@@ -13,6 +13,9 @@ let PostSchema = new Schema({
 		type: String,
 		trim: true
 	},
+	coverPhoto: {
+		type: String
+	},
 	likes: {
 		type: Number,
 		default: 0

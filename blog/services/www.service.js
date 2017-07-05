@@ -96,11 +96,14 @@ module.exports = {
 		searchPosts(req, res) {
 			const pageSize = this.settings.pageSize;
 			let page = Number(req.query.page || 1);
+			let query = req.query.query;
+			if (!query)
+				return res.redirect("/");
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.search", { query: req.query.query, limit: pageSize, offset: (page - 1) * pageSize }).then(res => {
-						data.query = req.query.query;
+					return this.broker.call("posts.search", { query, limit: pageSize, offset: (page - 1) * pageSize }).then(res => {
+						data.query = query;
 						data.posts = res.posts;
 						data.pageCount = Math.floor(res.count / pageSize);
 						return data;

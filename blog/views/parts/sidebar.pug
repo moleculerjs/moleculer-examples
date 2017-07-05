@@ -21,7 +21,7 @@ section#sidebar
                                 a(href='/post/' + encodeObjectID(post._id) + '/' + slugify(post.title))= post.title
                             time.published= moment(post.createdAt).format('LLL')
                         a.image(href='/post/' + encodeObjectID(post._id) + '/' + slugify(post.title))
-                            img(src="http://lorempixel.com/1280/480/", alt='')
+                            img(src="/images/covers/" + post.coverPhoto, alt='')
     // About
     section.blurb
         h2 About

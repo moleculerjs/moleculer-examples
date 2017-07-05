@@ -14,7 +14,7 @@ module.exports = {
 	model: Post,
 
 	settings: {
-		fields: "_id title content author likes category createdAt",
+		fields: "_id title content author likes category coverPhoto createdAt",
 		populates: {
 			"author": {
 				action: "users.model",
@@ -33,14 +33,7 @@ module.exports = {
 				offset: { type: "number", gt: 0, integer: true }
 			},
 			handler(ctx) {
-				return Post.find({}).sort("-createdAt").limit(ctx.params.limit).skip(ctx.params.offset).lean().exec()
-					.then(posts => this.transformDocuments(ctx, posts))
-					.then(posts => Post.find({}).count().then(count => {
-						return {
-							count,
-							posts
-						};
-					}));
+				return this.listPosts(ctx, {}, "-createdAt");
 			}
 		},
 
@@ -52,15 +45,7 @@ module.exports = {
 				offset: { type: "number", gt: 0, integer: true }
 			},
 			handler(ctx) {
-				let filter = { category: ctx.params.category };
-				return Post.find(filter).sort("-createdAt").limit(ctx.params.limit).skip(ctx.params.offset).lean().exec()
-					.then(posts => this.transformDocuments(ctx, posts))
-					.then(posts => Post.find(filter).count().then(count => {
-						return {
-							count,
-							posts
-						};
-					}));
+				return this.listPosts(ctx, { category: ctx.params.category }, "-createdAt");
 			}
 		},
 
@@ -72,15 +57,7 @@ module.exports = {
 				offset: { type: "number", gt: 0, integer: true }
 			},
 			handler(ctx) {
-				let filter = { author: ctx.params.author };
-				return Post.find(filter).sort("-createdAt").limit(ctx.params.limit).skip(ctx.params.offset).lean().exec()
-					.then(posts => this.transformDocuments(ctx, posts))
-					.then(posts => Post.find(filter).count().then(count => {
-						return {
-							count,
-							posts
-						};
-					}));
+				return this.listPosts(ctx, { author: ctx.params.author }, "-createdAt");
 			}
 		},
 
@@ -93,7 +70,8 @@ module.exports = {
 			},
 			handler(ctx) {
 				let q = Post.find({});
-				
+
+				// Full-text search
 				q.find({
 					$text: {
 						$search: ctx.params.query
@@ -104,12 +82,13 @@ module.exports = {
 						$meta: "textScore"
 					}
 				};
+				// Sort by score
 				q.sort({
 					_score: {
 						$meta: "textScore"
 					}
-				});				
-				
+				});
+
 				return q.limit(ctx.params.limit).skip(ctx.params.offset).lean().exec()
 					.then(posts => this.transformDocuments(ctx, posts))
 					.then(posts => q.count().then(count => {
@@ -134,6 +113,17 @@ module.exports = {
 	},
 
 	methods: {
+		listPosts(ctx, filter, sort) {
+			return Post.find(filter || {}).sort(sort || "-createdAt").limit(ctx.params.limit).skip(ctx.params.offset).lean().exec()
+				.then(posts => this.transformDocuments(ctx, posts))
+				.then(posts => Post.find({}).count().then(count => {
+					return {
+						count,
+						posts
+					};
+				}));
+		},
+
 		seedDB() {
 			this.logger.info("Seed Posts collection...");
 			return this.broker.call("users.find").then(users => {
@@ -151,14 +141,16 @@ module.exports = {
 					return this.adapter.insert({
 						title: fakePost.title,
 						content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
-						category: fake.random.arrayElement("General", "Tech", "Social", "News"),
+						category: fake.random.arrayElement(["General", "Tech", "Social", "News"]),
 						author: fake.random.arrayElement(authors)._id,
 						likes: fake.random.number(100),
+						coverPhoto: fake.random.number(1, 20) + ".jpg",
 						createdAt: fakePost.created
 					});
-				})).then(() => {
-					this.adapter.findAll({}).then(res => console.log(`Generated ${res.length} posts!`));
-				});
+				}))
+					.then(() => this.count())
+					.then(count => console.log(`Generated ${count} posts!`));
+
 			}).catch(err => {
 				if (err.name == "ServiceNotFoundError") {
 					this.logger.info("Waiting for `users` service...");
