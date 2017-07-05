@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    // Post
+    each post in posts
+        article.post
+            header
+                .title
+                    h2
+                        a(href='#')= post.title
+                    p
+                .meta
+                    time.published= moment(post.createdAt).format('LLL')
+                    a.author(href='#')
+                        span.name= post.author.fullName
+                        img(src=post.author.avatar, alt='')
+            a.image.featured(href='#')
+                img(src="http://lorempixel.com/1280/480/", alt='')
+            p= truncateContent(post.content)
+            footer
+                ul.actions
+                    li
+                        a.button.big(href='#') Continue Reading
+                ul.stats
+                    li
+                        a(href='#')= post.categor
+                    li
+                        a.icon.fa-heart(href='#')= post.likes
+                    li
+                        a.icon.fa-comment(href='#') -
+    // Pagination
+    ul.actions.pagination
+        li
+            a.disabled.button.big.previous(href='') Previous Page
+        li
+            a.button.big.next(href='#') Next Page
+

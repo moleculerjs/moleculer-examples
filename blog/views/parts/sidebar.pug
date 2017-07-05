@@ -1,0 +1,48 @@
+section#sidebar
+    // Intro
+    section#intro
+        a.logo(href='#')
+            img(src='images/logo.jpg', alt='')
+        header
+            h2 Blog Example
+            p
+                | Another fine responsive site template by 
+                a(href='http://html5up.net') HTML5 UP
+    // Posts List
+    section
+        ul.posts
+            li(v-for='post in bestPosts')
+                article
+                    header
+                        h3
+                            a(href='#') {{ post.title }}
+                        time.published(datetime='2015-10-20') {{ post.createdAt | moment }}
+                    a.image(href='#')
+                        img(:src="'http://lorempixel.com/1280/480/?_=' + Math.random().toString(36)", alt='')
+    // About
+    section.blurb
+        h2 About
+        p
+            | Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod amet placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at phasellus sed ultricies.
+        //
+            ul class="actions">
+            <li><a href="#" class="button">Learn More</a></li>
+            </ul
+    // Footer
+    section#footer
+        ul.icons
+            li
+                a.fa-twitter(href='https://twitter.com/MoleculerJS')
+                    span.label Twitter
+            li
+                a.fa-github(href='https://github.com/ice-services')
+                    span.label Github
+            li
+                a.fa-envelope(href='hello@moleculer.services')
+                    span.label Email
+        p.copyright
+            | © Moleculer Project. Design: 
+            a(href='http://html5up.net') HTML5 UP
+            | . Images: 
+            a(href='http://unsplash.com') Unsplash
+            | .

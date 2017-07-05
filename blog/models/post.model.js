@@ -6,7 +6,8 @@ let Schema = mongoose.Schema;
 let PostSchema = new Schema({
 	title: {
 		type: String,
-		trim: true
+		trim: true,
+		required: "Please fill in title"
 	},
 	content: {
 		type: String,

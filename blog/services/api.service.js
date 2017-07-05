@@ -8,30 +8,29 @@
 
 const ApiGatewayService = require("moleculer-web");
 
-module.exports = function() {
-	return {
-		name: "api",
-		mixins: [ApiGatewayService],
+module.exports = {
+	name: "api",
+	mixins: [ApiGatewayService],
 
-		settings: {
-			routes: [
-				{
-					path: "/api",
+	settings: {
+		PORT: 3001,
+		routes: [
+			{
+				path: "/api",
 
-					whitelist: [
-						"**"
-					],
+				whitelist: [
+					"**"
+				],
 
-					aliases: {
-						"REST posts": "posts"
-					}
+				aliases: {
+					"REST posts": "posts"
 				}
-			],
-
-			assets: {
-				folder: "./www"
 			}
+		],
 
-		}		
-	};
+		assets: {
+			folder: "./www"
+		}
+
+	}		
 };

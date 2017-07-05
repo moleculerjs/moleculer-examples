@@ -1,3 +1,4 @@
+NODE_ENV=production
 LOGGER=true
 LOGLEVEL=info
 CACHER=true

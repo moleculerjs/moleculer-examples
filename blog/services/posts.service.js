@@ -25,6 +25,17 @@ module.exports = {
 		}
 	},
 
+	actions: {
+		findAll: {
+			cache: true,
+			handler(ctx) {
+				let page = ctx.params.page || 1;
+				return Post.find({}).sort("-createdAt").limit(5).skip(page * 5).lean().exec()
+					.then(docs => this.transformDocuments(ctx, docs));
+			}
+		}
+	},
+
 	methods: {
 		seedDB() {
 			this.logger.info("Seed Posts collection...");
