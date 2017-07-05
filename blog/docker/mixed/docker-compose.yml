@@ -36,6 +36,19 @@ services:
       - mongo      
     #deploy:
     #  replicas: 2
+    
+  metrics:
+    image: moleculer-blog
+    env_file: env
+    environment:
+      NODEID: "node-metrics"
+      SERVICES: metrics
+    links:
+      - nats
+      - redis
+    depends_on:
+      - nats
+      - redis
 
   nats:
     image: nats
