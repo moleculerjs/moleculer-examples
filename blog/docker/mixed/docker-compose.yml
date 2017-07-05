@@ -8,11 +8,11 @@ services:
       - "3000"
     ports:
       - "3000:3000"
-    env_file: env
     environment:
       NODEID: "node-api"
       SERVICES: api
       PORT: 3000
+    env_file: env
     links:
       - nats
       - redis
@@ -22,10 +22,10 @@ services:
 
   group1:
     image: moleculer-blog
-    env_file: env
     environment:
       NODEID: "node-group1"
       SERVICES: posts,users,comments
+    env_file: env
     links:
       - nats
       - redis
