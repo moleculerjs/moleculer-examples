@@ -10,11 +10,10 @@ services:
       - "3000"
     ports:
       - "3000:3000"
+    env_file: env
     environment:
       PORT: 3000
-      MONGO_URI: "mongodb://mongo/moleculer-blog"
 
-    env_file: env
     links:
       - mongo
     depends_on:

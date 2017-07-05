@@ -4,11 +4,11 @@ services:
 
   api:
     image: moleculer-blog
+    env_file: env
     environment:
       NODEID: "node-api"
       SERVICES: api
       PORT: 4000
-    env_file: env
     links:
       - nats
       - redis
@@ -24,10 +24,10 @@ services:
 
   posts:
     image: moleculer-blog
+    env_file: env
     environment:
       NODEID: "node-posts"
       SERVICES: posts
-    env_file: env
     links:
       - nats
       - redis
@@ -39,10 +39,10 @@ services:
 
   users:
     image: moleculer-blog
+    env_file: env
     environment:
       NODEID: "node-users"
       SERVICES: users
-    env_file: env
     links:
       - nats
       - redis
