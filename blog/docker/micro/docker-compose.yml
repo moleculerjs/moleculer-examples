@@ -4,16 +4,11 @@ services:
 
   api:
     image: moleculer-blog
-    #expose:
-    #  - "4000"
-    #ports:
-    #  - "4000:4000"
+    env_file: env
     environment:
       NODEID: "node-api"
-      SERVICEDIR: services
       SERVICES: api
       PORT: 4000
-    env_file: env
     links:
       - nats
       - redis
@@ -29,11 +24,10 @@ services:
 
   posts:
     image: moleculer-blog
+    env_file: env
     environment:
       NODEID: "node-posts"
-      SERVICEDIR: services
       SERVICES: posts
-    env_file: env
     links:
       - nats
       - redis
@@ -45,11 +39,10 @@ services:
 
   users:
     image: moleculer-blog
+    env_file: env
     environment:
       NODEID: "node-users"
-      SERVICEDIR: services
       SERVICES: users
-    env_file: env
     links:
       - nats
       - redis
@@ -63,10 +56,10 @@ services:
 
   # comments:
   #   image: moleculer-blog
+  #   env_file: env
   #   environment:
   #     NODEID: "node-comments"
-  #     SERVICES: comments.service
-  #   env_file: env
+  #     SERVICES: comments
   #   links:
   #     - nats
   #     - redis
@@ -78,37 +71,21 @@ services:
 
   nats:
     image: nats
-    expose:
-      - "4222"
-    ports:
-      - "4222:4222"
-      - "8222:8222"
-    # hostname: nats-server
 
   redis:
     image: redis:alpine
-    expose:
-      - "6379"
-    ports:
-      - "6379:6379"
-    # hostname: redis-server
 
   mongo:
     image: mongo
     volumes:
-      - ../db:/data/db
+      - ../../db:/data/db
 
   traefik:
     image: traefik
-    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG --docker.exposedbydefault=false
+    command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
     ports:
       - "3000:80"
       - "3001:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
-
-  mongo:
-    image: mongo
-    volumes:
-      - ../db:/data/db

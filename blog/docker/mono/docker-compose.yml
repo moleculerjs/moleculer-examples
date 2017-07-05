@@ -10,12 +10,10 @@ services:
       - "3000"
     ports:
       - "3000:3000"
+    env_file: env
     environment:
       PORT: 3000
       MONGO_URI: "mongodb://mongo/moleculer-blog"
-      LOGGER: "true"
-      LOGLEVEL: info
-      SERVICEDIR: services
 
     links:
       - mongo
@@ -25,4 +23,4 @@ services:
   mongo:
     image: mongo
     volumes:
-      - ../db:/data/db
+      - ../../db:/data/db
