@@ -7,31 +7,26 @@ block content
             header
                 .title
                     h2
-                        a(href='#')= post.title
+                        a(href='/post/' + post._id + '/' + slugify(post.title))= post.title
                     p
                 .meta
                     time.published= moment(post.createdAt).format('LLL')
-                    a.author(href='#')
+                    a.author(href='/author/' + post.author.username)
                         span.name= post.author.fullName
                         img(src=post.author.avatar, alt='')
-            a.image.featured(href='#')
+            a.image.featured(href='/post/' + post._id + '/' + slugify(post.title))
                 img(src="http://lorempixel.com/1280/480/", alt='')
             p= truncateContent(post.content)
             footer
                 ul.actions
                     li
-                        a.button.big(href='#') Continue Reading
+                        a.button.big(href='/post/' + post._id + '/' + slugify(post.title)) Continue Reading
                 ul.stats
                     li
-                        a(href='#')= post.categor
+                        a(href='/category/' + post.category)= post.category
                     li
-                        a.icon.fa-heart(href='#')= post.likes
+                        a.icon.fa-heart(href='/like/' + post._id)= post.likes
                     li
-                        a.icon.fa-comment(href='#') -
+                        a.icon.fa-comment(href='/post/' + post._id + '#comments')= post.comments
     // Pagination
-    ul.actions.pagination
-        li
-            a.disabled.button.big.previous(href='') Previous Page
-        li
-            a.button.big.next(href='#') Next Page
-
+    include parts/pagination

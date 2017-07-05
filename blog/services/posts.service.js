@@ -28,10 +28,32 @@ module.exports = {
 	actions: {
 		findAll: {
 			cache: true,
+			params: {
+				limit: { type: "number", positive: true, integer: true },
+				offset: { type: "number", gt: 0, integer: true }
+			},
 			handler(ctx) {
-				let page = ctx.params.page || 1;
-				return Post.find({}).sort("-createdAt").limit(5).skip(page * 5).lean().exec()
-					.then(docs => this.transformDocuments(ctx, docs));
+				return Post.find({}).sort("-createdAt").limit(ctx.params.limit).skip(ctx.params.offset).lean().exec()
+					.then(posts => this.transformDocuments(ctx, posts))
+					.then(posts => {
+						return Post.find({}).count().then(count => {
+							return {
+								count,
+								posts
+							};
+						});
+					});
+			}
+		},
+
+		bestOf: {
+			cache: true,
+			params: {
+				limit: { type: "number", positive: true, integer: true }
+			},
+			handler(ctx) {
+				return Post.find({}).sort("-likes").limit(ctx.params.limit).lean().exec()
+					.then(posts => this.transformDocuments(ctx, posts));
 			}
 		}
 	},
@@ -53,8 +75,8 @@ module.exports = {
 					let fakePost = fake.entity.post();
 					return this.adapter.insert({
 						title: fakePost.title,
-						content: fakePost.content,
-						category: "General",
+						content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
+						category: fake.random.arrayElement("General", "Tech", "Social", "News"),
 						author: fake.random.arrayElement(authors)._id,
 						likes: fake.random.number(100),
 						createdAt: fakePost.created
