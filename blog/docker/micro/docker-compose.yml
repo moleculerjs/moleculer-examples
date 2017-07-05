@@ -35,9 +35,11 @@ services:
     links:
       - nats
       - redis
+      - mongo
     depends_on:
       - nats
       - redis
+      - mongo
 
   users:
     image: moleculer-blog
@@ -48,24 +50,28 @@ services:
     links:
       - nats
       - redis
+      - mongo
     depends_on:
       - nats
       - redis
+      - mongo
     #deploy:
     #  replicas: 2
 
-  comments:
-    image: moleculer-blog
-    environment:
-      NODEID: "node-comments"
-      SERVICES: comments.service
-    env_file: env
-    links:
-      - nats
-      - redis
-    depends_on:
-      - nats
-      - redis
+  # comments:
+  #   image: moleculer-blog
+  #   environment:
+  #     NODEID: "node-comments"
+  #     SERVICES: comments.service
+  #   env_file: env
+  #   links:
+  #     - nats
+  #     - redis
+  #     - mongo
+  #   depends_on:
+  #     - nats
+  #     - redis
+  #     - mongo
 
   nats:
     image: nats
@@ -84,12 +90,22 @@ services:
       - "6379:6379"
     # hostname: redis-server
 
+  mongo:
+    image: mongo
+    volumes:
+      - ../db:/data/db
+
   traefik:
     image: traefik
     command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG --docker.exposedbydefault=false
     ports:
-      - "88:80"
-      - "8888:8080"
+      - "3000:80"
+      - "3001:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
+
+  mongo:
+    image: mongo
+    volumes:
+      - ../db:/data/db

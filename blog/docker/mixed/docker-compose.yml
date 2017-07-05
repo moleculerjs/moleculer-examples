@@ -5,13 +5,13 @@ services:
   api:
     image: moleculer-blog
     expose:
-      - "5000"
+      - "3000"
     ports:
-      - "5000:5000"
+      - "3000:3000"
     environment:
       NODEID: "node-api"      
       SERVICES: api.service
-      PORT: 5000
+      PORT: 3000
     env_file: env
     links:
       - nats
@@ -29,9 +29,11 @@ services:
     links:
       - nats
       - redis
+      - mongo      
     depends_on:
       - nats
       - redis
+      - mongo      
     #deploy:
     #  replicas: 2
 
@@ -42,7 +44,6 @@ services:
     ports:
       - "4222:4222"
       - "8222:8222"
-    # hostname: nats-server
 
   redis:
     image: redis:alpine
@@ -50,4 +51,8 @@ services:
       - "6379"
     ports:
       - "6379:6379"
-    # hostname: redis-server
+
+  mongo:
+    image: mongo
+    volumes:
+      - ../db:/data/db    

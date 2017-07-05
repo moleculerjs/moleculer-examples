@@ -12,7 +12,7 @@ services:
       - "3000:3000"
     environment:
       PORT: 3000
-      MONGO_URI: "mongo://mongo/moleculer-blog"
+      MONGO_URI: "mongodb://mongo/moleculer-blog"
       LOGGER: "true"
       LOGLEVEL: info
       SERVICEDIR: services

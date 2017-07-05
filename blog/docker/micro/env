@@ -1,3 +1,4 @@
 LOGGER=true
 LOGLEVEL=info
 TRANSPORTER=nats://nats:4222
+MONGO_URI=mongodb://mongo/moleculer-blog
