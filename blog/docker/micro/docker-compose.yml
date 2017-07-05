@@ -9,9 +9,9 @@ services:
     #ports:
     #  - "4000:4000"
     environment:
-      MOL_NODE_ID: "node-api"
-      MOL_SERVICES: api.service
-      MOL_APIGW_PORT: 4000
+      NODEID: "node-api"
+      SERVICES: api.service
+      PORT: 4000
     env_file: env
     links:
       - nats
@@ -29,8 +29,8 @@ services:
   posts:
     image: moleculer-blog
     environment:
-      MOL_NODE_ID: "node-posts"
-      MOL_SERVICES: posts.service
+      NODEID: "node-posts"
+      SERVICES: posts.service
     env_file: env
     links:
       - nats
@@ -42,8 +42,8 @@ services:
   users:
     image: moleculer-blog
     environment:
-      MOL_NODE_ID: "node-users"
-      MOL_SERVICES: users.service
+      NODEID: "node-users"
+      SERVICES: users.service
     env_file: env
     links:
       - nats
@@ -57,8 +57,8 @@ services:
   comments:
     image: moleculer-blog
     environment:
-      MOL_NODE_ID: "node-comments"
-      MOL_SERVICES: comments.service
+      NODEID: "node-comments"
+      SERVICES: comments.service
     env_file: env
     links:
       - nats

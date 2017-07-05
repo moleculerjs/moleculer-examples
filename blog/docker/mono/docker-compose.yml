@@ -11,5 +11,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      MOL_APIGW_PORT: 3000
-      MOL_LOGLEVEL: info
+      PORT: 3000
+      LOGGER: true
+      LOGLEVEL: info

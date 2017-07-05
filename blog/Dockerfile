@@ -2,7 +2,7 @@ FROM node:6.10-alpine
 
 RUN addgroup -S mol && adduser -S -g mol mol
 
-ENV HOME=/home/node
+ENV HOME=/home/mol
 ENV NODE_ENV=production 
 
 # API gateway settings
@@ -45,9 +45,9 @@ RUN apk add --no-cache --virtual git && \
 #   && yarn cache clean \
 #   && apk del .app-deps
 
-COPY index.js $HOME/app/
+COPY moleculer.config.js $HOME/app/
 COPY services $HOME/app/services/
-COPY assets $HOME/app/assets/
+COPY www $HOME/app/www/
 
 USER mol
 

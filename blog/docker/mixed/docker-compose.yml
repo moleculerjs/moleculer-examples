@@ -9,9 +9,9 @@ services:
     ports:
       - "5000:5000"
     environment:
-      MOL_NODE_ID: "node-api"
-      MOL_SERVICES: api.service
-      MOL_APIGW_PORT: 5000
+      NODEID: "node-api"      
+      SERVICES: api.service
+      PORT: 5000
     env_file: env
     links:
       - nats
@@ -23,8 +23,8 @@ services:
   group1:
     image: moleculer-blog
     environment:
-      MOL_NODE_ID: "node-group1"
-      MOL_SERVICES: "posts.service,users.service,comments.service"
+      NODEID: "node-group1"
+      SERVICES: "posts.service,users.service,comments.service"
     env_file: env
     links:
       - nats
