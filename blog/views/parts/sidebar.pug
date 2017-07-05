@@ -5,7 +5,7 @@ section#sidebar
             img(src='/images/logo.jpg', alt='')
         header
             h2
-                a(href="/") Blog Example
+                a(href="/") Mol BlogEx
             p
                 | Another fine responsive site template by 
                 a(href='http://html5up.net') HTML5 UP
@@ -18,9 +18,9 @@ section#sidebar
                     article
                         header
                             h3
-                                a(href='/post/' + post._id + '/' + slugify(post.title))= post.title
+                                a(href='/post/' + encodeObjectID(post._id) + '/' + slugify(post.title))= post.title
                             time.published= moment(post.createdAt).format('LLL')
-                        a.image(href='/post/' + post._id + '/' + slugify(post.title))
+                        a.image(href='/post/' + encodeObjectID(post._id) + '/' + slugify(post.title))
                             img(src="http://lorempixel.com/1280/480/", alt='')
     // About
     section.blurb

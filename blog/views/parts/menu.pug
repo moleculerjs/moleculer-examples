@@ -1,27 +1,23 @@
 section#menu
     // Search
     section
-        form.search(method='get', action='#')
-            input(type='text', name='query', placeholder='Search')
+        form#search(method='get', action='/search')
+            input(type='text', name='query', placeholder='Search', value=query)
     // Links
     section
-        ul.links
+        ul.links      
             li
-                a(href='#')
-                    h3 Lorem ipsum
-                    p Feugiat tempus veroeros dolor
+                a(href='/category/General')
+                    h3 General
             li
-                a(href='#')
-                    h3 Dolor sit amet
-                    p Sed vitae justo condimentum
+                a(href='/category/Tech')
+                    h3 Tech
             li
-                a(href='#')
-                    h3 Feugiat veroeros
-                    p Phasellus sed ultricies mi congue
+                a(href='/category/Social')
+                    h3 Social
             li
-                a(href='#')
-                    h3 Etiam sed consequat
-                    p Porta lectus amet ultricies
+                a(href='/category/News')
+                    h3 News
     // Actions
     section
         ul.actions.vertical
