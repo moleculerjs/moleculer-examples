@@ -47,6 +47,7 @@ RUN apk add --no-cache --virtual git && \
 
 COPY moleculer.config.js $HOME/app/
 COPY services $HOME/app/services/
+COPY models $HOME/app/models/
 COPY www $HOME/app/www/
 
 USER mol
