@@ -10,7 +10,8 @@ services:
     #  - "4000:4000"
     environment:
       NODEID: "node-api"
-      SERVICES: api.service
+      SERVICEDIR: services
+      SERVICES: api
       PORT: 4000
     env_file: env
     links:
@@ -30,7 +31,8 @@ services:
     image: moleculer-blog
     environment:
       NODEID: "node-posts"
-      SERVICES: posts.service
+      SERVICEDIR: services
+      SERVICES: posts
     env_file: env
     links:
       - nats
@@ -45,7 +47,8 @@ services:
     image: moleculer-blog
     environment:
       NODEID: "node-users"
-      SERVICES: users.service
+      SERVICEDIR: services
+      SERVICES: users
     env_file: env
     links:
       - nats

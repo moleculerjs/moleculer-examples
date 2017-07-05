@@ -9,8 +9,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NODEID: "node-api"      
-      SERVICES: api.service
+      NODEID: "node-api"
+      SERVICEDIR: services
+      SERVICES: api
       PORT: 3000
     env_file: env
     links:
@@ -24,7 +25,8 @@ services:
     image: moleculer-blog
     environment:
       NODEID: "node-group1"
-      SERVICES: "posts.service,users.service,comments.service"
+      SERVICEDIR: services
+      SERVICES: posts,users,comments
     env_file: env
     links:
       - nats
