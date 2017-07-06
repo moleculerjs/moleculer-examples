@@ -1,4 +1,5 @@
 # Blog example
+[![Blog screenshot](assets/screenshots/blog-screenshot.jpg)](blog/)
 
 ## Features
 - multiple services (www, posts, users)
