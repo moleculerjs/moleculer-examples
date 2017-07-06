@@ -32,7 +32,7 @@ npm start
 >First you need to build the `moleculer-blog` image. You can use the `npm run docker:build` command or `docker build -t moleculer-blog`
 
 ### Running as monolith 
-_all services are in a container_
+_All services are running in a container._
 ```bash
 cd docker/mono
 docker-compose up
@@ -42,7 +42,7 @@ docker-compose up
 **Open the http://docker-machine:3000/ URL in your browser.**
 
 ### Running as microservices 
-_all services are in separated containers, communicate via NATS & Traefik reverse proxy_
+_All services are running in separated containers, communicate via NATS & use Traefik reverse proxy._
 ```bash
 cd docker/micro
 docker-compose up
@@ -64,7 +64,7 @@ docker-compose scale www=2
 ```
 
 ### Running as mixed
-_coherent services are in the same container and communicate via NATS_
+_Coherent services are running in the same container and communicate via NATS._
 ```bash
 cd docker/mixed
 docker-compose up
@@ -80,20 +80,21 @@ docker-compose scale group1=2
 ```
 
 ## Development locally
-_Running MongoDB is required_
+_Running MongoDB is required!_
 
 ```bash
 npm run dev
 ```
 
 ## Development in Docker (without dependencies)
-In this case you don't need to running MongoDB, what is more, you don't need NodeJS environment. Everything is in Docker.
+In this case you don't need MongoDB, what is more, you don't need NodeJS environment. Everything is in Docker.
 
 ```bash
 cd docker/dev
 docker-compose up
 ```
 
+_If you changed any source file, the app will be restarted._
 
 # License
 This repo is available under the [MIT license](https://tldrlegal.com/license/mit-license).
