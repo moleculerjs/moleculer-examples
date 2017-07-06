@@ -2,7 +2,7 @@
 Official examples for Moleculer microservices framework
 
 ## [Blog site](blog/)
-[![Blog screenshot](assets/screenshots/blog-screenshot.jpg)](assets/screenshots/blog-screenshot.jpg)
+[![Blog screenshot](assets/screenshots/blog-screenshot.jpg)](blog/)
 
 # License
 This repo is available under the [MIT license](https://tldrlegal.com/license/mit-license).

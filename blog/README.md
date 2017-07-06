@@ -22,7 +22,7 @@ npm install
 npm start
 ```
 
-**Open the [http://localhost:3000](http://localhost:3000) URL in your browser.**
+**Open the [http://localhost:3000/](http://localhost:3000/) URL in your browser.**
 
 
 ## Start on Docker
@@ -34,7 +34,7 @@ docker-compose up
 # or 
 # ./start.sh
 ```
-**Open the http://<docker-machine>:3000 URL in your browser.**
+**Open the http://docker-machine:3000/ URL in your browser.**
 
 ### Running as microservices (all services in separated containers, communicate via NATS & Traefik reverse proxy)
 ```bash
@@ -43,7 +43,7 @@ docker-compose up
 # or 
 # ./start.sh
 ```
-**Open the http://<docker-machine>:3000 URL in your browser.**
+**Open the http://docker-machine:3000/ URL in your browser.**
 
 If you want to scale up
 ```bash
@@ -64,7 +64,7 @@ docker-compose up
 # or 
 # ./start.sh
 ```
-**Open the http://<docker-machine>:3000 URL in your browser.**
+**Open the http://docker-machine:3000/ URL in your browser.**
 
 
 If you want to scale up
