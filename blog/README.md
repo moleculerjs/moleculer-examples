@@ -27,7 +27,8 @@ npm start
 
 ## Start on Docker
 
-### Running as monolith (all services in a container)
+### Running as monolith 
+_all services in a container_
 ```bash
 cd docker/mono
 docker-compose up
@@ -36,7 +37,8 @@ docker-compose up
 ```
 **Open the http://docker-machine:3000/ URL in your browser.**
 
-### Running as microservices (all services in separated containers, communicate via NATS & Traefik reverse proxy)
+### Running as microservices 
+_all services in separated containers, communicate via NATS & Traefik reverse proxy_
 ```bash
 cd docker/micro
 docker-compose up
@@ -57,7 +59,8 @@ You can scale up the API gateway as well. Traefik is load balancing the requests
 docker-compose scale api=2
 ```
 
-### Running as mixed (coherent services in the same container and communicate via NATS)
+### Running as mixed
+_coherent services in the same container and communicate via NATS_
 ```bash
 cd docker/mixed
 docker-compose up
