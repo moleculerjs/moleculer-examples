@@ -156,7 +156,7 @@ module.exports = {
 		const baseFolder = path.join(__dirname, "..");
 
 		app.locals._ = _;
-		app.locals.truncateContent = val => _.truncate(val, { length: 100 });
+		app.locals.truncateContent = val => _.truncate(val, { length: 200 });
 		app.locals.moment = moment;
 		app.locals.slugify = slugify;
 		app.locals.encodeObjectID = encodeObjectID;
