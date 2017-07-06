@@ -28,7 +28,7 @@ npm start
 ## Start on Docker
 
 ### Running as monolith 
-_all services in a container_
+_all services are in a container_
 ```bash
 cd docker/mono
 docker-compose up
@@ -38,7 +38,7 @@ docker-compose up
 **Open the http://docker-machine:3000/ URL in your browser.**
 
 ### Running as microservices 
-_all services in separated containers, communicate via NATS & Traefik reverse proxy_
+_all services are in separated containers, communicate via NATS & Traefik reverse proxy_
 ```bash
 cd docker/micro
 docker-compose up
@@ -60,7 +60,7 @@ docker-compose scale api=2
 ```
 
 ### Running as mixed
-_coherent services in the same container and communicate via NATS_
+_coherent services are in the same container and communicate via NATS_
 ```bash
 cd docker/mixed
 docker-compose up
