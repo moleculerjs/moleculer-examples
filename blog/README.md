@@ -94,7 +94,7 @@ cd docker/dev
 docker-compose up
 ```
 
-_If you changed any source file, the app will be restarted._
+_If you change source files, the app will be restarted automatically._
 
 # License
 This repo is available under the [MIT license](https://tldrlegal.com/license/mit-license).
