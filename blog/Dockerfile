@@ -26,10 +26,7 @@ RUN apk add --no-cache --virtual git && \
 #   && yarn cache clean \
 #   && apk del .app-deps
 
-COPY moleculer.config.js HOME_APP/
-COPY services HOME_APP/services/
-COPY models HOME_APP/models/
-COPY www HOME_APP/www/
+COPY moleculer.config.js services models public views HOME_APP/
 
 USER mol
 

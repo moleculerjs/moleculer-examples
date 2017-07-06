@@ -3,8 +3,6 @@ version: "3"
 services:
 
   main:
-    build:
-      context: "../../"
     image: moleculer-blog
     expose:
       - "3000"

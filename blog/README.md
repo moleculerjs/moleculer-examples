@@ -29,6 +29,8 @@ npm start
 
 ## Start on Docker
 
+>First you need to build the `moleculer-blog` image. You can use the `npm run docker:build` command or `docker build -t moleculer-blog`
+
 ### Running as monolith 
 _all services are in a container_
 ```bash
