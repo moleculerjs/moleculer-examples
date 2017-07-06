@@ -4,21 +4,23 @@ services:
 
   api:
     image: moleculer-blog
-    expose:
-      - "3000"
-    ports:
-      - "3000:3000"
     env_file: env
     environment:
       NODEID: "node-api"
       SERVICES: api
-      PORT: 3000
+      PORT: 4000
     links:
       - nats
       - redis
     depends_on:
       - nats
       - redis
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=api"
+      - "traefik.port=4000"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=PathPrefix:/"      
 
   group1:
     image: moleculer-blog
@@ -60,4 +62,14 @@ services:
   mongo:
     image: mongo
     volumes:
-      - ../../db:/data/db    
+      - ../../db:/data/db
+
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
+    ports:
+      - "3000:80"
+      - "3001:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml      
