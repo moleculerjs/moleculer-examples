@@ -3,8 +3,6 @@ version: "3"
 services:
 
   main:
-    #build:
-    #  context: "../../"
     image: node:6.10-alpine
     expose:
       - "3000"
@@ -14,10 +12,11 @@ services:
     environment:
       PORT: 3000
 
+    working_dir: /app
     volumes:
       - ../..:/app
 
-    command: npm install && npm run dev
+    command: /bin/sh -c "npm install && npm run dev"
 
     links:
       - mongo
