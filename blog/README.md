@@ -5,10 +5,11 @@
 - multiple services (www, posts, users)
 - Docker files to running in Docker containers (3 architectures)
 - ExpressJS www server with Pug
+- MongoDB database with [moleculer-db]() and [moleculer-db-adapter-mongoose]() modules
 - NATS transporter
 - Redis cacher
 - [Traefik](https://traefik.io/) reverse proxy (in micro arch)
-- Static client side
+- static client side
 
 ## Install
 ```bash
@@ -17,7 +18,7 @@ cd blog
 ```
 
 ## Start locally
-
+To start locally, you need to running a MongoDB server on localhost.
 ```bash
 npm install
 npm start
@@ -48,7 +49,7 @@ docker-compose up
 ```
 **Open the http://docker-machine:3000/ URL in your browser.**
 
-If you want to scale up
+You can scale up the containers
 ```bash
 # Scale users service to 2 instances
 docker-compose scale users=2
@@ -70,16 +71,25 @@ docker-compose up
 ```
 **Open the http://docker-machine:3000/ URL in your browser.**
 
-
-If you want to scale up
+You can scale up the containers
 ```bash
 # Scale group1 container to 2 instances
 docker-compose scale group1=2
 ```
 
-## Development
+## Development locally
+_Running MongoDB is required_
+
 ```bash
 npm run dev
+```
+
+## Development in Docker (without dependencies)
+In this case you don't need to running MongoDB, what is more, you don't need NodeJS environment. Everything is in Docker.
+
+```bash
+cd docker/dev
+docker-compose up
 ```
 
 

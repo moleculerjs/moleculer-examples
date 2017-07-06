@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+
+  main:
+    #build:
+    #  context: "../../"
+    image: node:6.10-alpine
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    env_file: env
+    environment:
+      PORT: 3000
+
+    volumes:
+      - ../..:/app
+
+    command: npm install && npm run dev
+
+    links:
+      - mongo
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    volumes:
+      - ../../db:/data/db
