@@ -53,13 +53,13 @@ docker-compose up
 
 You can scale up the containers
 ```bash
-# Scale users service to 2 instances
+# Scale up the users service to 2 instances
 docker-compose scale users=2
 ```
 
 You can scale up the WWW service as well. Traefik is load balancing the requests to instances.
 ```bash
-# Scale WWW service to 2 instances
+# Scale up the WWW service to 2 instances
 docker-compose scale www=2
 ```
 
@@ -75,7 +75,7 @@ docker-compose up
 
 You can scale up the containers
 ```bash
-# Scale group1 container to 2 instances
+# Scale up the group1 container to 2 instances
 docker-compose scale group1=2
 ```
 
