@@ -31,7 +31,7 @@ npm start
 
 >First you need to build the `moleculer-blog` image. You can use the `npm run docker:build` command or `docker build -t moleculer-blog`
 
-### Running as monolith 
+### :house: Running as monolith 
 _All services are running in a container._
 ```bash
 cd docker/mono
@@ -41,7 +41,7 @@ docker-compose up
 ```
 **Open the http://docker-machine:3000/ URL in your browser.**
 
-### Running as microservices 
+### :office: Running as microservices 
 _All services are running in separated containers, communicate via NATS & use Traefik reverse proxy._
 ```bash
 cd docker/micro
@@ -63,7 +63,7 @@ You can scale up the WWW service as well. Traefik is load balancing the requests
 docker-compose scale www=2
 ```
 
-### Running as mixed
+### :hotel: Running as mixed
 _Coherent services are running in the same container and communicate via NATS._
 ```bash
 cd docker/mixed
