@@ -14,11 +14,11 @@ ADD https://github.com/Yelp/dumb-init/releases/download/v1.1.1/dumb-init_1.1.1_a
 WORKDIR $HOME_APP
 
 # RUN apk add --no-cache --virtual .app-deps python make g++ git && \
-RUN apk add --no-cache --virtual git && \
-	chown -R mol:mol $HOME/* /usr/local/ && \
+# RUN apk add --no-cache --virtual git && \
+RUN chown -R mol:mol $HOME/* /usr/local/ && \
     chmod +x /usr/local/bin/dumb-init && \
-#    npm cache clean && \
     npm install --silent --progress=false --production && \
+    npm cache clean && \
     chown -R mol:mol $HOME/*
 
 # RUN apk add --no-cache --virtual .app-deps python make g++ \
