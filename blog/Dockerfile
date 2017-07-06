@@ -26,7 +26,11 @@ RUN chown -R mol:mol $HOME/* /usr/local/ && \
 #   && yarn cache clean \
 #   && apk del .app-deps
 
-COPY moleculer.config.js services models public views $HOME_APP/
+COPY moleculer.config.js 
+COPY services/ $HOME_APP/services/
+COPY models/ $HOME_APP/services/ 
+COPY public/ $HOME_APP/services/ 
+COPY views/ $HOME_APP/services/
 
 USER mol
 
