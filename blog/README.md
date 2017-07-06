@@ -27,7 +27,7 @@ npm start
 **Open the [http://localhost:3000/](http://localhost:3000/) URL in your browser.**
 
 
-## Start on Docker
+## Start in Docker
 
 >First you need to build the `moleculer-blog` image. You can use the `npm run docker:build` command or `docker build -t moleculer-blog`
 
