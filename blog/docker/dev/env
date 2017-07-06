@@ -1,0 +1,6 @@
+NODE_ENV=development
+LOGGER=true
+LOGLEVEL=debug
+CACHER=false
+MONGO_URI=mongodb://mongo/moleculer-blog
+SERVICEDIR=services

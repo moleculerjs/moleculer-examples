@@ -1,0 +1,75 @@
+version: "3.0"
+
+services:
+
+  www:
+    image: moleculer-blog
+    env_file: env
+    environment:
+      NODEID: "node-www"
+      SERVICES: www
+      PORT: 4000
+    links:
+      - nats
+      - redis
+    depends_on:
+      - nats
+      - redis
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=www"
+      - "traefik.port=4000"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=PathPrefix:/"      
+
+  group1:
+    image: moleculer-blog
+    env_file: env
+    environment:
+      NODEID: "node-group1"
+      SERVICES: posts,users
+      #SERVICES: posts,users,comments
+    links:
+      - nats
+      - redis
+      - mongo      
+    depends_on:
+      - nats
+      - redis
+      - mongo      
+    #deploy:
+    #  replicas: 2
+
+  metrics:
+    image: moleculer-blog
+    env_file: env
+    environment:
+      NODEID: "node-metrics"
+      SERVICES: metrics
+    links:
+      - nats
+      - redis
+    depends_on:
+      - nats
+      - redis
+
+  nats:
+    image: nats
+
+  redis:
+    image: redis:alpine
+
+  mongo:
+    image: mongo
+    volumes:
+      - ../../db:/data/db
+
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
+    ports:
+      - "3000:80"
+      - "3001:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml      

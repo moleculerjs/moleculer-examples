@@ -1,0 +1,51 @@
+section#sidebar
+    // Intro
+    section#intro
+        a.logo(href='#')
+            img(src='/images/logo.png', alt='')
+        header
+            h2
+                a(href="/") Moleculer
+            p
+                | Blog example site with 
+                a(href='http://moleculer.services') Moleculer
+    // Posts List
+    section
+        h2 Popular
+        ul.posts
+            each post in bestOfPosts
+                li
+                    article
+                        header
+                            h3
+                                a(href='/post/' + encodeObjectID(post._id) + '/' + slugify(post.title))= post.title
+                            time.published= moment(post.createdAt).format('LLL')
+                        a.image(href='/post/' + encodeObjectID(post._id) + '/' + slugify(post.title))
+                            img(src="/images/covers/" + post.coverPhoto, alt='')
+    // About
+    section.blurb
+        h2 About
+        p
+            | Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod amet placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at phasellus sed ultricies.
+        //
+            ul class="actions">
+            <li><a href="#" class="button">Learn More</a></li>
+            </ul
+    // Footer
+    section#footer
+        ul.icons
+            li
+                a.fa-twitter(href='https://twitter.com/MoleculerJS')
+                    span.label Twitter
+            li
+                a.fa-github(href='https://github.com/ice-services')
+                    span.label Github
+            li
+                a.fa-envelope(href='hello@moleculer.services')
+                    span.label Email
+        p.copyright
+            | © Moleculer Project. Design: 
+            a(href='http://html5up.net') HTML5 UP
+            | . Images: 
+            a(href='http://unsplash.com') Unsplash
+            | .

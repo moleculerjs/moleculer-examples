@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+  main:
+    image: moleculer-blog
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    env_file: env
+    environment:
+      PORT: 3000
+
+    links:
+      - mongo
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    volumes:
+      - ../../db:/data/db

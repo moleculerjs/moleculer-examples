@@ -1,0 +1,25 @@
+section#menu
+    // Search
+    section
+        form#search(method='get', action='/search')
+            input(type='text', name='query', placeholder='Search', value=query)
+    // Links
+    section
+        ul.links      
+            li
+                a(href='/category/General')
+                    h3 General
+            li
+                a(href='/category/Tech')
+                    h3 Tech
+            li
+                a(href='/category/Social')
+                    h3 Social
+            li
+                a(href='/category/News')
+                    h3 News
+    // Actions
+    section
+        ul.actions.vertical
+            li
+                a.button.big.fit(href='#') Log In

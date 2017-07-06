@@ -1,0 +1,11 @@
+ul.actions.pagination
+	li
+		if page > 1
+			a.button.big.previous(href='?page=' + (page - 1)) Previous Page
+		else
+			a.disabled.button.big.previous(href='') Previous Page
+	li
+		if (page < pageCount)
+			a.button.big.next(href='?page=' + (page + 1)) Next Page
+		else
+			a.disabled.button.big.next(href='#') Next Page

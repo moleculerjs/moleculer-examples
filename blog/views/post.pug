@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	article.post
+		header
+			.title
+				h2
+					a(href='/post/' + encodeObjectID(post._id) + '/' + slugify(post.title))= post.title
+				p
+			.meta
+				time.published= moment(post.createdAt).format('LLL')
+				a.author(href='/author/' + encodeObjectID(post.author._id))
+					span.name= post.author.fullName
+					img(src=post.author.avatar, alt='')
+		span.image.featured
+			img(src="/images/covers/" + post.coverPhoto, alt='')
+		
+		each paragraph in post.content.split('\n')
+			p= paragraph
+
+		footer
+			ul.stats
+				li
+					a(href='/category/' + post.category)= post.category
+				li
+					a.icon.fa-heart(href='/like/' + encodeObjectID(post._id))= post.likes
+				li
+					a.icon.fa-comment(href='/post/' + encodeObjectID(post._id) + '#comments')= post.comments

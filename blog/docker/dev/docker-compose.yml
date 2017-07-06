@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+
+  dev:
+    image: node:6.10-alpine
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    env_file: env
+    environment:
+      PORT: 3000
+
+    working_dir: /app
+    volumes:
+      - ../..:/app
+
+    command: /bin/sh -c "npm install && npm run dev"
+
+    links:
+      - mongo
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    volumes:
+      - ../../db:/data/db

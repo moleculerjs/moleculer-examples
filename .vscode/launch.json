@@ -8,8 +8,14 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Launch blog",
-			"program": "${workspaceRoot}\\blog\\index.js",
-			"cwd": "${workspaceRoot}"
+			"program": "${workspaceRoot}\\blog\\node_modules\\moleculer\\bin\\moleculer-runner.js",
+			"args": [
+				"services"
+			],
+			"env": {
+				"PORT": "4000"
+			},
+			"cwd": "${workspaceRoot}\\blog"
 		},
 		{
 			"type": "node",
