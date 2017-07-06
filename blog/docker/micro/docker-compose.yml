@@ -2,12 +2,12 @@ version: "3.0"
 
 services:
 
-  api:
+  www:
     image: moleculer-blog
     env_file: env
     environment:
-      NODEID: "node-api"
-      SERVICES: api
+      NODEID: "node-www"
+      SERVICES: www
       PORT: 4000
     links:
       - nats
@@ -17,7 +17,7 @@ services:
       - redis
     labels:
       - "traefik.enable=true"   
-      - "traefik.backend=api"
+      - "traefik.backend=www"
       - "traefik.port=4000"
       - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=PathPrefix:/"

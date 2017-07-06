@@ -57,10 +57,10 @@ You can scale up the containers
 docker-compose scale users=2
 ```
 
-You can scale up the API gateway as well. Traefik is load balancing the requests to gateway instances.
+You can scale up the WWW service as well. Traefik is load balancing the requests to instances.
 ```bash
-# Scale API gateway to 2 instances
-docker-compose scale api=2
+# Scale WWW service to 2 instances
+docker-compose scale www=2
 ```
 
 ### Running as mixed
