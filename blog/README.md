@@ -1,7 +1,7 @@
 # Blog example
 ![Blog screenshot](../assets/screenshots/blog-screenshot.jpg)
 
-## Features
+## :triangular_flag_on_post: Features
 - multiple services (www, posts, users)
 - Docker files to running in Docker containers (3 architectures)
 - ExpressJS www server with Pug
@@ -11,13 +11,13 @@
 - [Traefik](https://traefik.io/) reverse proxy (in micro arch)
 - static client side
 
-## Install
+## :nut_and_bolt: Install
 ```bash
 git clone https://github.com/ice-services/moleculer-examples.git
 cd blog
 ```
 
-## Start locally
+## :game_die: Start locally
 To start locally, you need to running a MongoDB server on localhost.
 ```bash
 npm install
@@ -27,7 +27,7 @@ npm start
 **Open the [http://localhost:3000/](http://localhost:3000/) URL in your browser.**
 
 
-## Start in Docker
+## :cloud: Start in Docker
 
 >First you need to build the `moleculer-blog` image. You can use the `npm run docker:build` command or `docker build -t moleculer-blog`
 
@@ -79,14 +79,14 @@ You can scale up the containers
 docker-compose scale group1=2
 ```
 
-## Development locally
-_Running MongoDB is required!_
+## :wrench: Development locally
+_Running MongoDB is required on localhost!_
 
 ```bash
 npm run dev
 ```
 
-## Development in Docker (without dependencies)
+## :cloud: Development in Docker (without dependencies)
 In this case you don't need MongoDB, what is more, you don't need NodeJS environment. Everything is in Docker.
 
 ```bash
