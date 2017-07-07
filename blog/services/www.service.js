@@ -162,10 +162,10 @@ module.exports = {
 		app.locals.encodeObjectID = encodeObjectID;
 		//app.locals.decodeObjectID = decodeObjectID;
 
-		app.use(express["static"](path.join(baseFolder, "public")));
-
 		app.set("etag", true);
 		app.enable("trust proxy");
+
+		app.use(express["static"](path.join(baseFolder, "public")));
 
 		// Init morgan
 		let stream = require("stream");
@@ -181,6 +181,14 @@ module.exports = {
 		// Set view folder
 		app.set("views", path.join(baseFolder, "views"));
 		app.set("view engine", "pug");
+
+		if (process.env.NODE_ENV == "production") {
+			app.locals.cache = "memory";
+			app.set("view cache", true);
+		} else {
+			// Disable views cache
+			app.set("view cache", false);			
+		}
 
 		this.initRoutes(app);
 
