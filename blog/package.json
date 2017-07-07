@@ -5,7 +5,8 @@
   "scripts": {
     "start": "moleculer-runner",
     "dev": "nodemon --exec \"moleculer-runner -r services\"",
-    "docker:build": "docker build -t moleculer-blog ."
+    "docker:build": "docker build -t moleculer-blog .",
+    "deps": "npm-check -u"
   },
   "author": "Ice Services",
   "license": "MIT",
@@ -18,10 +19,10 @@
     "hashids": "1.1.1",
     "ioredis": "3.1.1",
     "lodash": "4.17.4",
-    "moleculer": "0.8.1",
-    "moleculer-db": "0.1.3",
-    "moleculer-db-adapter-mongoose": "0.1.2",
-    "moleculer-fake": "1.0.2",
+    "moleculer": "0.8.2",
+    "moleculer-db": "0.2.0",
+    "moleculer-db-adapter-mongoose": "0.2.0",
+    "moleculer-fake": "1.0.3",
     "moleculer-repl": "0.1.3",
     "moleculer-web": "0.3.3",
     "moment": "2.18.1",
@@ -31,6 +32,7 @@
     "slugify": "1.1.0"
   },
   "devDependencies": {
-    "nodemon": "1.11.0"
+    "nodemon": "1.11.0",
+    "npm-check": "5.4.4"
   }
 }

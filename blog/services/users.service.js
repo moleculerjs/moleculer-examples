@@ -38,8 +38,7 @@ module.exports = {
 		authors: {
 			cache: true,
 			handler(ctx) {
-				return User.find({ author: true }).lean().exec()
-					.then(docs => this.transformDocuments(ctx, docs));
+				return this.find(ctx, { query: { author: true }});
 			}
 		}
 	},

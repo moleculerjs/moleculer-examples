@@ -160,7 +160,7 @@ module.exports = {
 		app.locals.moment = moment;
 		app.locals.slugify = slugify;
 		app.locals.encodeObjectID = encodeObjectID;
-		app.locals.decodeObjectID = decodeObjectID;
+		//app.locals.decodeObjectID = decodeObjectID;
 
 		app.use(express["static"](path.join(baseFolder, "public")));
 

@@ -9,7 +9,7 @@ const fake = new Fakerator();
 
 module.exports = {
 	name: "posts",
-	mixins: DbService,
+	mixins: [DbService],
 	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
 	model: Post,
 
@@ -33,7 +33,7 @@ module.exports = {
 				offset: { type: "number", gt: 0, integer: true }
 			},
 			handler(ctx) {
-				return this.listPosts(ctx, {}, "-createdAt");
+				return this.listWithCount(ctx, {}, "-createdAt");
 			}
 		},
 
@@ -45,7 +45,7 @@ module.exports = {
 				offset: { type: "number", gt: 0, integer: true }
 			},
 			handler(ctx) {
-				return this.listPosts(ctx, { category: ctx.params.category }, "-createdAt");
+				return this.listWithCount(ctx, { category: ctx.params.category }, "-createdAt");
 			}
 		},
 
@@ -57,7 +57,7 @@ module.exports = {
 				offset: { type: "number", gt: 0, integer: true }
 			},
 			handler(ctx) {
-				return this.listPosts(ctx, { author: ctx.params.author }, "-createdAt");
+				return this.listWithCount(ctx, { author: ctx.params.author }, "-createdAt");
 			}
 		},
 
@@ -69,34 +69,7 @@ module.exports = {
 				offset: { type: "number", gt: 0, integer: true }
 			},
 			handler(ctx) {
-				let q = Post.find({});
-
-				// Full-text search
-				q.find({
-					$text: {
-						$search: ctx.params.query
-					}
-				});
-				q._fields = {
-					_score: {
-						$meta: "textScore"
-					}
-				};
-				// Sort by score
-				q.sort({
-					_score: {
-						$meta: "textScore"
-					}
-				});
-
-				return q.limit(ctx.params.limit).skip(ctx.params.offset).lean().exec()
-					.then(posts => this.transformDocuments(ctx, posts))
-					.then(posts => q.count().then(count => {
-						return {
-							count,
-							posts
-						};
-					}));
+				return this.listWithCount(ctx, {}, null, ctx.params.query);
 			}
 		},
 
@@ -106,22 +79,28 @@ module.exports = {
 				limit: { type: "number", positive: true, integer: true }
 			},
 			handler(ctx) {
-				return Post.find({}).sort("-likes").limit(ctx.params.limit).lean().exec()
-					.then(posts => this.transformDocuments(ctx, posts));
+				return this.find(ctx, {
+					limit: ctx.params.limit,
+					sort: "-likes"
+				});
 			}
 		}
 	},
 
 	methods: {
-		listPosts(ctx, filter, sort) {
-			return Post.find(filter || {}).sort(sort || "-createdAt").limit(ctx.params.limit).skip(ctx.params.offset).lean().exec()
-				.then(posts => this.transformDocuments(ctx, posts))
-				.then(posts => Post.find({}).count().then(count => {
-					return {
-						count,
-						posts
-					};
+		listWithCount(ctx, query, sort, search) {
+			return this.find(ctx, {
+				query,
+				search,
+				sort: sort || "-createdAt",
+				limit: ctx.params.limit,
+				offset: ctx.params.offset
+			}).then(posts => {
+				return this.count(ctx, { query, search }).then(count => ({
+					posts,
+					count
 				}));
+			});
 		},
 
 		seedDB() {
