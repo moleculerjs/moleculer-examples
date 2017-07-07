@@ -20,7 +20,7 @@
     "ioredis": "3.1.1",
     "lodash": "4.17.4",
     "moleculer": "0.8.2",
-    "moleculer-db": "0.3.2",
+    "moleculer-db": "0.3.3",
     "moleculer-db-adapter-mongoose": "0.2.0",
     "moleculer-fake": "1.0.3",
     "moleculer-repl": "0.1.3",
