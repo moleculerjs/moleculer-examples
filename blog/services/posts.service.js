@@ -22,87 +22,14 @@ module.exports = {
 					fields: "_id username fullName email avatar"
 				}
 			}
-		}
+		},
+		pageSize: 5
 	},
 
 	actions: {
-		findAll: {
-			cache: true,
-			params: {
-				limit: { type: "number", positive: true, integer: true },
-				offset: { type: "number", gt: 0, integer: true }
-			},
-			handler(ctx) {
-				return this.listWithCount(ctx, {}, "-createdAt");
-			}
-		},
-
-		categoryAll: {
-			cache: true,
-			params: {
-				category: { type: "string" },
-				limit: { type: "number", positive: true, integer: true },
-				offset: { type: "number", gt: 0, integer: true }
-			},
-			handler(ctx) {
-				return this.listWithCount(ctx, { category: ctx.params.category }, "-createdAt");
-			}
-		},
-
-		authorAll: {
-			cache: true,
-			params: {
-				author: { type: "string" },
-				limit: { type: "number", positive: true, integer: true },
-				offset: { type: "number", gt: 0, integer: true }
-			},
-			handler(ctx) {
-				return this.listWithCount(ctx, { author: ctx.params.author }, "-createdAt");
-			}
-		},
-
-		search: {
-			cache: true,
-			params: {
-				query: { type: "string" },
-				limit: { type: "number", positive: true, integer: true },
-				offset: { type: "number", gt: 0, integer: true }
-			},
-			handler(ctx) {
-				return this.listWithCount(ctx, {}, null, ctx.params.query);
-			}
-		},
-
-		bestOf: {
-			cache: true,
-			params: {
-				limit: { type: "number", positive: true, integer: true }
-			},
-			handler(ctx) {
-				return this.find(ctx, {
-					limit: ctx.params.limit,
-					sort: "-likes"
-				});
-			}
-		}
 	},
 
 	methods: {
-		listWithCount(ctx, query, sort, search) {
-			return this.find(ctx, {
-				query,
-				search,
-				sort: sort || "-createdAt",
-				limit: ctx.params.limit,
-				offset: ctx.params.offset
-			}).then(posts => {
-				return this.count(ctx, { query, search }).then(count => ({
-					posts,
-					count
-				}));
-			});
-		},
-
 		seedDB() {
 			this.logger.info("Seed Posts collection...");
 			return this.broker.call("users.find").then(users => {

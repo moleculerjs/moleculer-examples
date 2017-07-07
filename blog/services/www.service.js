@@ -41,9 +41,9 @@ module.exports = {
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.findAll", { limit: pageSize, offset: (page - 1) * pageSize }).then(res => {
-						data.posts = res.posts;
-						data.pageCount = Math.floor(res.count / pageSize);
+					return this.broker.call("posts.list", { page, pageSize }).then(res => {
+						data.posts = res.rows;
+						data.totalPages = res.totalPages;
 						return data;
 					});
 				})
@@ -60,9 +60,9 @@ module.exports = {
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.categoryAll", { category, limit: pageSize, offset: (page - 1) * pageSize }).then(res => {
-						data.posts = res.posts;
-						data.pageCount = Math.floor(res.count / pageSize);
+					return this.broker.call("posts.list", { query: { category }, page, pageSize }).then(res => {
+						data.posts = res.rows;
+						data.totalPages = res.totalPages;
 						return data;
 					});
 				})
@@ -81,9 +81,9 @@ module.exports = {
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.authorAll", { author: author, limit: pageSize, offset: (page - 1) * pageSize }).then(res => {
-						data.posts = res.posts;
-						data.pageCount = Math.floor(res.count / pageSize);
+					return this.broker.call("posts.list", { query: { author }, page, pageSize }).then(res => {
+						data.posts = res.rows;
+						data.totalPages = res.totalPages;
 						return data;
 					});
 				})
@@ -96,16 +96,16 @@ module.exports = {
 		searchPosts(req, res) {
 			const pageSize = this.settings.pageSize;
 			let page = Number(req.query.page || 1);
-			let query = req.query.query;
-			if (!query)
+			let search = req.query.query;
+			if (!search)
 				return res.redirect("/");
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.search", { query, limit: pageSize, offset: (page - 1) * pageSize }).then(res => {
-						data.query = query;
-						data.posts = res.posts;
-						data.pageCount = Math.floor(res.count / pageSize);
+					return this.broker.call("posts.list", { search, page, pageSize }).then(res => {
+						data.query = search;
+						data.posts = res.rows;
+						data.totalPages = res.totalPages;
 						return data;
 					});
 				})
@@ -136,7 +136,7 @@ module.exports = {
 		},
 
 		appendAdditionalData(data) {
-			return this.broker.call("posts.bestOf", { limit: 5 }).then(posts => {
+			return this.broker.call("posts.find", { limit: 5, sort: "-likes", populate: false }).then(posts => {
 				data.bestOfPosts = posts;
 				return data;
 			});
