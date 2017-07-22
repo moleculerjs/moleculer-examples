@@ -41,7 +41,7 @@ module.exports = {
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.list", { page, pageSize }).then(res => {
+					return this.broker.call("posts.list", { page, pageSize, populate: ["author"] }).then(res => {
 						data.posts = res.rows;
 						data.totalPages = res.totalPages;
 						return data;
@@ -60,7 +60,7 @@ module.exports = {
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.list", { query: { category }, page, pageSize }).then(res => {
+					return this.broker.call("posts.list", { query: { category }, page, pageSize, populate: ["author"] }).then(res => {
 						data.posts = res.rows;
 						data.totalPages = res.totalPages;
 						return data;
@@ -81,7 +81,7 @@ module.exports = {
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.list", { query: { author }, page, pageSize }).then(res => {
+					return this.broker.call("posts.list", { query: { author }, page, pageSize, populate: ["author"] }).then(res => {
 						data.posts = res.rows;
 						data.totalPages = res.totalPages;
 						return data;
@@ -102,7 +102,7 @@ module.exports = {
 
 			return Promise.resolve({ page })
 				.then(data => {
-					return this.broker.call("posts.list", { search, page, pageSize }).then(res => {
+					return this.broker.call("posts.list", { search, page, pageSize, populate: ["author"] }).then(res => {
 						data.query = search;
 						data.posts = res.rows;
 						data.totalPages = res.totalPages;
@@ -121,7 +121,7 @@ module.exports = {
 				return this.handleErr(res)(this.Promise.reject(new MoleculerError("Invalid POST ID", 404, "INVALID_POST_ID", { id: req.params.id })));
 
 			return Promise.resolve({ })
-				.then(data => this.broker.call("posts.get", { id }).then(post => {
+				.then(data => this.broker.call("posts.get", { id, populate: ["author"] }).then(post => {
 					if (!post)
 						return this.Promise.reject(new MoleculerError("Post not found", 404, "NOT_FOUND_POST", { id: req.params.id }));
 
@@ -136,7 +136,7 @@ module.exports = {
 		},
 
 		appendAdditionalData(data) {
-			return this.broker.call("posts.find", { limit: 5, sort: "-likes", populate: false }).then(posts => {
+			return this.broker.call("posts.find", { limit: 5, sort: "-likes" }).then(posts => {
 				data.bestOfPosts = posts;
 				return data;
 			});

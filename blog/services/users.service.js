@@ -34,6 +34,10 @@ module.exports = {
 	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
 	model: User,
 
+	settings: {
+		fields: ["_id", "username", "fullName", "email", "avatar", "author"]
+	},
+
 	actions: {
 		authors: {
 			cache: true,
