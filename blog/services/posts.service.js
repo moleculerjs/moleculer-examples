@@ -14,12 +14,22 @@ module.exports = {
 	model: Post,
 
 	settings: {
-		fields: ["_id", "title", "content", "author", "likes", "category", "coverPhoto", "createdAt"],
+		fields: ["_id", "title", "content", "author", "likes", "likers", "category", "coverPhoto", "createdAt"],
 		populates: {
 			"author": {
 				action: "users.get",
 				params: {
 					fields: ["_id", "username", "fullName", "avatar"]
+				}
+			},
+			likes(ids, docs, rule, ctx) {
+				return this.Promise.all(docs.map(doc => ctx.call("likes.count", { query: { post: doc._id } }).then(count => doc.likes = count)));
+			},
+			"likers": {
+				action: "likes.findByPost",
+				params: {
+					populate: ["user"],
+					limit: 5
 				}
 			}
 		},
@@ -27,6 +37,15 @@ module.exports = {
 	},
 
 	actions: {
+
+		like(ctx) {
+
+		},
+
+		unlike(ctx) {
+
+		}
+
 	},
 
 	methods: {
@@ -49,7 +68,6 @@ module.exports = {
 						content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
 						category: fake.random.arrayElement(["General", "Tech", "Social", "News"]),
 						author: fake.random.arrayElement(authors)._id,
-						likes: fake.random.number(100),
 						coverPhoto: fake.random.number(1, 20) + ".jpg",
 						createdAt: fakePost.created
 					});
