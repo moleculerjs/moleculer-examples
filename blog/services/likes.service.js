@@ -42,15 +42,19 @@ module.exports = {
 				let promises = [];
 
 				users.forEach(user => {
-					promises.push(this.createMany(null, _.times(fake.random.number(8, 15), () => ({
-						user: user._id,
-						post: fake.random.arrayElement(posts)._id
-					}))));
+					let c = fake.random.number(8, 15);
+					let postIDs = fake.utimes(fake.random.arrayElement, c, posts).map(post => post._id);
+					promises.push(this.createMany(null, postIDs.map(postID => {
+						return {
+							user: user._id,
+							post: postID
+						};
+					})));
 				});
 
 				return this.Promise.all(promises)
 					.then(() => this.count())
-					.then(count => console.log(`Generated ${count} likes!`));
+					.then(count => this.logger.info(`Generated ${count} likes!`));
 
 			}).catch(err => {
 				if (err.name == "ServiceNotFoundError") {

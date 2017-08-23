@@ -72,7 +72,7 @@ module.exports = {
 						createdAt: fakePost.created
 					};
 				}))
-					.then(posts => console.log(`Generated ${posts.length} posts!`));
+					.then(posts => this.logger.info(`Generated ${posts.length} posts!`));
 
 			}).catch(err => {
 				if (err.name == "ServiceNotFoundError") {

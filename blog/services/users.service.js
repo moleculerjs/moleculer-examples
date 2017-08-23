@@ -81,7 +81,7 @@ module.exports = {
 						author: false
 					};
 				})))
-				.then(users => console.log(`Generated ${users.length} users!`));
+				.then(users => this.logger.info(`Generated ${users.length} users!`));
 		}
 	},
 
