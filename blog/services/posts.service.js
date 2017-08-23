@@ -25,7 +25,7 @@ module.exports = {
 			likes(ids, docs, rule, ctx) {
 				return this.Promise.all(docs.map(doc => ctx.call("likes.count", { query: { post: doc._id } }).then(count => doc.likes = count)));
 			},
-			"likers": {
+			likers: {
 				action: "likes.findByPost",
 				params: {
 					populate: ["user"],
@@ -61,19 +61,18 @@ module.exports = {
 				let authors = users.filter(u => u.author);
 
 				// Create fake posts
-				return Promise.all(_.times(20, () => {
+				return this.createMany(null, _.times(20, () => {
 					let fakePost = fake.entity.post();
-					return this.adapter.insert({
+					return {
 						title: fakePost.title,
 						content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
 						category: fake.random.arrayElement(["General", "Tech", "Social", "News"]),
 						author: fake.random.arrayElement(authors)._id,
 						coverPhoto: fake.random.number(1, 20) + ".jpg",
 						createdAt: fakePost.created
-					});
+					};
 				}))
-					.then(() => this.count())
-					.then(count => console.log(`Generated ${count} posts!`));
+					.then(posts => this.logger.info(`Generated ${posts.length} posts!`));
 
 			}).catch(err => {
 				if (err.name == "ServiceNotFoundError") {

@@ -9,7 +9,7 @@ const fake = new Fakerator();
 
 module.exports = {
 	name: "likes",
-	mixins: DbService,
+	mixins: [DbService],
 	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
 	model: Like,
 
@@ -29,10 +29,10 @@ module.exports = {
 		seedDB() {
 			this.logger.info("Seed Likes DB...");
 
-			return this.Promise.all([
-				this.broker.call("users.find"),
-				this.broker.call("posts.find")
-			]).then(([users, posts]) => {
+			return this.broker.mcall({
+				users: { action: "users.find" },
+				posts: { action: "posts.find" }
+			}).then(({ users, posts }) => {
 				if (users.length == 0 || posts.length == 0) {
 					this.logger.info("Waiting for `users` & 'posts' seed...");
 					setTimeout(this.seedDB, 1000);
@@ -42,20 +42,19 @@ module.exports = {
 				let promises = [];
 
 				users.forEach(user => {
-					_.times(fake.random.number(8, 15), () => {
-						let p = this.adapter.insert({
+					let c = fake.random.number(8, 15);
+					let postIDs = fake.utimes(fake.random.arrayElement, c, posts).map(post => post._id);
+					promises.push(this.createMany(null, postIDs.map(postID => {
+						return {
 							user: user._id,
-							post: fake.random.arrayElement(posts)._id
-						}).catch(err => {
-							// Skip unique index error
-						});
-						promises.push(p);
-					});
+							post: postID
+						};
+					})));
 				});
 
 				return this.Promise.all(promises)
 					.then(() => this.count())
-					.then(count => console.log(`Generated ${count} likes!`));
+					.then(count => this.logger.info(`Generated ${count} likes!`));
 
 			}).catch(err => {
 				if (err.name == "ServiceNotFoundError") {

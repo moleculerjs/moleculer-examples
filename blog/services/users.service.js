@@ -30,7 +30,7 @@ function hashPassword(password) {
 
 module.exports = {
 	name: "users",
-	mixins: DbService,
+	mixins: [DbService],
 	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
 	model: User,
 
@@ -52,7 +52,7 @@ module.exports = {
 			this.logger.info("Seed Users DB...");
 			// Create authors
 			return Promise.resolve()
-				.then(() => this.adapter.insert({
+				.then(() => this.create(null, {
 					username: "john",
 					password: "john1234",
 					fullName: "John Doe",
@@ -60,7 +60,7 @@ module.exports = {
 					avatar: fake.internet.avatar(),
 					author: true,
 				}))
-				.then(() => this.adapter.insert({
+				.then(() => this.create(null, {
 					username: "jane",
 					password: "jane1234",
 					fullName: "Jane Doe",
@@ -70,20 +70,18 @@ module.exports = {
 				}))
 
 				// Create fake commenter users
-				.then(() => Promise.all(_.times(30, () => {
+				.then(() => this.createMany(null, _.times(30, () => {
 					let fakeUser = fake.entity.user();
-					return this.adapter.insert({
+					return {
 						username: fakeUser.userName,
 						password: fakeUser.password,
 						fullName: fakeUser.firstName + " " + fakeUser.lastName,
 						email: fakeUser.email,
 						avatar: fakeUser.avatar,
 						author: false
-					});
+					};
 				})))
-				.then(() => {
-					return this.count().then(count => console.log(`Generated ${count} users!`));
-				});
+				.then(users => this.logger.info(`Generated ${users.length} users!`));
 		}
 	},
 
