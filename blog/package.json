@@ -4,7 +4,7 @@
   "description": "Blog examples for Moleculer framework",
   "scripts": {
     "start": "moleculer-runner",
-    "dev": "nodemon --exec \"moleculer-runner -r services\"",
+    "dev": "moleculer-runner --repl --hot services",
     "docker:build": "docker build -t moleculer-blog .",
     "deps": "npm-check -u"
   },
