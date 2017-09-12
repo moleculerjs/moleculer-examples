@@ -51,37 +51,39 @@ module.exports = {
 	methods: {
 		seedDB() {
 			this.logger.info("Seed Posts collection...");
-			return this.broker.call("users.find").then(users => {
-				if (users.length == 0) {
-					this.logger.info("Waiting for `users` seed...");
-					setTimeout(this.seedDB, 1000);
-					return;
-				}
+			return this.waitForServices(["users"])
+				.then(() => this.broker.call("users.find"))
+				.then(users => {
+					if (users.length == 0) {
+						this.logger.info("Waiting for `users` seed...");
+						setTimeout(this.seedDB, 1000);
+						return;
+					}
 
-				let authors = users.filter(u => u.author);
+					let authors = users.filter(u => u.author);
 
-				// Create fake posts
-				return this.createMany(null, _.times(20, () => {
-					let fakePost = fake.entity.post();
-					return {
-						title: fakePost.title,
-						content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
-						category: fake.random.arrayElement(["General", "Tech", "Social", "News"]),
-						author: fake.random.arrayElement(authors)._id,
-						coverPhoto: fake.random.number(1, 20) + ".jpg",
-						createdAt: fakePost.created
-					};
-				}))
-					.then(posts => this.logger.info(`Generated ${posts.length} posts!`));
+					// Create fake posts
+					return this.createMany(null, _.times(20, () => {
+						let fakePost = fake.entity.post();
+						return {
+							title: fakePost.title,
+							content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
+							category: fake.random.arrayElement(["General", "Tech", "Social", "News"]),
+							author: fake.random.arrayElement(authors)._id,
+							coverPhoto: fake.random.number(1, 20) + ".jpg",
+							createdAt: fakePost.created
+						};
+					}))
+						.then(posts => this.logger.info(`Generated ${posts.length} posts!`));
 
-			}).catch(err => {
-				if (err.name == "ServiceNotFoundError") {
-					this.logger.info("Waiting for `users` service...");
-					setTimeout(this.seedDB, 1000);
-					return;
-				} else
-					return Promise.reject(err);
-			});
+				}).catch(err => {
+					if (err.name == "ServiceNotFoundError") {
+						this.logger.info("Waiting for `users` service...");
+						setTimeout(this.seedDB, 1000);
+						return;
+					} else
+						return Promise.reject(err);
+				});
 
 		}
 	},
