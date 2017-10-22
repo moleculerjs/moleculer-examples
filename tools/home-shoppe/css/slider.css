@@ -1,0 +1,148 @@
+
+#slider { 
+	background:#FFF;
+	border:1px solid #EEE;
+	height: 100%;
+    overflow: hidden;
+	position: relative; 
+    margin:0px 0; 
+ }								  
+   /* DEFAULT is for three panels in width, adjust as needed
+      This only matters if JS is OFF, otherwise JS sets this. */								  
+#mover { 
+	width: 2880px; 
+	position: relative; 
+}
+.slide { 
+	    padding:24px 25px; 
+	    width:31%; 
+	    float: left; 
+	    position: relative; 
+ }
+ .slider-text{
+ 	float:left;
+ 	width:47%;
+ 	padding-left:4%;
+ 	padding-top:3%;
+ }
+ .slider-img{
+ 	float:left;
+ 	width:42%;
+ }
+.slide h1{ 
+	   font-size:2.5em; 
+	   font-weight:bold;
+	   color:#CD1F25; 
+	   text-transform:uppercase;
+ }
+ .slide h1 span{
+ 	font-size:3em;
+ }
+ .slide h2{ 
+ 	font-size:2em;
+ 	color:#999;
+ 	font-family: 'ambleregular';
+ }
+  .slide h2 span{ 
+  	color:#CD1F25;
+  	font-size:2em; 
+ }
+ .slide p {
+ 	 color:#222;
+ 	 font-size:0.9em; 
+ 	 padding:5px 0;	   
+ 	line-height:1.8em; 
+ }
+ .slide p span{
+ 	   color:#0B86AA;
+ }
+ .slide h3{ 
+	   font-size:1.2em; 
+	   color: #999;  
+	   text-transform:uppercase;
+	   padding-top:10px; 
+ }
+ .features_list{
+	padding-top:5px;
+}
+.features_list h4{	  
+	   font-family: 'ambleregular'; 
+	   font-size:1.2em; 
+	   color:#222;
+}
+.features_list li{
+	font-size:0.9em;
+	color:#888888;
+	padding:8px 20px;
+	background:url(../images/list_img.png) no-repeat 0px;
+	cursor:pointer;
+}
+.features_list li:hover{
+	color:#DDD;
+}
+.button {
+	font-size: 1.2em;
+	padding:8px 15px;
+	text-shadow:0px 1px 1px rgba(94, 94, 94, 0.9);
+}
+.button {
+	margin-top:20px;
+	display: inline-block;
+	background:#CD1F25;
+	color: #FFF;
+	text-decoration: none;
+	border-radius:5px;
+	outline: 0;
+	  -webkit-transition:all 0.2s linear;
+    -moz-transition:all 0.2s linear;
+    -o-transition:all 0.2s linear;
+    transition:all 0.2s linear;
+}
+.button:hover {
+	text-shadow: 0px 1px 1px #000;
+	background:#CD1F25;
+	 -webkit-transform:scale(1.05);
+    -moz-transform:scale(1.05);
+    -ms-transform:scale(1.05);
+    -o-transform:scale(1.05);
+    transform:scale(1.05);
+}
+.button-icon-download{
+	margin-left:15px;
+}
+#slider-stopper { 
+	position: absolute; 
+	top: 1px; 
+	right: 20px; 
+	background: #ac0000; 
+	color: white;
+    padding: 3px 8px; 
+    font-size: 10px; 
+    text-transform: uppercase; 
+    z-index: 1000; 
+ }
+ @media only screen and (max-width: 1024px) {
+	.slide h1 {
+		font-size:2em;
+	}
+}
+@media only screen and (max-width:800px) {
+	.slider-text{
+		width:55%;
+		float:none;
+	}
+ .slider-img{
+ 	float:none;
+ 	text-align:center;
+ }
+
+}
+@media only screen and (max-width:320px) {
+	.slider-text{
+		width:31%;
+		padding:0 1% 0 0;
+	}
+	.slider-img{
+		width:30%;
+	}
+}

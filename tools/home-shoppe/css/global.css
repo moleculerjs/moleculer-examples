@@ -1,0 +1,146 @@
+
+#container {
+	margin:0 auto;
+	position:relative;
+	z-index:0;
+}
+#products_example {
+	position:relative;
+}
+/*Slideshow*/
+#products .slides_container {
+	width:99.5%;
+	overflow:hidden;
+	float:left;
+	position:relative;
+	border:1px solid #dfdfdf;
+	display:none;
+}
+
+/*
+	Each slide
+	Important:
+	Set the width of your slides
+	If height not specified height will be set by the slide content
+	Set to display block
+*/
+
+.slides_container a {
+	width:366px;
+	height:274px;
+	display:block;
+}
+
+/*Next/prev buttons*/
+
+#products .next,#products .prev {
+	position:absolute;
+	top:127px;
+	left:5px;
+	width:21px;
+	height:0;
+	padding-top:21px;
+	overflow:hidden;
+	display:block;
+	z-index:101;
+}
+#products .prev {
+	background:url(../images/arrow-prev.png);
+}
+
+#products .next {
+	left:350px;
+	background:url(../images/arrow-next.png);
+}
+
+/*****Pagination********/
+
+#products .pagination {
+	background:#dfdfdf;
+	padding:5px;
+	float:left;
+}
+#products .pagination li {
+	float:left;
+	margin:2px 4px;
+	list-style:none;
+}
+#products .pagination li a {
+	display:block;
+	width:55px;
+	height:41px;
+	margin:1px;
+	float:left;
+	background:#f9f9f9;
+}
+#products .pagination li.current a {
+	border:1px solid #7f7f7f;
+	margin:0;
+}
+@media only screen and (max-width: 1024px) {
+	.slides_container a {
+		width:265px;
+		padding-top:40px;
+	}
+	#products .pagination li {
+		margin:2px 14px;
+	}
+	#products .next {
+		left: 243px;
+   }
+}
+@media only screen and (max-width: 800px) {
+	.slides_container a{
+		width:320px;
+	}
+	#products .pagination li {
+		margin:2px 10px;
+	}
+	#products .next {
+		left: 295px;
+   }
+}
+@media only screen and (max-width: 640px) {
+.slides_container a{
+	width:250px;
+  }
+  #products .next{
+  	left:230px;
+  }
+}
+@media only screen and (max-width: 480px) {
+.slides_container a{
+	width:400px;
+    padding-top:0;
+}
+#products .next{
+	left:403px;
+}
+#products .pagination li{
+	margin:2px 6.6px;
+}
+}
+@media only screen and (max-width:320px) {
+#products .next{
+	left:255px;
+}
+.slides_container a{
+	width:285px;
+	padding-top:30px;
+}
+#products .pagination li{
+	margin:2px 5px;
+}
+.wish-list li a{
+	font-size:0.8em;
+}
+.your-review input[type="text"], .your-review textarea{
+	width:93%;
+}
+.signup{
+	width:98%;
+}
+.signup input[type="submit"]{
+	width:69px;
+}
+}
