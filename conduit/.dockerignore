@@ -1,0 +1,8 @@
+docker-compose.env
+docker-compose.yml
+Dockerfile
+node_modules
+test
+.vscode
+data
+db
