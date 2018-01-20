@@ -5,7 +5,7 @@
 - multiple services (www, posts, users)
 - Docker files to running in Docker containers (3 architectures)
 - ExpressJS www server with Pug
-- MongoDB database with [moleculer-db]() and [moleculer-db-adapter-mongoose]() modules
+- MongoDB database with [moleculer-db](https://github.com/ice-services/moleculer-db) and [moleculer-db-adapter-mongoose](https://github.com/ice-services/moleculer-db/tree/master/packages/moleculer-db-adapter-mongoose) modules
 - NATS transporter
 - Redis cacher
 - [Traefik](https://traefik.io/) reverse proxy (in micro arch)
