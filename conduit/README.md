@@ -60,7 +60,7 @@ TRANSPORTER=nats://localhost:4222
 - [bcrypt](https://github.com/kelektiv/node.bcrypt.js) - Hashing user password
 - [lodash](https://github.com/lodash/lodash) - Utility library
 - [slug](https://github.com/dodo/node-slug) - For encoding titles into a URL-friendly format
-- [nats](https://github.com/dodo/node-slug) - [NATS](https://nats.io) transport driver for Moleculer *(optional)*
+- [nats](https://github.com/nats-io/node-nats) - [NATS](https://nats.io) transport driver for Moleculer *(optional)*
 
 ### Application Structure
 
