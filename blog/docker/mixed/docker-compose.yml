@@ -67,8 +67,8 @@ services:
 
   mongo:
     image: mongo
-    volumes:
-      - ../../db:/data/db
+    # volumes:
+    #   - ../../db:/data/db
 
   traefik:
     image: traefik
