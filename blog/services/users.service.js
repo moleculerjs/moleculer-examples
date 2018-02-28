@@ -42,7 +42,7 @@ module.exports = {
 		authors: {
 			cache: true,
 			handler(ctx) {
-				return this.find(ctx, { query: { author: true }});
+				return this.adapter.find({ query: { author: true }});
 			}
 		}
 	},
@@ -52,7 +52,7 @@ module.exports = {
 			this.logger.info("Seed Users DB...");
 			// Create authors
 			return Promise.resolve()
-				.then(() => this.create(null, {
+				.then(() => this.adapter.insert({
 					username: "john",
 					password: "john1234",
 					fullName: "John Doe",
@@ -60,7 +60,7 @@ module.exports = {
 					avatar: fake.internet.avatar(),
 					author: true,
 				}))
-				.then(() => this.create(null, {
+				.then(() => this.adapter.insert({
 					username: "jane",
 					password: "jane1234",
 					fullName: "Jane Doe",
@@ -70,7 +70,7 @@ module.exports = {
 				}))
 
 				// Create fake commenter users
-				.then(() => this.createMany(null, _.times(30, () => {
+				.then(() => this.adapter.insertMany(_.times(30, () => {
 					let fakeUser = fake.entity.user();
 					return {
 						username: fakeUser.userName,
@@ -86,7 +86,7 @@ module.exports = {
 	},
 
 	afterConnected() {
-		return this.count().then(count => {
+		return this.adapter.count().then(count => {
 			if (count == 0) {
 				this.seedDB();
 			}

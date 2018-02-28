@@ -16,7 +16,7 @@ module.exports = {
 	settings: {
 		fields: ["_id", "title", "content", "author", "likes", "likers", "category", "coverPhoto", "createdAt"],
 		populates: {
-			"author": {
+			author: {
 				action: "users.get",
 				params: {
 					fields: ["_id", "username", "fullName", "avatar"]
@@ -63,7 +63,7 @@ module.exports = {
 					let authors = users.filter(u => u.author);
 
 					// Create fake posts
-					return this.createMany(null, _.times(20, () => {
+					return this.adapter.insertMany(_.times(20, () => {
 						let fakePost = fake.entity.post();
 						return {
 							title: fakePost.title,
@@ -89,7 +89,7 @@ module.exports = {
 	},
 
 	afterConnected() {
-		return this.count().then(count => {
+		return this.adapter.count().then(count => {
 			if (count == 0) {
 				this.seedDB();
 			}

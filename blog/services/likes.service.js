@@ -46,7 +46,7 @@ module.exports = {
 					users.forEach(user => {
 						let c = fake.random.number(8, 15);
 						let postIDs = fake.utimes(fake.random.arrayElement, c, posts).map(post => post._id);
-						promises.push(this.createMany(null, postIDs.map(postID => {
+						promises.push(this.adapter.insertMany(postIDs.map(postID => {
 							return {
 								user: user._id,
 								post: postID
@@ -55,7 +55,7 @@ module.exports = {
 					});
 
 					return this.Promise.all(promises)
-						.then(() => this.count())
+						.then(() => this.adapter.count())
 						.then(count => this.logger.info(`Generated ${count} likes!`));
 
 				})
@@ -71,7 +71,7 @@ module.exports = {
 	},
 
 	afterConnected() {
-		return this.count().then(count => {
+		return this.adapter.count().then(count => {
 			if (count == 0) {
 				this.seedDB();
 			}

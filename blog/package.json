@@ -12,27 +12,27 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "3.5.1",
-    "chalk": "2.2.0",
-    "eslint": "4.9.0",
+    "chalk": "2.3.1",
+    "eslint": "4.18.1",
     "express": "4.16.2",
     "fakerator": "0.3.0",
-    "hashids": "1.1.2",
-    "ioredis": "3.1.4",
-    "lodash": "4.17.4",
-    "moleculer": "0.11.5",
-    "moleculer-db": "0.6.0",
-    "moleculer-db-adapter-mongoose": "0.4.3",
-    "moleculer-fake": "1.0.8",
-    "moleculer-repl": "0.3.1",
-    "moleculer-web": "0.5.1",
-    "moment": "2.19.1",
+    "hashids": "1.1.4",
+    "ioredis": "3.2.2",
+    "lodash": "4.17.5",
+    "moleculer": "0.12.0-rc1",
+    "moleculer-db": "0.7.0",
+    "moleculer-db-adapter-mongoose": "0.4.5",
+    "moleculer-fake": "1.0.9",
+    "moleculer-repl": "0.3.2",
+    "moleculer-web": "0.6.3",
+    "moment": "2.20.1",
     "morgan": "1.9.0",
-    "nats": "0.7.24",
+    "nats": "0.8.0",
     "pug": "2.0.0-rc.2",
-    "slugify": "1.2.1"
+    "slugify": "1.2.9"
   },
   "devDependencies": {
-    "nodemon": "1.12.1",
-    "npm-check": "5.4.5"
+    "nodemon": "1.17.1",
+    "npm-check": "5.5.2"
   }
 }
