@@ -1,4 +1,4 @@
-FROM node:6.10-alpine
+FROM node:8.9-alpine
 
 RUN addgroup -S mol && adduser -S -g mol mol
 

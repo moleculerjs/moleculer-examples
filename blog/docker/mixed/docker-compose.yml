@@ -3,6 +3,8 @@ version: "3.0"
 services:
 
   www:
+    build:
+      context: ../..
     image: moleculer-blog
     env_file: env
     environment:
@@ -23,6 +25,8 @@ services:
       - "traefik.frontend.rule=PathPrefix:/"      
 
   group1:
+    build:
+      context: ../..
     image: moleculer-blog
     env_file: env
     environment:
@@ -41,6 +45,8 @@ services:
     #  replicas: 2
 
   metrics:
+    build:
+      context: ../..
     image: moleculer-blog
     env_file: env
     environment:
