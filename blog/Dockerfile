@@ -27,6 +27,7 @@ RUN chown -R mol:mol $HOME/* /usr/local/ && \
 #   && apk del .app-deps
 
 COPY moleculer.config.js $HOME_APP/
+COPY mixins/ $HOME_APP/mixins/
 COPY services/ $HOME_APP/services/
 COPY models/ $HOME_APP/models/ 
 COPY public/ $HOME_APP/public/ 
