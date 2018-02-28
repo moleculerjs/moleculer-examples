@@ -60,6 +60,25 @@ services:
     #deploy:
     #  replicas: 2
 
+  likes:
+    build:
+      context: ../..
+    image: moleculer-blog
+    env_file: env
+    environment:
+      NODEID: "node-likes"
+      SERVICES: likes
+    links:
+      - nats
+      - redis
+      - mongo
+    depends_on:
+      - nats
+      - redis
+      - mongo
+    #deploy:
+    #  replicas: 2
+
   # comments:
   #   build:
   #     context: ../..
