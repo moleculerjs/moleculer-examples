@@ -12,8 +12,10 @@ services:
       PORT: 3000
     links:
       - nats
+      - redis
     depends_on:
       - nats
+      - redis
     labels:
       - "traefik.enable=true"   
       - "traefik.backend=api"
@@ -32,9 +34,11 @@ services:
       SERVICES: articles
     links:
       - nats
+      - redis
       - mongo
     depends_on:
       - nats
+      - redis
       - mongo
     #deploy:
     #  replicas: 2
@@ -48,9 +52,11 @@ services:
       SERVICES: comments
     links:
       - nats
+      - redis
       - mongo
     depends_on:
       - nats
+      - redis
       - mongo
     #deploy:
     #  replicas: 2
@@ -64,9 +70,11 @@ services:
       SERVICES: favorites
     links:
       - nats
+      - redis
       - mongo
     depends_on:
       - nats
+      - redis
       - mongo
     #deploy:
     #  replicas: 2
@@ -80,9 +88,11 @@ services:
       SERVICES: follows
     links:
       - nats
+      - redis
       - mongo
     depends_on:
       - nats
+      - redis
       - mongo
     #deploy:
     #  replicas: 2
@@ -96,9 +106,11 @@ services:
       SERVICES: users
     links:
       - nats
+      - redis
       - mongo
     depends_on:
       - nats
+      - redis
       - mongo
     #deploy:
     #  replicas: 2
@@ -107,6 +119,9 @@ services:
     image: nats
     ports:
       - "4222:4222"
+
+  redis:
+    image: redis:alpine
 
   mongo:
     image: mongo
