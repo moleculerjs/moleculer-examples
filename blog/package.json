@@ -8,7 +8,7 @@
     "docker:build": "docker build -t moleculer-blog .",
     "deps": "npm-check -u"
   },
-  "author": "Ice Services",
+  "author": "MoleculerJS",
   "license": "MIT",
   "dependencies": {
     "bluebird": "3.5.1",

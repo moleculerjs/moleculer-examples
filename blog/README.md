@@ -5,7 +5,7 @@
 - multiple services (www, posts, users)
 - Docker files to running in Docker containers (3 architectures)
 - ExpressJS www server with Pug
-- MongoDB database with [moleculer-db](https://github.com/ice-services/moleculer-db) and [moleculer-db-adapter-mongoose](https://github.com/ice-services/moleculer-db/tree/master/packages/moleculer-db-adapter-mongoose) modules
+- MongoDB database with [moleculer-db](https://github.com/moleculerjs/moleculer-db) and [moleculer-db-adapter-mongoose](https://github.com/moleculerjs/moleculer-db/tree/master/packages/moleculer-db-adapter-mongoose) modules
 - NATS transporter
 - Redis cacher
 - [Traefik](https://traefik.io/) reverse proxy (in micro arch)
@@ -13,7 +13,7 @@
 
 ## :nut_and_bolt: Install
 ```bash
-git clone https://github.com/ice-services/moleculer-examples.git
+git clone https://github.com/moleculerjs/moleculer-examples.git
 cd blog
 ```
 
@@ -100,6 +100,6 @@ _If you change source files, the app will be restarted automatically._
 This repo is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 # Contact
-Copyright (c) 2016-2017 Ice Services
+Copyright (c) 2016-2018 MoleculerJS
 
-[![@ice-services](https://img.shields.io/badge/github-ice--services-green.svg)](https://github.com/ice-services) [![@MoleculerJS](https://img.shields.io/badge/twitter-MoleculerJS-blue.svg)](https://twitter.com/MoleculerJS)
+[![@moleculerjs](https://img.shields.io/badge/github-ice--services-green.svg)](https://github.com/moleculerjs) [![@MoleculerJS](https://img.shields.io/badge/twitter-MoleculerJS-blue.svg)](https://twitter.com/MoleculerJS)

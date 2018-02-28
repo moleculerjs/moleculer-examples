@@ -38,7 +38,7 @@ TRANSPORTER=nats://localhost:4222
 
 ### To get the Node server running locally with Docker
 
-1. Checkout the repo `git clone https://github.com/ice-services/moleculer-realworld-example-app.git`
+1. Checkout the repo `git clone https://github.com/moleculerjs/moleculer-realworld-example-app.git`
 2. `cd moleculer-realworld-example-app`
 3. Start with docker-compose: `docker compose up -d`
 	
@@ -52,10 +52,10 @@ TRANSPORTER=nats://localhost:4222
 
 ### Dependencies
 
-- [moleculer](https://github.com/ice-services/moleculer) - Microservices framework for NodeJS
-- [moleculer-web](https://github.com/ice-services/moleculer-web) - Official API Gateway service for Moleculer
-- [moleculer-db](https://github.com/ice-services/moleculer-db/tree/master/packages/moleculer-db#readme) - Database store service for Moleculer
-- [moleculer-db-adapter-mongo](https://github.com/ice-services/moleculer-db/tree/master/packages/moleculer-db-adapter-mongo#readme) - Database store service for MongoDB *(optional)*
+- [moleculer](https://github.com/moleculerjs/moleculer) - Microservices framework for NodeJS
+- [moleculer-web](https://github.com/moleculerjs/moleculer-web) - Official API Gateway service for Moleculer
+- [moleculer-db](https://github.com/moleculerjs/moleculer-db/tree/master/packages/moleculer-db#readme) - Database store service for Moleculer
+- [moleculer-db-adapter-mongo](https://github.com/moleculerjs/moleculer-db/tree/master/packages/moleculer-db-adapter-mongo#readme) - Database store service for MongoDB *(optional)*
 - [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) - For generating JWTs used by authentication
 - [bcrypt](https://github.com/kelektiv/node.bcrypt.js) - Hashing user password
 - [lodash](https://github.com/lodash/lodash) - Utility library
@@ -88,6 +88,6 @@ $ npm run ci
 This project is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 ## Contact
-Copyright (c) 2016-2017 Ice-Services
+Copyright (c) 2016-2018 MoleculerJS
 
-[![@ice-services](https://img.shields.io/badge/github-ice--services-green.svg)](https://github.com/ice-services) [![@MoleculerJS](https://img.shields.io/badge/twitter-MoleculerJS-blue.svg)](https://twitter.com/MoleculerJS)
+[![@moleculerjs](https://img.shields.io/badge/github-ice--services-green.svg)](https://github.com/moleculerjs) [![@MoleculerJS](https://img.shields.io/badge/twitter-MoleculerJS-blue.svg)](https://twitter.com/MoleculerJS)
