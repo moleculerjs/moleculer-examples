@@ -7,6 +7,7 @@ const { MoleculerError } = require("moleculer").Errors;
 const DbService = require("moleculer-db");
 const MongooseAdapter = require("moleculer-db-adapter-mongoose");
 const User = require("../models/user.model");
+const CacheCleaner = require("../mixins/cache.cleaner.mixin");
 const Fakerator = require("fakerator");
 const fake = new Fakerator();
 
@@ -30,7 +31,7 @@ function hashPassword(password) {
 
 module.exports = {
 	name: "users",
-	mixins: [DbService],
+	mixins: [DbService, CacheCleaner(["users"])],
 	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
 	model: User,
 
@@ -81,7 +82,10 @@ module.exports = {
 						author: false
 					};
 				})))
-				.then(users => this.logger.info(`Generated ${users.length} users!`));
+				.then(users => {
+					this.logger.info(`Generated ${users.length} users!`);
+					this.clearCache();
+				});
 		}
 	},
 

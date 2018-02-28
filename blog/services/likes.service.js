@@ -4,12 +4,13 @@ const _ = require("lodash");
 const DbService = require("moleculer-db");
 const MongooseAdapter = require("moleculer-db-adapter-mongoose");
 const Like = require("../models/like.model");
+const CacheCleaner = require("../mixins/cache.cleaner.mixin");
 const Fakerator = require("fakerator");
 const fake = new Fakerator();
 
 module.exports = {
 	name: "likes",
-	mixins: [DbService],
+	mixins: [DbService, CacheCleaner(["users", "posts"])],
 	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
 	model: Like,
 
@@ -56,7 +57,10 @@ module.exports = {
 
 					return this.Promise.all(promises)
 						.then(() => this.adapter.count())
-						.then(count => this.logger.info(`Generated ${count} likes!`));
+						.then(count => {
+							this.logger.info(`Generated ${count} likes!`);
+							this.clearCache();
+						});
 
 				})
 				.catch(err => {

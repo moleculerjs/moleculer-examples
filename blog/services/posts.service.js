@@ -4,12 +4,13 @@ const _ = require("lodash");
 const DbService = require("moleculer-db");
 const MongooseAdapter = require("moleculer-db-adapter-mongoose");
 const Post = require("../models/post.model");
+const CacheCleaner = require("../mixins/cache.cleaner.mixin");
 const Fakerator = require("fakerator");
 const fake = new Fakerator();
 
 module.exports = {
 	name: "posts",
-	mixins: [DbService],
+	mixins: [DbService, CacheCleaner(["users", "likes"])],
 	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
 	model: Post,
 
@@ -73,8 +74,10 @@ module.exports = {
 							coverPhoto: fake.random.number(1, 20) + ".jpg",
 							createdAt: fakePost.created
 						};
-					}))
-						.then(posts => this.logger.info(`Generated ${posts.length} posts!`));
+					})).then(posts => {
+						this.logger.info(`Generated ${posts.length} posts!`);
+						this.clearCache();
+					});
 
 				}).catch(err => {
 					if (err.name == "ServiceNotFoundError") {
