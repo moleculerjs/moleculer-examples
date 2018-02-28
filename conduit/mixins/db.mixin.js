@@ -5,8 +5,6 @@ const mkdir = require("mkdirp").sync;
 
 const DbService	= require("moleculer-db");
 
-//process.env.MONGO_URI = "mongodb://localhost/conduit";
-
 module.exports = function(collection) {
 	if (process.env.MONGO_URI) {
 		// Mongo adapter

@@ -1,6 +1,6 @@
 {
   "name": "moleculer-realworld-example-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "RealWorld example app with Moleculer microservices framework",
   "scripts": {
     "dev": "moleculer-runner --repl --hot services",
@@ -9,7 +9,6 @@
     "ci": "jest --watch",
     "test": "jest --coverage",
     "lint": "eslint services",
-
     "docker:build": "docker build -t conduit ."
   },
   "keywords": [
@@ -19,21 +18,21 @@
   ],
   "author": "",
   "devDependencies": {
-    "eslint": "4.11.0",
-    "jest": "21.2.1",
-    "jest-cli": "21.2.1",
+    "eslint": "4.18.1",
+    "jest": "22.4.2",
+    "jest-cli": "22.4.2",
     "moleculer-repl": "^0.3.0",
     "npm-check": "5.5.2"
   },
   "dependencies": {
     "bcrypt": "1.0.3",
-    "jsonwebtoken": "8.1.0",
-    "lodash": "4.17.4",
-    "moleculer": "^0.11.0",
+    "jsonwebtoken": "8.1.1",
+    "lodash": "4.17.5",
+    "moleculer": "0.12.0-rc1",
     "moleculer-db": "0.7.0",
     "moleculer-db-adapter-mongo": "0.1.6",
-    "moleculer-web": "0.6.0-beta7",
-    "nats": "0.7.24",
+    "moleculer-web": "github:moleculerjs/moleculer-web",
+    "nats": "0.8.0",
     "slug": "0.9.1"
   },
   "repository": {
