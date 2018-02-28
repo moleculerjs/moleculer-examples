@@ -42,7 +42,7 @@ TRANSPORTER=nats://localhost:4222
 2. `cd moleculer-realworld-example-app`
 3. Start with docker-compose: `docker compose up -d`
 	
-	It starts all services in separated containers, a NATS server for communication, a MongoDB server for database and a [Traefik](https://traefik.io/) reverse proxy
+	It starts all services in separated containers, a Redis server for caching, a MongoDB server for database and a [Traefik](https://traefik.io/) reverse proxy. All nodes communicate via Moleculer TCP transporter.
 4. Open the http://docker-ip:3000
 5. Scale up services
 	
@@ -56,10 +56,11 @@ TRANSPORTER=nats://localhost:4222
 - [moleculer-web](https://github.com/moleculerjs/moleculer-web) - Official API Gateway service for Moleculer
 - [moleculer-db](https://github.com/moleculerjs/moleculer-db/tree/master/packages/moleculer-db#readme) - Database store service for Moleculer
 - [moleculer-db-adapter-mongo](https://github.com/moleculerjs/moleculer-db/tree/master/packages/moleculer-db-adapter-mongo#readme) - Database store service for MongoDB *(optional)*
-- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) - For generating JWTs used by authentication
+- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) - To generate JWTs used by authentication
 - [bcrypt](https://github.com/kelektiv/node.bcrypt.js) - Hashing user password
 - [lodash](https://github.com/lodash/lodash) - Utility library
-- [slug](https://github.com/dodo/node-slug) - For encoding titles into a URL-friendly format
+- [slug](https://github.com/dodo/node-slug) - To encode titles into a URL-friendly format
+- [ioredis](https://github.com/luin/ioredis) - [Redis](https://redis.io) server for caching *(optional)*
 - [nats](https://github.com/nats-io/node-nats) - [NATS](https://nats.io) transport driver for Moleculer *(optional)*
 
 ### Application Structure
