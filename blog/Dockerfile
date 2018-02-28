@@ -18,7 +18,7 @@ WORKDIR $HOME_APP
 RUN chown -R mol:mol $HOME/* /usr/local/ && \
     chmod +x /usr/local/bin/dumb-init && \
     npm install --silent --progress=false --production && \
-    npm cache clean && \
+    npm cache clean --force && \
     chown -R mol:mol $HOME/*
 
 # RUN apk add --no-cache --virtual .app-deps python make g++ \
