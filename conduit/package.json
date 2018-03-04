@@ -36,10 +36,6 @@
     "nats": "0.8.2",
     "slug": "0.9.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/moleculerjs/moleculer-realworld-example-app.git"
-  },
   "engines": {
     "node": ">= 6.x.x"
   },
