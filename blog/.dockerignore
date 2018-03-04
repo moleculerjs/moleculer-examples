@@ -1,0 +1,5 @@
+docker
+Dockerfile
+node_modules
+test
+.vscode

@@ -200,7 +200,7 @@ module.exports = {
 			if (err)
 				return this.broker.fatal(err);
 
-			this.logger.info(`WWW server started on port ${this.settings.PORT}`);
+			this.logger.info(`WWW server started on port ${this.settings.port}`);
 		});
 
 	},

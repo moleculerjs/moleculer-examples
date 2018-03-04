@@ -1,7 +1,9 @@
-FROM node:8.9-alpine
+FROM node:8-alpine
 
 RUN mkdir /app
 WORKDIR /app
+
+ENV NODE_ENV=production
 
 COPY package.json .
 
