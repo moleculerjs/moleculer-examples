@@ -32,7 +32,7 @@
     "moleculer": "0.12.1",
     "moleculer-console-tracer": "0.1.1",
     "moleculer-db": "0.7.2",
-    "moleculer-db-adapter-mongo": "0.2.0",
+    "moleculer-db-adapter-mongo": "0.3.0",
     "moleculer-web": "0.7.0-beta3",
     "nats": "0.8.4",
     "slug": "0.9.1"
