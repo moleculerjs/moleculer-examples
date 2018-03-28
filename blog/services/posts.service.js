@@ -55,13 +55,13 @@ module.exports = {
 			return this.waitForServices(["users"])
 				.then(() => this.broker.call("users.find"))
 				.then(users => {
-					if (users.length == 0) {
+					let authors = users.filter(u => u.author);
+
+					if (authors.length == 0) {
 						this.logger.info("Waiting for `users` seed...");
 						setTimeout(this.seedDB, 1000);
 						return;
 					}
-
-					let authors = users.filter(u => u.author);
 
 					// Create fake posts
 					return this.adapter.insertMany(_.times(20, () => {

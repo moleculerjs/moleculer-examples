@@ -13,26 +13,28 @@
   "dependencies": {
     "bluebird": "3.5.1",
     "chalk": "2.3.2",
-    "eslint": "4.18.2",
-    "express": "4.16.2",
+    "eslint": "4.19.1",
+    "express": "4.16.3",
     "fakerator": "0.3.0",
     "hashids": "1.1.4",
     "ioredis": "3.2.2",
     "lodash": "4.17.5",
     "moleculer": "0.12.1",
-    "moleculer-db": "0.7.1",
-    "moleculer-db-adapter-mongoose": "0.4.6",
+    "moleculer-console-tracer": "0.1.1",
+    "moleculer-db": "0.7.2",
+    "moleculer-db-adapter-mongoose": "0.6.0",
     "moleculer-fake": "1.0.10",
     "moleculer-repl": "0.4.0",
-    "moleculer-web": "0.6.4",
+    "moleculer-web": "0.7.0-beta3",
     "moment": "2.21.0",
+    "mongoose": "5.0.12",
     "morgan": "1.9.0",
-    "nats": "0.8.2",
-    "pug": "2.0.0-rc.2",
+    "nats": "0.8.4",
+    "pug": "2.0.3",
     "slugify": "1.2.9"
   },
   "devDependencies": {
-    "nodemon": "1.17.1",
-    "npm-check": "5.5.2"
+    "nodemon": "1.17.2",
+    "npm-check": "5.6.0"
   }
 }
