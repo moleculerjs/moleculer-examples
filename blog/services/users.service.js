@@ -2,7 +2,7 @@
 
 const path = require("path");
 const _ = require("lodash");
-const bcrypt = require("lodash");
+const bcrypt = require("bcrypt");
 const { MoleculerError } = require("moleculer").Errors;
 const DbService = require("moleculer-db");
 const MongooseAdapter = require("moleculer-db-adapter-mongoose");

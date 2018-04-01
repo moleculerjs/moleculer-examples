@@ -187,7 +187,7 @@ module.exports = {
 							return this.Promise.reject(new ForbiddenError());
 
 						return this.adapter.removeById(ctx.params.id)
-							.then(json => this.entityChanged("updated", json, ctx).then(() => json));
+							.then(json => this.entityChanged("removed", json, ctx).then(() => json));
 					});	
 			}
 		}
