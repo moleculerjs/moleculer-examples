@@ -1,4 +1,3 @@
-LOGGER=true
 LOGLEVEL=info
 TRANSPORTER=nats://nats:4222
 CACHER=redis://redis
