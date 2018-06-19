@@ -2,12 +2,19 @@
 
 const { MoleculerClientError } = require("moleculer").Errors;
 const DbService = require("../mixins/db.mixin");
+const CacheCleanerMixin = require("../mixins/cache.cleaner.mixin");
 
 
 module.exports = {
 	name: "favorites",
-	mixins: [DbService("favorites")],
-
+	mixins: [
+		DbService("favorites"),
+		CacheCleanerMixin([
+			"cache.clean.articles",
+			"cache.clean.users",
+			"cache.clean.favorites",
+		])
+	],
 	/**
 	 * Default settings
 	 */
@@ -22,13 +29,13 @@ module.exports = {
 
 		/**
 		 * Create a new favorite record
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} article - Article ID
 		 * @param {String} user - User ID
 		 * @returns {Object} Created favorite record
-		 */		
+		 */
 		add: {
 			params: {
 				article: { type: "string" },
@@ -50,13 +57,13 @@ module.exports = {
 
 		/**
 		 * Check the given 'article' is followed by 'user'.
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} article - Article ID
 		 * @param {String} user - User ID
 		 * @returns {Boolean}
-		 */		
+		 */
 		has: {
 			cache: {
 				keys: ["article", "user"]
@@ -74,13 +81,13 @@ module.exports = {
 
 		/**
 		 * Count of favorites.
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String?} article - Article ID
 		 * @param {String?} user - User ID
 		 * @returns {Number}
-		 */		
+		 */
 		count: {
 			cache: {
 				keys: ["article", "user"]
@@ -91,10 +98,10 @@ module.exports = {
 			},
 			handler(ctx) {
 				let query = {};
-				if (ctx.params.article) 
+				if (ctx.params.article)
 					query = { article: ctx.params.article };
-				
-				if (ctx.params.user) 
+
+				if (ctx.params.user)
 					query = { user: ctx.params.user };
 
 				return this.adapter.count({ query });
@@ -103,13 +110,13 @@ module.exports = {
 
 		/**
 		 * Delete a favorite record
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} article - Article ID
 		 * @param {String} user - User ID
 		 * @returns {Number} Count of removed records
-		 */		
+		 */
 		delete: {
 			params: {
 				article: { type: "string" },
@@ -130,12 +137,12 @@ module.exports = {
 
 		/**
 		 * Remove all favorites by article
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} article - Article ID
 		 * @returns {Number} Count of removed records
-		 */		
+		 */
 		removeByArticle: {
 			params: {
 				article: { type: "string" }
@@ -151,27 +158,12 @@ module.exports = {
 	 */
 	methods: {
 		/**
-		 * Find the first favorite record by 'article' or 'user' 
+		 * Find the first favorite record by 'article' or 'user'
 		 * @param {String} article - Article ID
 		 * @param {String} user - User ID
 		 */
 		findByArticleAndUser(article, user) {
 			return this.adapter.findOne({ article, user });
 		},
-	},
-
-	events: {
-		"cache.clean.favorites"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.users"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.articles"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		}
 	}
 };

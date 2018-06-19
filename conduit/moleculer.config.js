@@ -3,6 +3,12 @@
 module.exports = {
 	logger: true,
 	logLevel: "info",
-	cacher: "memory",
+	logFormatter: "short",
+	cacher: {
+		type: "memory",
+		options: {
+			maxParamsLength: 100
+		}
+	},
 	metrics: true
 };

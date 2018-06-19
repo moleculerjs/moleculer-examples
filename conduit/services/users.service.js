@@ -7,10 +7,17 @@ const bcrypt 		= require("bcrypt");
 const jwt 			= require("jsonwebtoken");
 
 const DbService = require("../mixins/db.mixin");
+const CacheCleanerMixin = require("../mixins/cache.cleaner.mixin");
 
 module.exports = {
 	name: "users",
-	mixins: [DbService("users")],
+	mixins: [
+		DbService("users"),
+		CacheCleanerMixin([
+			"cache.clean.users",
+			"cache.clean.follows",
+		])
+	],
 
 	/**
 	 * Default settings
@@ -38,16 +45,16 @@ module.exports = {
 	actions: {
 		/**
 		 * Register a new user
-		 * 
+		 *
 		 * @actions
 		 * @param {Object} user - User entity
-		 * 
+		 *
 		 * @returns {Object} Created entity & token
 		 */
 		create: {
 			params: {
 				user: { type: "object" }
-			},			
+			},
 			handler(ctx) {
 				let entity = ctx.params.user;
 				return this.validateEntity(entity)
@@ -57,7 +64,7 @@ module.exports = {
 								.then(found => {
 									if (found)
 										return Promise.reject(new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist"}]));
-									
+
 								});
 					})
 					.then(() => {
@@ -67,7 +74,7 @@ module.exports = {
 									if (found)
 										return Promise.reject(new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist"}]));
 								});
-							
+
 					})
 					.then(() => {
 						entity.password = bcrypt.hashSync(entity.password, 10);
@@ -78,17 +85,17 @@ module.exports = {
 						return this.adapter.insert(entity)
 							.then(doc => this.transformDocuments(ctx, {}, doc))
 							.then(user => this.transformEntity(user, true, ctx.meta.token))
-							.then(json => this.entityChanged("created", json, ctx).then(() => json));					
+							.then(json => this.entityChanged("created", json, ctx).then(() => json));
 					});
 			}
 		},
 
 		/**
 		 * Login with username & password
-		 * 
+		 *
 		 * @actions
 		 * @param {Object} user - User credentials
-		 * 
+		 *
 		 * @returns {Object} Logged in user with token
 		 */
 		login: {
@@ -110,7 +117,7 @@ module.exports = {
 						return bcrypt.compare(password, user.password).then(res => {
 							if (!res)
 								return Promise.reject(new MoleculerClientError("Wrong password!", 422, "", [{ field: "email", message: "is not found"}]));
-							
+
 							// Transform user entity (remove password and all protected fields)
 							return this.transformDocuments(ctx, {}, user);
 						});
@@ -121,17 +128,17 @@ module.exports = {
 
 		/**
 		 * Get user by JWT token (for API GW authentication)
-		 * 
+		 *
 		 * @actions
 		 * @param {String} token - JWT token
-		 * 
+		 *
 		 * @returns {Object} Resolved user
 		 */
 		resolveToken: {
 			cache: {
 				keys: ["token"],
 				ttl: 60 * 60 // 1 hour
-			},			
+			},
 			params: {
 				token: "string"
 			},
@@ -155,15 +162,15 @@ module.exports = {
 		/**
 		 * Get current user entity.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @returns {Object} User entity
 		 */
 		me: {
 			auth: "required",
 			cache: {
-				keys: ["#token"]
+				keys: ["#userID"]
 			},
 			handler(ctx) {
 				return this.getById(ctx.meta.user._id)
@@ -180,9 +187,9 @@ module.exports = {
 		/**
 		 * Update current user entity.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {Object} user - Modified fields
 		 * @returns {Object} User entity
 		 */
@@ -206,7 +213,7 @@ module.exports = {
 								.then(found => {
 									if (found && found._id.toString() !== ctx.meta.user._id.toString())
 										return Promise.reject(new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist"}]));
-									
+
 								});
 					})
 					.then(() => {
@@ -216,7 +223,7 @@ module.exports = {
 									if (found && found._id.toString() !== ctx.meta.user._id.toString())
 										return Promise.reject(new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist"}]));
 								});
-							
+
 					})
 					.then(() => {
 						newData.updatedAt = new Date();
@@ -234,15 +241,15 @@ module.exports = {
 
 		/**
 		 * Get a user profile.
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} username - Username
 		 * @returns {Object} User entity
 		 */
 		profile: {
 			cache: {
-				keys: ["#token", "username"]
+				keys: ["#userID", "username"]
 			},
 			params: {
 				username: { type: "string" }
@@ -262,9 +269,9 @@ module.exports = {
 		/**
 		 * Follow a user
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} username - Followed username
 		 * @returns {Object} Current user entity
 		 */
@@ -284,14 +291,14 @@ module.exports = {
 					})
 					.then(user => this.transformProfile(ctx, user, ctx.meta.user));
 			}
-		},	
+		},
 
 		/**
 		 * Unfollow a user
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} username - Unfollowed username
 		 * @returns {Object} Current user entity
 		 */
@@ -311,7 +318,7 @@ module.exports = {
 					})
 					.then(user => this.transformProfile(ctx, user, ctx.meta.user));
 			}
-		}		
+		}
 	},
 
 	/**
@@ -320,8 +327,8 @@ module.exports = {
 	methods: {
 		/**
 		 * Generate a JWT token from user entity
-		 * 
-		 * @param {Object} user 
+		 *
+		 * @param {Object} user
 		 */
 		generateJWT(user) {
 			const today = new Date();
@@ -337,9 +344,9 @@ module.exports = {
 
 		/**
 		 * Transform returned user entity. Generate JWT token if neccessary.
-		 * 
-		 * @param {Object} user 
-		 * @param {Boolean} withToken 
+		 *
+		 * @param {Object} user
+		 * @param {Boolean} withToken
 		 */
 		transformEntity(user, withToken, token) {
 			if (user) {
@@ -354,10 +361,10 @@ module.exports = {
 
 		/**
 		 * Transform returned user entity as profile.
-		 * 
+		 *
 		 * @param {Context} ctx
-		 * @param {Object} user 
-		 * @param {Object?} loggedInUser 
+		 * @param {Object} user
+		 * @param {Object?} loggedInUser
 		 */
 		transformProfile(ctx, user, loggedInUser) {
 			//user.image = user.image || "https://www.gravatar.com/avatar/" + crypto.createHash("md5").update(user.email).digest("hex") + "?d=robohash";
@@ -386,5 +393,5 @@ module.exports = {
 			if (this.broker.cacher)
 				this.broker.cacher.clean(`${this.name}.*`);
 		}
-	}	
+	}
 };

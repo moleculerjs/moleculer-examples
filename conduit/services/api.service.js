@@ -122,6 +122,7 @@ module.exports = {
 									// Reduce user fields (it will be transferred to other nodes)
 									ctx.meta.user = _.pick(user, ["_id", "username", "email", "image"]);
 									ctx.meta.token = token;
+									ctx.meta.userID = user._id;
 								}
 								return user;
 							})
@@ -132,7 +133,7 @@ module.exports = {
 					}
 				})
 				.then(user => {
-					if (req.$endpoint.action.auth == "required" && !user)
+					if (req.$action.auth == "required" && !user)
 						return this.Promise.reject(new UnAuthorizedError());
 				});
 		},

@@ -6,10 +6,20 @@ const { ForbiddenError } = require("moleculer-web").Errors;
 const _ = require("lodash");
 const slug = require("slug");
 const DbService = require("../mixins/db.mixin");
+const CacheCleanerMixin = require("../mixins/cache.cleaner.mixin");
 
 module.exports = {
 	name: "articles",
-	mixins: [DbService("articles")],
+	mixins: [
+		DbService("articles"),
+		CacheCleanerMixin([
+			"cache.clean.articles",
+			"cache.clean.users",
+			"cache.clean.comments",
+			"cache.clean.follows",
+			"cache.clean.favorites",
+		])
+	],
 
 	/**
 	 * Default settings
@@ -62,10 +72,10 @@ module.exports = {
 		/**
 		 * Create a new article.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {Object} article - Article entity
-		 * 
+		 *
 		 * @returns {Object} Created entity
 		 */
 		create: {
@@ -94,11 +104,11 @@ module.exports = {
 		/**
 		 * Update an article.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} id - Article ID
 		 * @param {Object} article - Article modified fields
-		 * 
+		 *
 		 * @returns {Object} Updated entity
 		 */
 		update: {
@@ -109,7 +119,7 @@ module.exports = {
 					title: { type: "string", min: 1, optional: true },
 					description: { type: "string", min: 1, optional: true },
 					body: { type: "string", min: 1, optional: true },
-					tagList: { type: "array", items: "string", optional: true },					
+					tagList: { type: "array", items: "string", optional: true },
 				} }
 			},
 			handler(ctx) {
@@ -139,19 +149,19 @@ module.exports = {
 
 		/**
 		 * List articles with pagination.
-		 * 
+		 *
 		 * @actions
 		 * @param {String} tag - Filter for 'tag'
 		 * @param {String} author - Filter for author ID
 		 * @param {String} favorited - Filter for favorited author
 		 * @param {Number} limit - Pagination limit
 		 * @param {Number} offset - Pagination offset
-		 * 
+		 *
 		 * @returns {Object} List of articles
 		 */
 		list: {
 			cache: {
-				keys: ["#token", "tag", "author", "favorited", "limit", "offset"]
+				keys: ["#userID", "tag", "author", "favorited", "limit", "offset"]
 			},
 			params: {
 				tag: { type: "string", optional: true },
@@ -209,7 +219,7 @@ module.exports = {
 						if (countParams && countParams.limit)
 							countParams.limit = null;
 						if (countParams && countParams.offset)
-							countParams.offset = null;						
+							countParams.offset = null;
 					})
 					.then(() => this.Promise.all([
 						// Get rows
@@ -232,17 +242,17 @@ module.exports = {
 		/**
 		 * List articles from followed authors.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {Number} limit - Pagination limit
 		 * @param {Number} offset - Pagination offset
-		 * 
+		 *
 		 * @returns {Object} List of articles
 		 */
 		feed: {
 			auth: "required",
 			cache: {
-				keys: ["#token", "limit", "offset"]
+				keys: ["#userID", "limit", "offset"]
 			},
 			params: {
 				limit: { type: "number", optional: true, convert: true },
@@ -267,7 +277,7 @@ module.exports = {
 							.then(list => {
 								const authors = _.uniq(_.compact(_.flattenDeep(list.map(o => o.follow))));
 								params.query.author = {"$in" : authors};
-							});						
+							});
 					})
 					.then(() => {
 						countParams = Object.assign({}, params);
@@ -275,7 +285,7 @@ module.exports = {
 						if (countParams && countParams.limit)
 							countParams.limit = null;
 						if (countParams && countParams.offset)
-							countParams.offset = null;						
+							countParams.offset = null;
 					})
 					.then(() => this.Promise.all([
 						// Get rows
@@ -297,15 +307,15 @@ module.exports = {
 
 		/**
 		 * Get an article by slug
-		 * 
+		 *
 		 * @actions
 		 * @param {String} id - Article slug
-		 * 
+		 *
 		 * @returns {Object} Article entity
 		 */
 		get: {
 			cache: {
-				keys: ["#token", "id"]
+				keys: ["#userID", "id"]
 			},
 			params: {
 				id: { type: "string" }
@@ -321,15 +331,15 @@ module.exports = {
 					.then(doc => this.transformDocuments(ctx, { populate: ["author", "favorited", "favoritesCount"] }, doc))
 					.then(entity => this.transformResult(ctx, entity, ctx.meta.user));
 			}
-		},	
+		},
 
 		/**
 		 * Remove an article by slug
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} id - Article slug
-		 * 
+		 *
 		 * @returns {Number} Count of removed articles
 		 */
 		remove: {
@@ -356,10 +366,10 @@ module.exports = {
 		/**
 		 * Favorite an article
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} id - Article slug
-		 * 
+		 *
 		 * @returns {Object} Updated article
 		 */
 		favorite: {
@@ -373,7 +383,7 @@ module.exports = {
 					.then(article => {
 						if (!article)
 							return this.Promise.reject(new MoleculerClientError("Article not found", 404));
-							
+
 						return ctx.call("favorites.add", { article: article._id.toString(), user: ctx.meta.user._id.toString() }).then(() => article);
 					})
 					.then(doc => this.transformDocuments(ctx, { populate: ["author", "favorited", "favoritesCount"] }, doc))
@@ -384,10 +394,10 @@ module.exports = {
 		/**
 		 * Unfavorite an article
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} id - Article slug
-		 * 
+		 *
 		 * @returns {Object} Updated article
 		 */
 		unfavorite: {
@@ -411,7 +421,7 @@ module.exports = {
 
 		/**
 		 * Get list of available tags
-		 * 
+		 *
 		 * @returns {Object} Tag list
 		 */
 		tags: {
@@ -430,16 +440,16 @@ module.exports = {
 
 		/**
 		 * Get all comments of an article.
-		 * 
+		 *
 		 * @actions
 		 * @param {String} slug - Article slug
-		 * 
+		 *
 		 * @returns {Object} Comment list
-		 * 
+		 *
 		 */
 		comments: {
 			cache: {
-				keys: ["#token", "slug"]
+				keys: ["#userID", "slug"]
 			},
 			params: {
 				slug: { type: "string" }
@@ -454,16 +464,16 @@ module.exports = {
 						return ctx.call("comments.list", { article: article._id.toString() });
 					});
 			}
-		},	
+		},
 
 		/**
 		 * Add a new comment to an article.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} slug - Article slug
 		 * @param {Object} comment - Comment fields
-		 * 
+		 *
 		 * @returns {Object} Comment entity
 		 */
 		addComment: {
@@ -482,17 +492,17 @@ module.exports = {
 						return ctx.call("comments.create", { article: article._id.toString(), comment: ctx.params.comment });
 					});
 			}
-		},	
+		},
 
 		/**
 		 * Update a comment.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} slug - Article slug
 		 * @param {String} commentID - Comment ID
 		 * @param {Object} comment - Comment fields
-		 * 
+		 *
 		 * @returns {Object} Comment entity
 		 */
 		updateComment: {
@@ -512,16 +522,16 @@ module.exports = {
 						return ctx.call("comments.update", { id: ctx.params.commentID, comment: ctx.params.comment });
 					});
 			}
-		},	
+		},
 
 		/**
 		 * Remove a comment.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} slug - Article slug
 		 * @param {String} commentID - Comment ID
-		 * 
+		 *
 		 * @returns {Number} Count of removed comment
 		 */
 		removeComment: {
@@ -540,7 +550,7 @@ module.exports = {
 						return ctx.call("comments.remove", { id: ctx.params.commentID });
 					});
 			}
-		}	
+		}
 	},
 
 	/**
@@ -549,9 +559,9 @@ module.exports = {
 	methods: {
 		/**
 		 * Find an article by slug
-		 * 
+		 *
 		 * @param {String} slug - Article slug
-		 * 
+		 *
 		 * @results {Object} Promise<Article
 		 */
 		findBySlug(slug) {
@@ -560,9 +570,9 @@ module.exports = {
 
 		/**
 		 * Transform the result entities to follow the RealWorld API spec
-		 * 
-		 * @param {Context} ctx 
-		 * @param {Array} entities 
+		 *
+		 * @param {Context} ctx
+		 * @param {Array} entities
 		 * @param {Object} user - Logged in user
 		 */
 		transformResult(ctx, entities, user) {
@@ -576,39 +586,16 @@ module.exports = {
 		},
 
 		/**
-		 * Transform a result entity to follow the RealWorld API spec 
-		 * 
-		 * @param {Context} ctx 
-		 * @param {Object} entity 
+		 * Transform a result entity to follow the RealWorld API spec
+		 *
+		 * @param {Context} ctx
+		 * @param {Object} entity
 		 * @param {Object} user - Logged in user
 		 */
 		transformEntity(ctx, entity, user) {
 			if (!entity) return this.Promise.resolve();
 
 			return this.Promise.resolve(entity);
-		}
-	},
-	
-	events: {
-		"cache.clean.articles"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.users"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.comments"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.follows"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.favorites"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
 		}
 	}
 };
