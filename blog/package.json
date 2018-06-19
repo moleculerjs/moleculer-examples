@@ -19,7 +19,7 @@
     "hashids": "1.1.4",
     "ioredis": "3.2.2",
     "lodash": "4.17.10",
-    "moleculer": "0.12.8",
+    "moleculer": "0.13.0-beta5",
     "moleculer-console-tracer": "0.1.1",
     "moleculer-db": "0.7.3",
     "moleculer-db-adapter-mongoose": "0.7.0",
