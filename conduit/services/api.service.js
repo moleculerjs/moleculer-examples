@@ -52,7 +52,7 @@ module.exports = {
 			mappingPolicy: "restrict",
 
 			// Set CORS headers
-			cors: true,
+			//cors: true,
 
 			// Parse body content
 			bodyParsers: {
@@ -84,7 +84,7 @@ module.exports = {
 					o[field] = e.message;
 				});
 
-				res.end(JSON.stringify({ errors: o }, null, 2));				
+				res.end(JSON.stringify({ errors: o }, null, 2));
 			} else {
 				const errObj = _.pick(err, ["name", "message", "code", "type", "data"]);
 				res.end(JSON.stringify(errObj, null, 2));
@@ -139,9 +139,9 @@ module.exports = {
 
 		/**
 		 * Convert ValidationError to RealWorld.io result
-		 * @param {*} req 
-		 * @param {*} res 
-		 * @param {*} err 
+		 * @param {*} req
+		 * @param {*} res
+		 * @param {*} err
 		 */
 		/*sendError(req, res, err) {
 			if (err.code == 422) {
@@ -155,9 +155,9 @@ module.exports = {
 				return res.end(JSON.stringify({
 					errors: o
 				}, null, 2));
-				
-			}			
-			
+
+			}
+
 			return this._sendError(req, res, err);
 		}*/
 	},
