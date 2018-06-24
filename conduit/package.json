@@ -18,7 +18,7 @@
   ],
   "author": "",
   "devDependencies": {
-    "eslint": "4.19.1",
+    "eslint": "5.0.0",
     "jest": "23.1.0",
     "jest-cli": "23.1.0",
     "moleculer": "0.13.0-beta6",
@@ -33,7 +33,7 @@
     "moleculer-console-tracer": "0.1.1",
     "moleculer-db": "0.7.3",
     "moleculer-db-adapter-mongo": "0.4.0",
-    "moleculer-web": "0.8.0-beta2",
+    "moleculer-web": "0.8.0-beta3",
     "nats": "1.0.0",
     "slug": "0.9.1"
   },
