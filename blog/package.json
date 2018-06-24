@@ -1,5 +1,5 @@
 {
-  "name": "moleculer-examples",
+  "name": "moleculer-examples-blog",
   "version": "3.0.0",
   "description": "Blog examples for Moleculer framework",
   "scripts": {

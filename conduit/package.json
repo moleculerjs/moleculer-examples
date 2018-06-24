@@ -1,5 +1,5 @@
 {
-  "name": "moleculer-realworld-example-app",
+  "name": "moleculer-examples-conduit",
   "version": "2.0.0",
   "description": "RealWorld example app with Moleculer microservices framework",
   "scripts": {
