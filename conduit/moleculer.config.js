@@ -2,7 +2,7 @@
 
 module.exports = {
 	namespace: "conduit",
-	transporter: "TCP",
+	//transporter: "TCP",
 	logger: true,
 	logLevel: "info",
 	logFormatter: "short",

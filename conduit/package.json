@@ -33,7 +33,7 @@
     "moleculer-console-tracer": "0.1.1",
     "moleculer-db": "0.7.3",
     "moleculer-db-adapter-mongo": "0.4.0",
-    "moleculer-web": "0.8.0"
+    "moleculer-web": "0.8.0",
     "slug": "0.9.1"
   },
   "engines": {
