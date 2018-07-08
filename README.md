@@ -4,6 +4,9 @@ Official examples for Moleculer microservices framework
 ## [Blog site](blog/)
 [![Blog screenshot](assets/screenshots/blog-screenshot.jpg)](blog/)
 
+## [RealWorld.io example backend app](conduit/)
+[![RealWorld screenshot](assets/screenshots/conduit-screenshot.png)](conduit/)
+
 # License
 This repo is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
