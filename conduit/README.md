@@ -1,6 +1,7 @@
-# ![RealWorld Example App](logo.png)
+# RealWorld Example App
+![Conduit screenshot](../assets/screenshots/conduit-screenshot.png)
 
-> ### [Moleculer](http://moleculer.services/) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+[Moleculer](http://moleculer.services/) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
 
 This repo is functionality complete — PRs and issues welcome!
 
@@ -20,7 +21,7 @@ Glitch project: https://glitch.com/edit/#!/realworld-moleculer
 - `npm run dev` to start the local server
 - the API is available at http://localhost:3000/api
 
-Alternately, to quickly try out this repo in the cloud, you can 
+Alternately, to quickly try out this repo in the cloud, you can
 
 [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/remix/realworld-moleculer)
 
@@ -41,11 +42,11 @@ TRANSPORTER=nats://localhost:4222
 1. Checkout the repo `git clone https://github.com/moleculerjs/moleculer-realworld-example-app.git`
 2. `cd moleculer-realworld-example-app`
 3. Start with docker-compose: `docker compose up -d`
-	
+
 	It starts all services in separated containers, a Redis server for caching, a MongoDB server for database and a [Traefik](https://traefik.io/) reverse proxy. All nodes communicate via Moleculer TCP transporter.
 4. Open the http://docker-ip:3000
 5. Scale up services
-	
+
 	`docker-compose scale api=3 articles=2 users=2 comments=2 follows=2 favorites=2`
 
 ## Code Overview
