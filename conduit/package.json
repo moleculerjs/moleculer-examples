@@ -21,7 +21,6 @@
     "eslint": "5.0.1",
     "jest": "23.3.0",
     "jest-cli": "23.3.0",
-    "moleculer": "0.13.0",
     "moleculer-repl": "0.5.0",
     "npm-check": "5.7.1"
   },
@@ -30,6 +29,7 @@
     "ioredis": "3.2.2",
     "jsonwebtoken": "8.3.0",
     "lodash": "4.17.10",
+    "moleculer": "0.13.0",
     "moleculer-console-tracer": "0.1.1",
     "moleculer-db": "0.7.3",
     "moleculer-db-adapter-mongo": "0.4.0",

@@ -29,22 +29,22 @@ npm start
 
 ## :cloud: Start in Docker
 
-### :house: Running as monolith 
+### :house: Running as monolith
 _All services are running in a container._
 ```bash
 cd docker/mono
-docker-compose up
-# or 
+docker-compose up -d --build
+# or
 # ./start.sh
 ```
 **Open the http://docker-machine:3000/ URL in your browser.**
 
-### :office: Running as microservices 
+### :office: Running as microservices
 _All services are running in separated containers, communicate via NATS & use Traefik reverse proxy._
 ```bash
 cd docker/micro
-docker-compose up
-# or 
+docker-compose up -d --build
+# or
 # ./start.sh
 ```
 **Open the http://docker-machine:3000/ URL in your browser.**
@@ -65,8 +65,8 @@ docker-compose scale www=2
 _Coherent services are running in the same container and communicate via NATS._
 ```bash
 cd docker/mixed
-docker-compose up
-# or 
+docker-compose up -d --build
+# or
 # ./start.sh
 ```
 **Open the http://docker-machine:3000/ URL in your browser.**
@@ -89,7 +89,7 @@ In this case you don't need MongoDB, what is more, you don't need NodeJS environ
 
 ```bash
 cd docker/dev
-docker-compose up
+docker-compose up -d --build
 ```
 
 _If you change source files, the app will be restarted automatically._

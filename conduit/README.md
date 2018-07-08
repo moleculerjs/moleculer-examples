@@ -39,13 +39,13 @@ TRANSPORTER=nats://localhost:4222
 
 ### To get the Node server running locally with Docker
 
-1. Checkout the repo `git clone https://github.com/moleculerjs/moleculer-realworld-example-app.git`
-2. `cd moleculer-realworld-example-app`
-3. Start with docker-compose: `docker compose up -d`
+1. Checkout the repo `git clone https://github.com/moleculerjs/moleculer-examples.git`
+2. `cd moleculer-examples/conduit`
+3. Start with docker-compose: `docker-compose up -d --build`
 
 	It starts all services in separated containers, a Redis server for caching, a MongoDB server for database and a [Traefik](https://traefik.io/) reverse proxy. All nodes communicate via Moleculer TCP transporter.
-4. Open the http://docker-ip:3000
-5. Scale up services
+4. Open the http://docker-ip:3000 in your browser
+5. _Optional: Scale up services_
 
 	`docker-compose scale api=3 articles=2 users=2 comments=2 follows=2 favorites=2`
 
