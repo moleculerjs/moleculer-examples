@@ -52,7 +52,7 @@ module.exports = {
 			mappingPolicy: "restrict",
 
 			// Set CORS headers
-			cors: true,
+			//cors: true,
 
 			// Parse body content
 			bodyParsers: {
@@ -84,7 +84,7 @@ module.exports = {
 					o[field] = e.message;
 				});
 
-				res.end(JSON.stringify({ errors: o }, null, 2));				
+				res.end(JSON.stringify({ errors: o }, null, 2));
 			} else {
 				const errObj = _.pick(err, ["name", "message", "code", "type", "data"]);
 				res.end(JSON.stringify(errObj, null, 2));
@@ -122,6 +122,7 @@ module.exports = {
 									// Reduce user fields (it will be transferred to other nodes)
 									ctx.meta.user = _.pick(user, ["_id", "username", "email", "image"]);
 									ctx.meta.token = token;
+									ctx.meta.userID = user._id;
 								}
 								return user;
 							})
@@ -132,16 +133,16 @@ module.exports = {
 					}
 				})
 				.then(user => {
-					if (req.$endpoint.action.auth == "required" && !user)
+					if (req.$action.auth == "required" && !user)
 						return this.Promise.reject(new UnAuthorizedError());
 				});
 		},
 
 		/**
 		 * Convert ValidationError to RealWorld.io result
-		 * @param {*} req 
-		 * @param {*} res 
-		 * @param {*} err 
+		 * @param {*} req
+		 * @param {*} res
+		 * @param {*} err
 		 */
 		/*sendError(req, res, err) {
 			if (err.code == 422) {
@@ -155,9 +156,9 @@ module.exports = {
 				return res.end(JSON.stringify({
 					errors: o
 				}, null, 2));
-				
-			}			
-			
+
+			}
+
 			return this._sendError(req, res, err);
 		}*/
 	},

@@ -1,6 +1,6 @@
 {
-  "name": "moleculer-examples",
-  "version": "2.0.0",
+  "name": "moleculer-examples-blog",
+  "version": "3.0.0",
   "description": "Blog examples for Moleculer framework",
   "scripts": {
     "start": "moleculer-runner",
@@ -12,29 +12,29 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "3.5.1",
-    "chalk": "2.3.2",
-    "eslint": "4.19.1",
+    "chalk": "2.4.1",
+    "eslint": "5.0.1",
     "express": "4.16.3",
     "fakerator": "0.3.0",
     "hashids": "1.1.4",
     "ioredis": "3.2.2",
-    "lodash": "4.17.5",
-    "moleculer": "0.12.1",
+    "lodash": "4.17.10",
+    "moleculer": "0.13.0",
     "moleculer-console-tracer": "0.1.1",
-    "moleculer-db": "0.7.2",
-    "moleculer-db-adapter-mongoose": "0.6.0",
-    "moleculer-fake": "1.0.10",
-    "moleculer-repl": "0.4.0",
-    "moleculer-web": "0.7.0-beta3",
-    "moment": "2.21.0",
-    "mongoose": "5.0.12",
+    "moleculer-db": "0.7.3",
+    "moleculer-db-adapter-mongoose": "0.7.0",
+    "moleculer-fake": "1.0.11",
+    "moleculer-repl": "0.5.0",
+    "moleculer-web": "0.8.0",
+    "moment": "2.22.2",
+    "mongoose": "5.2.1",
     "morgan": "1.9.0",
-    "nats": "0.8.4",
+    "nats": "1.0.0",
     "pug": "2.0.3",
-    "slugify": "1.2.9"
+    "slugify": "1.3.0"
   },
   "devDependencies": {
-    "nodemon": "1.17.2",
-    "npm-check": "5.6.0"
+    "nodemon": "1.17.5",
+    "npm-check": "5.7.1"
   }
 }

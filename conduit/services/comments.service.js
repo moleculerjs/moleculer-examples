@@ -2,11 +2,19 @@
 
 const { ForbiddenError } = require("moleculer-web").Errors;
 const DbService = require("../mixins/db.mixin");
+const CacheCleanerMixin = require("../mixins/cache.cleaner.mixin");
 
 module.exports = {
 	name: "comments",
-	mixins: [DbService("comments")],
-
+	mixins: [
+		DbService("comments"),
+		CacheCleanerMixin([
+			"cache.clean.comments",
+			"cache.clean.users",
+			"cache.clean.follows",
+			"cache.clean.articles",
+		])
+	],
 	/**
 	 * Default settings
 	 */
@@ -33,11 +41,11 @@ module.exports = {
 		/**
 		 * Create a comment.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} article - Article ID
 		 * @param {Object} comment - Comment entity
-		 * 
+		 *
 		 * @returns {Object} Created comment entity
 		 */
 		create: {
@@ -50,7 +58,7 @@ module.exports = {
 				let entity = ctx.params.comment;
 				entity.article = ctx.params.article;
 				entity.author = ctx.meta.user._id.toString();
-				
+
 				return this.validateEntity(entity)
 					.then(() => {
 
@@ -68,11 +76,11 @@ module.exports = {
 		/**
 		 * Update a comment.
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} id - Comment ID
 		 * @param {Object} comment - Comment modified fields
-		 * 
+		 *
 		 * @returns {Object} Updated comment entity
 		 */
 		update: {
@@ -86,12 +94,12 @@ module.exports = {
 			handler(ctx) {
 				let newData = ctx.params.comment;
 				newData.updatedAt = new Date();
-				
+
 				return this.getById(ctx.params.id)
 					.then(comment => {
 						if (comment.author !== ctx.meta.user._id.toString())
 							return this.Promise.reject(new ForbiddenError());
-						
+
 						const update = {
 							"$set": newData
 						};
@@ -106,17 +114,17 @@ module.exports = {
 
 		/**
 		 * List of comments by article.
-		 * 
+		 *
 		 * @actions
 		 * @param {String} article - Article ID
 		 * @param {Number} limit - Pagination limit
 		 * @param {Number} offset - Pagination offset
-		 * 
+		 *
 		 * @returns {Object} List of comments
 		 */
 		list: {
 			cache: {
-				keys: ["#token", "article", "limit", "offset"]
+				keys: ["#userID", "article", "limit", "offset"]
 			},
 			params: {
 				article: { type: "string" },
@@ -145,8 +153,8 @@ module.exports = {
 						if (countParams && countParams.limit)
 							countParams.limit = null;
 						if (countParams && countParams.offset)
-							countParams.offset = null;						
-					})				
+							countParams.offset = null;
+					})
 					.then(() => this.Promise.all([
 						// Get rows
 						this.adapter.find(params),
@@ -169,10 +177,10 @@ module.exports = {
 		/**
 		 * Remove a comment
 		 * Auth is required!
-		 * 
+		 *
 		 * @actions
 		 * @param {String} id - Comment ID
-		 * 
+		 *
 		 * @returns {Number} Count of removed comments
 		 */
 		remove: {
@@ -188,7 +196,7 @@ module.exports = {
 
 						return this.adapter.removeById(ctx.params.id)
 							.then(json => this.entityChanged("removed", json, ctx).then(() => json));
-					});	
+					});
 			}
 		}
 	},
@@ -200,9 +208,9 @@ module.exports = {
 
 		/**
 		 * Transform the result entities to follow the RealWorld API spec
-		 * 
-		 * @param {Context} ctx 
-		 * @param {Array} entities 
+		 *
+		 * @param {Context} ctx
+		 * @param {Array} entities
 		 * @param {Object} user - Logged in user
 		 */
 		transformResult(ctx, entities, user) {
@@ -216,10 +224,10 @@ module.exports = {
 		},
 
 		/**
-		 * Transform a result entity to follow the RealWorld API spec 
-		 * 
-		 * @param {Context} ctx 
-		 * @param {Object} entity 
+		 * Transform a result entity to follow the RealWorld API spec
+		 *
+		 * @param {Context} ctx
+		 * @param {Object} entity
 		 * @param {Object} user - Logged in user
 		 */
 		transformEntity(ctx, entity, loggedInUser) {
@@ -237,30 +245,11 @@ module.exports = {
 							});
 					}
 
-					entity.author.following = false;					
+					entity.author.following = false;
 
 					return entity;
 				});
 
-		}
-	},
-
-	events: {
-		"cache.clean.comments"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.users"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.follows"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.articles"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
 		}
 	}
 };

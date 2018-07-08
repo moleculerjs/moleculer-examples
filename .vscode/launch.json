@@ -19,6 +19,19 @@
 		},
 		{
 			"type": "node",
+			"request": "launch",
+			"name": "Launch conduit",
+			"program": "${workspaceRoot}\\conduit\\node_modules\\moleculer\\bin\\moleculer-runner.js",
+			"args": [
+				"services"
+			],
+			"env": {
+				"PORT": "3000"
+			},
+			"cwd": "${workspaceRoot}\\conduit"
+		},		
+		{
+			"type": "node",
 			"request": "attach",
 			"name": "Attach",
 			"port": 9229

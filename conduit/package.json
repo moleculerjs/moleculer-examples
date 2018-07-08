@@ -1,6 +1,6 @@
 {
-  "name": "moleculer-realworld-example-app",
-  "version": "1.1.0",
+  "name": "moleculer-examples-conduit",
+  "version": "2.0.0",
   "description": "RealWorld example app with Moleculer microservices framework",
   "scripts": {
     "dev": "moleculer-runner --repl --hot services",
@@ -18,23 +18,23 @@
   ],
   "author": "",
   "devDependencies": {
-    "eslint": "4.19.1",
-    "jest": "22.4.3",
-    "jest-cli": "22.4.3",
-    "moleculer-repl": "0.4.0",
-    "npm-check": "5.6.0"
+    "eslint": "5.0.1",
+    "jest": "23.3.0",
+    "jest-cli": "23.3.0",
+    "moleculer": "0.13.0",
+    "moleculer-repl": "0.5.0",
+    "npm-check": "5.7.1"
   },
   "dependencies": {
-    "bcrypt": "1.0.3",
+    "bcrypt": "2.0.1",
     "ioredis": "3.2.2",
-    "jsonwebtoken": "8.2.0",
-    "lodash": "4.17.5",
-    "moleculer": "0.12.1",
+    "jsonwebtoken": "8.3.0",
+    "lodash": "4.17.10",
     "moleculer-console-tracer": "0.1.1",
-    "moleculer-db": "0.7.2",
-    "moleculer-db-adapter-mongo": "0.3.0",
-    "moleculer-web": "0.7.0-beta3",
-    "nats": "0.8.4",
+    "moleculer-db": "0.7.3",
+    "moleculer-db-adapter-mongo": "0.4.0",
+    "moleculer-web": "0.8.0",
+    "nats": "1.0.0",
     "slug": "0.9.1"
   },
   "engines": {

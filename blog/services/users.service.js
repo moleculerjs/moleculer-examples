@@ -1,16 +1,14 @@
 "use strict";
 
-const path = require("path");
 const _ = require("lodash");
-const bcrypt = require("bcrypt");
-const { MoleculerError } = require("moleculer").Errors;
 const DbService = require("moleculer-db");
 const MongooseAdapter = require("moleculer-db-adapter-mongoose");
 const User = require("../models/user.model");
 const CacheCleaner = require("../mixins/cache.cleaner.mixin");
 const Fakerator = require("fakerator");
 const fake = new Fakerator();
-
+/*
+const bcrypt = require("bcrypt");
 function hashPassword(password) {
 	return new Promise((resolve, reject) => {
 		bcrypt.genSalt(10, function (error, salt) {
@@ -27,7 +25,7 @@ function hashPassword(password) {
 			});
 		});
 	});
-}
+}*/
 
 module.exports = {
 	name: "users",

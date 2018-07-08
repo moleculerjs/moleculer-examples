@@ -2,10 +2,17 @@
 
 const { MoleculerClientError } = require("moleculer").Errors;
 const DbService = require("../mixins/db.mixin");
+const CacheCleanerMixin = require("../mixins/cache.cleaner.mixin");
 
 module.exports = {
 	name: "follows",
-	mixins: [DbService("follows")],
+	mixins: [
+		DbService("follows"),
+		CacheCleanerMixin([
+			"cache.clean.users",
+			"cache.clean.follows",
+		])
+	],
 
 	/**
 	 * Default settings
@@ -21,9 +28,9 @@ module.exports = {
 
 		/**
 		 * Create a new following record
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} user - Follower username
 		 * @param {String} follow - Followee username
 		 * @returns {Object} Created following record
@@ -48,12 +55,12 @@ module.exports = {
 
 		/**
 		 * Check the given 'follow' user is followed by 'user' user.
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} user - Follower username
 		 * @param {String} follow - Followee username
-		 * @returns {Boolean} 
+		 * @returns {Boolean}
 		 */
 		has: {
 			cache: {
@@ -71,9 +78,9 @@ module.exports = {
 
 		/**
 		 * Count of following.
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String?} user - Follower username
 		 * @param {String?} follow - Followee username
 		 * @returns {Number}
@@ -88,10 +95,10 @@ module.exports = {
 			},
 			handler(ctx) {
 				let query = {};
-				if (ctx.params.follow) 
+				if (ctx.params.follow)
 					query = { follow: ctx.params.follow };
-				
-				if (ctx.params.user) 
+
+				if (ctx.params.user)
 					query = { user: ctx.params.user };
 
 				return this.adapter.count({ query });
@@ -100,9 +107,9 @@ module.exports = {
 
 		/**
 		 * Delete a following record
-		 * 
+		 *
 		 * @actions
-		 * 
+		 *
 		 * @param {String} user - Follower username
 		 * @param {String} follow - Followee username
 		 * @returns {Number} Count of removed records
@@ -131,23 +138,12 @@ module.exports = {
 	 */
 	methods: {
 		/**
-		 * Find the first following record by 'follow' or 'user' 
+		 * Find the first following record by 'follow' or 'user'
 		 * @param {String} follow - Followee username
 		 * @param {String} user - Follower username
 		 */
 		findByFollowAndUser(follow, user) {
 			return this.adapter.findOne({ follow, user });
 		},
-	},
-
-	events: {
-		"cache.clean.follows"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.users"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		}
-	}	
+	}
 };
