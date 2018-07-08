@@ -47,7 +47,7 @@ TRANSPORTER=nats://localhost:4222
 4. Open the http://docker-ip:3000 in your browser
 5. _Optional: Scale up services_
 
-	`docker-compose scale api=3 articles=2 users=2 comments=2 follows=2 favorites=2`
+	`docker-compose up -d --scale api=3 --scale articles=2 --scale users=2 --scale comments=2 --scale follows=2 --scale favorites=2`
 
 ## Code Overview
 

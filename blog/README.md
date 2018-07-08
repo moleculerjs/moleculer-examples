@@ -52,13 +52,13 @@ docker-compose up -d --build
 You can scale up the containers
 ```bash
 # Scale up the users service to 2 instances
-docker-compose scale users=2
+docker-compose up -d --scale users=2
 ```
 
 You can scale up the WWW service as well. Traefik is load balancing the requests to instances.
 ```bash
 # Scale up the WWW service to 2 instances
-docker-compose scale www=2
+docker-compose up -d --scale www=2
 ```
 
 ### :hotel: Running as mixed
@@ -74,7 +74,7 @@ docker-compose up -d --build
 You can scale up the containers
 ```bash
 # Scale up the group1 container to 2 instances
-docker-compose scale group1=2
+docker-compose up -d --scale group1=2
 ```
 
 ## :wrench: Development locally
