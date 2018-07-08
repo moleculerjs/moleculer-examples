@@ -32,10 +32,7 @@ MONGO_URI=mongodb://localhost/conduit
 ```
 
 #### Multiple instances
-You can run multiple instances of services. In this case you need to use a transporter i.e.: [NATS](https://nats.io). NATS is a lightweight & fast message broker. Download it and start with `gnatsd` command. After it started, set the `TRANSPORTER` env variable and start services.
-```
-TRANSPORTER=nats://localhost:4222
-```
+You can run multiple instances of services. Moleculer uses TCP transporter to communicate all instances. No need any additional configuration, it uses UDP for discovery.
 
 ### To get the Node server running locally with Docker
 
@@ -62,7 +59,6 @@ TRANSPORTER=nats://localhost:4222
 - [lodash](https://github.com/lodash/lodash) - Utility library
 - [slug](https://github.com/dodo/node-slug) - To encode titles into a URL-friendly format
 - [ioredis](https://github.com/luin/ioredis) - [Redis](https://redis.io) server for caching *(optional)*
-- [nats](https://github.com/nats-io/node-nats) - [NATS](https://nats.io) transport driver for Moleculer *(optional)*
 
 ### Application Structure
 

@@ -1,6 +1,8 @@
 "use strict";
 
 module.exports = {
+	namespace: "conduit",
+	transporter: "TCP",
 	logger: true,
 	logLevel: "info",
 	logFormatter: "short",
