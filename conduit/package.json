@@ -18,11 +18,11 @@
   ],
   "author": "",
   "devDependencies": {
-    "eslint": "5.0.0",
-    "jest": "23.1.0",
-    "jest-cli": "23.1.0",
-    "moleculer": "0.13.0-beta6",
-    "moleculer-repl": "0.4.0",
+    "eslint": "5.0.1",
+    "jest": "23.3.0",
+    "jest-cli": "23.3.0",
+    "moleculer": "0.13.0",
+    "moleculer-repl": "0.5.0",
     "npm-check": "5.7.1"
   },
   "dependencies": {
@@ -33,7 +33,7 @@
     "moleculer-console-tracer": "0.1.1",
     "moleculer-db": "0.7.3",
     "moleculer-db-adapter-mongo": "0.4.0",
-    "moleculer-web": "0.8.0-beta3",
+    "moleculer-web": "0.8.0",
     "nats": "1.0.0",
     "slug": "0.9.1"
   },
