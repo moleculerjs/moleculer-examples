@@ -25,7 +25,7 @@
     "npm-check": "5.7.1"
   },
   "dependencies": {
-    "bcrypt": "2.0.1",
+    "bcrypt": "^3.0.2",
     "ioredis": "3.2.2",
     "jsonwebtoken": "8.3.0",
     "lodash": "4.17.10",
