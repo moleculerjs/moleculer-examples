@@ -25,11 +25,11 @@
     "npm-check": "5.9.0"
   },
   "dependencies": {
-    "bcrypt": "3.0.6",
+    "bcryptjs": "2.4.3",
     "ioredis": "4.10.0",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.11",
-    "moleculer": "0.13.9",
+    "moleculer": "github:moleculerjs/moleculer#next",
     "moleculer-console-tracer": "0.2.1",
     "moleculer-db": "0.7.9",
     "moleculer-db-adapter-mongo": "0.4.2",

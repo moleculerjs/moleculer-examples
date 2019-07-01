@@ -3,7 +3,7 @@
 const { MoleculerClientError } = require("moleculer").Errors;
 
 //const crypto 		= require("crypto");
-const bcrypt 		= require("bcrypt");
+const bcrypt 		= require("bcryptjs");
 const jwt 			= require("jsonwebtoken");
 
 const DbService = require("../mixins/db.mixin");
@@ -381,17 +381,6 @@ module.exports = {
 			user.following = false;
 
 			return { profile: user };
-		}
-	},
-
-	events: {
-		"cache.clean.users"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.follows"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
 		}
 	}
 };

@@ -12,5 +12,18 @@ module.exports = {
 			maxParamsLength: 100
 		}
 	},
-	metrics: true
+	metrics: false,
+
+	tracing: {
+		enabled: true,
+		exporter: [
+			{
+				type: "Console",
+				options: {
+					width: 100,
+					colors: true,
+				}
+			}
+		]
+	},
 };
