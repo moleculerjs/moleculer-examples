@@ -18,23 +18,23 @@
   ],
   "author": "",
   "devDependencies": {
-    "eslint": "5.0.1",
-    "jest": "23.3.0",
-    "jest-cli": "23.3.0",
-    "moleculer-repl": "0.5.0",
-    "npm-check": "5.7.1"
+    "eslint": "6.0.1",
+    "jest": "24.8.0",
+    "jest-cli": "24.8.0",
+    "moleculer-repl": "0.5.7",
+    "npm-check": "5.9.0"
   },
   "dependencies": {
-    "bcrypt": "^3.0.2",
-    "ioredis": "3.2.2",
-    "jsonwebtoken": "8.3.0",
-    "lodash": "4.17.10",
-    "moleculer": "0.13.0",
-    "moleculer-console-tracer": "0.1.1",
-    "moleculer-db": "0.7.3",
-    "moleculer-db-adapter-mongo": "0.4.0",
-    "moleculer-web": "0.8.0",
-    "slug": "0.9.1"
+    "bcrypt": "3.0.6",
+    "ioredis": "4.10.0",
+    "jsonwebtoken": "8.5.1",
+    "lodash": "4.17.11",
+    "moleculer": "0.13.9",
+    "moleculer-console-tracer": "0.2.1",
+    "moleculer-db": "0.7.9",
+    "moleculer-db-adapter-mongo": "0.4.2",
+    "moleculer-web": "0.8.5",
+    "slug": "1.1.0"
   },
   "engines": {
     "node": ">= 6.x.x"
