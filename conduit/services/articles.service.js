@@ -353,7 +353,7 @@ module.exports = {
 				slug: { type: "string" }
 			},
 			async handler(ctx) {
-				const article = await this.findBySlug(slug);
+				const article = await this.findBySlug(ctx.params.slug);
 				if (!article)
 					throw new MoleculerClientError("Article not found", 404);
 
@@ -378,7 +378,7 @@ module.exports = {
 				slug: { type: "string" }
 			},
 			async handler(ctx) {
-				const article = await this.findBySlug(slug);
+				const article = await this.findBySlug(ctx.params.slug);
 				if (!article)
 					throw new MoleculerClientError("Article not found", 404);
 
