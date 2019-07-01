@@ -27,11 +27,10 @@ module.exports = function(collection) {
 		adapter: new DbService.MemoryAdapter({ filename: `./data/${collection}.db` }),
 
 		methods: {
-			entityChanged(type, json, ctx) {
-				return this.clearCache().then(() => {
-					const eventName = `${this.name}.entity.${type}`;
-					this.broker.emit(eventName, { meta: ctx.meta, entity: json });
-				});
+			async entityChanged(type, json, ctx) {
+				await this.clearCache();
+				const eventName = `${this.name}.entity.${type}`;
+				this.broker.emit(eventName, { meta: ctx.meta, entity: json });
 			}
 		}
 	};

@@ -41,17 +41,15 @@ module.exports = {
 				article: { type: "string" },
 				user: { type: "string" },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { article, user } = ctx.params;
-				return this.findByArticleAndUser(article, user)
-					.then(item => {
-						if (item)
-							return this.Promise.reject(new MoleculerClientError("Articles has already favorited"));
+				const item = await this.findByArticleAndUser(article, user);
+				if (item)
+					throw new MoleculerClientError("Articles has already favorited");
 
-						return this.adapter.insert({ article, user, createdAt: new Date() })
-							.then(json => this.entityChanged("created", json, ctx).then(() => json));
-
-					});
+				const json = await this.adapter.insert({ article, user, createdAt: new Date() });
+				await this.entityChanged("created", json, ctx);
+				return json;
 			}
 		},
 
@@ -72,10 +70,10 @@ module.exports = {
 				article: { type: "string" },
 				user: { type: "string" },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { article, user } = ctx.params;
-				return this.findByArticleAndUser(article, user)
-					.then(item => !!item);
+				const item = await this.findByArticleAndUser(article, user);
+				return !!item;
 			}
 		},
 
@@ -122,16 +120,15 @@ module.exports = {
 				article: { type: "string" },
 				user: { type: "string" },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { article, user } = ctx.params;
-				return this.findByArticleAndUser(article, user)
-					.then(item => {
-						if (!item)
-							return this.Promise.reject(new MoleculerClientError("Articles has not favorited yet"));
+				const item = await this.findByArticleAndUser(article, user);
+				if (!item)
+					throw new MoleculerClientError("Articles has not favorited yet");
 
-						return this.adapter.removeById(item._id)
-							.then(json => this.entityChanged("removed", json, ctx).then(() => json));
-					});
+				const json = await this.adapter.removeById(item._id);
+				await this.entityChanged("removed", json, ctx);
+				return json;
 			}
 		},
 
