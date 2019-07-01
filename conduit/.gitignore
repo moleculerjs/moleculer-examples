@@ -6,3 +6,4 @@ stats.json
 yarn-error.log
 
 data/
+db/
