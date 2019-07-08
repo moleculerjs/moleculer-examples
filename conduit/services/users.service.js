@@ -2,7 +2,6 @@
 
 const { MoleculerClientError } = require("moleculer").Errors;
 
-//const crypto 		= require("crypto");
 const bcrypt 		= require("bcryptjs");
 const jwt 			= require("jsonwebtoken");
 

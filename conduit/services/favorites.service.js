@@ -47,9 +47,7 @@ module.exports = {
 				if (item)
 					throw new MoleculerClientError("Articles has already favorited");
 
-				const json = await this.adapter.insert({ article, user, createdAt: new Date() });
-				await this.entityChanged("created", json, ctx);
-				return json;
+				return await this._create(ctx, { article, user, createdAt: new Date() });
 			}
 		},
 
@@ -94,7 +92,7 @@ module.exports = {
 				article: { type: "string", optional: true },
 				user: { type: "string", optional: true },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				let query = {};
 				if (ctx.params.article)
 					query = { article: ctx.params.article };
@@ -102,7 +100,7 @@ module.exports = {
 				if (ctx.params.user)
 					query = { user: ctx.params.user };
 
-				return this.adapter.count({ query });
+				return await this._count(ctx, { query });
 			}
 		},
 
@@ -126,9 +124,7 @@ module.exports = {
 				if (!item)
 					throw new MoleculerClientError("Articles has not favorited yet");
 
-				const json = await this.adapter.removeById(item._id);
-				await this.entityChanged("removed", json, ctx);
-				return json;
+				return await this._remove(ctx, { id: item._id });
 			}
 		},
 

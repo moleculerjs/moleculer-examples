@@ -15,43 +15,7 @@ module.exports = {
 			path: "/api",
 
 			authorization: true,
-
 			autoAliases: true,
-
-			aliases: {
-				/*
-				// Login
-				"POST /users/login": "users.login",
-
-				// Users
-				"REST /users": "users",
-
-				// Current user
-				"GET /user": "users.me",
-				"PUT /user": "users.updateMyself",
-
-				// Articles
-				"GET /articles/feed": "articles.feed",
-				"REST /articles": "articles",
-				*/
-				"GET /tags": "articles.tags",
-				/*
-				// Comments
-				"GET /articles/:slug/comments": "articles.comments",
-				"POST /articles/:slug/comments": "articles.addComment",
-				"PUT /articles/:slug/comments/:commentID": "articles.updateComment",
-				"DELETE /articles/:slug/comments/:commentID": "articles.removeComment",
-
-				// Favorites
-				"POST /articles/:slug/favorite": "articles.favorite",
-				"DELETE /articles/:slug/favorite": "articles.unfavorite",
-
-				// Profile
-				"GET /profiles/:username": "users.profile",
-				"POST /profiles/:username/follow": "users.follow",
-				"DELETE /profiles/:username/follow": "users.unfollow",
-				*/
-			},
 
 			// Set CORS headers
 			cors: true,

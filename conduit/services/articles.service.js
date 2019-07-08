@@ -405,7 +405,7 @@ module.exports = {
 		 */
 		tags: {
 			rest: {
-				method: "DELETE",
+				method: "GET",
 				fullPath: "/api/tags",
 			},
 			cache: {

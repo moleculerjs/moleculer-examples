@@ -46,9 +46,7 @@ module.exports = {
 				if (item)
 					throw new MoleculerClientError("User has already followed");
 
-				const json = await this.adapter.insert({ follow, user, createdAt: new Date() });
-				this.entityChanged("created", json, ctx);
-				return json;
+				return await this._create(ctx, { follow, user, createdAt: new Date() });
 			}
 		},
 
@@ -100,7 +98,7 @@ module.exports = {
 				if (ctx.params.user)
 					query = { user: ctx.params.user };
 
-				return await this.adapter.count({ query });
+				return await this._count(ctx, { query });
 			}
 		},
 
@@ -124,9 +122,7 @@ module.exports = {
 				if (!item)
 					throw new MoleculerClientError("User has not followed yet");
 
-				const json = await this.adapter.removeById(item._id);
-				this.entityChanged("removed", json, ctx);
-				return json;
+				return await this._remove(ctx, { id: item._id });
 			}
 		}
 	},
