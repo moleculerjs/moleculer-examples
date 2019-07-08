@@ -16,7 +16,10 @@ module.exports = {
 
 			authorization: true,
 
+			autoAliases: true,
+
 			aliases: {
+				/*
 				// Login
 				"POST /users/login": "users.login",
 
@@ -30,8 +33,9 @@ module.exports = {
 				// Articles
 				"GET /articles/feed": "articles.feed",
 				"REST /articles": "articles",
+				*/
 				"GET /tags": "articles.tags",
-
+				/*
 				// Comments
 				"GET /articles/:slug/comments": "articles.comments",
 				"POST /articles/:slug/comments": "articles.addComment",
@@ -46,13 +50,11 @@ module.exports = {
 				"GET /profiles/:username": "users.profile",
 				"POST /profiles/:username/follow": "users.follow",
 				"DELETE /profiles/:username/follow": "users.unfollow",
+				*/
 			},
 
-			// Disable to call not-mapped actions
-			mappingPolicy: "restrict",
-
 			// Set CORS headers
-			//cors: true,
+			cors: true,
 
 			// Parse body content
 			bodyParsers: {

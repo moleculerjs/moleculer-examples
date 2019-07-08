@@ -23,6 +23,8 @@ module.exports = {
 	 * Default settings
 	 */
 	settings: {
+		/** REST Basepath */
+		rest: "/",
 		/** Secret for JWT */
 		JWT_SECRET: process.env.JWT_SECRET || "jwt-conduit-secret",
 
@@ -52,6 +54,7 @@ module.exports = {
 		 * @returns {Object} Created entity & token
 		 */
 		create: {
+			rest: "POST /users",
 			params: {
 				user: { type: "object" }
 			},
@@ -92,6 +95,7 @@ module.exports = {
 		 * @returns {Object} Logged in user with token
 		 */
 		login: {
+			rest: "POST /users/login",
 			params: {
 				user: { type: "object", props: {
 					email: { type: "email" },
@@ -156,6 +160,7 @@ module.exports = {
 		 */
 		me: {
 			auth: "required",
+			rest: "GET /user",
 			cache: {
 				keys: ["#userID"]
 			},
@@ -180,6 +185,7 @@ module.exports = {
 		 */
 		updateMyself: {
 			auth: "required",
+			rest: "PUT /user",
 			params: {
 				user: { type: "object", props: {
 					username: { type: "string", min: 2, optional: true, pattern: /^[a-zA-Z0-9]+$/ },
@@ -215,6 +221,23 @@ module.exports = {
 			}
 		},
 
+		list: {
+			rest: "GET /users"
+		},
+
+		get: {
+			rest: "GET /users/:id"
+		},
+
+		update: {
+			rest: "PUT /users/:id"
+		},
+
+		remove: {
+			rest: "DELETE /users/:id"
+		},
+
+
 		/**
 		 * Get a user profile.
 		 *
@@ -227,6 +250,7 @@ module.exports = {
 			cache: {
 				keys: ["#userID", "username"]
 			},
+			rest: "GET /profiles/:username",
 			params: {
 				username: { type: "string" }
 			},
@@ -251,6 +275,7 @@ module.exports = {
 		 */
 		follow: {
 			auth: "required",
+			rest: "POST /profiles/:username/follow",
 			params: {
 				username: { type: "string" }
 			},
@@ -276,6 +301,7 @@ module.exports = {
 		 */
 		unfollow: {
 			auth: "required",
+			rest: "DELETE /profiles/:username/follow",
 			params: {
 				username: { type: "string" }
 			},

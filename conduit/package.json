@@ -30,9 +30,9 @@
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.11",
     "moleculer": "0.14.0-beta1",
-    "moleculer-db": "0.8.0",
-    "moleculer-db-adapter-mongo": "0.4.2",
-    "moleculer-web": "0.9.0-beta3",
+    "moleculer-db": "0.8.1",
+    "moleculer-db-adapter-mongo": "0.4.3",
+    "moleculer-web": "0.9.0-beta4",
     "slug": "1.1.0"
   },
   "engines": {

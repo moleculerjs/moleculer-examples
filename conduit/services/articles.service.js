@@ -25,6 +25,8 @@ module.exports = {
 	 * Default settings
 	 */
 	settings: {
+		rest: "articles/",
+
 		fields: ["_id", "title", "slug", "description", "body", "tagList", "createdAt", "updatedAt", "favorited", "favoritesCount", "author", "comments"],
 
 		// Populates
@@ -79,6 +81,7 @@ module.exports = {
 		 */
 		create: {
 			auth: "required",
+			rest: "POST /",
 			params: {
 				article: { type: "object" }
 			},
@@ -111,6 +114,7 @@ module.exports = {
 		 */
 		update: {
 			auth: "required",
+			rest: "PUT /:id",
 			params: {
 				id: { type: "string" },
 				article: { type: "object", props: {
@@ -159,6 +163,7 @@ module.exports = {
 			cache: {
 				keys: ["#userID", "tag", "author", "favorited", "limit", "offset"]
 			},
+			rest: "GET /",
 			params: {
 				tag: { type: "string", optional: true },
 				author: { type: "string", optional: true },
@@ -236,6 +241,7 @@ module.exports = {
 			cache: {
 				keys: ["#userID", "limit", "offset"]
 			},
+			rest: "GET /feed",
 			params: {
 				limit: { type: "number", optional: true, convert: true },
 				offset: { type: "number", optional: true, convert: true },
@@ -292,6 +298,7 @@ module.exports = {
 			cache: {
 				keys: ["#userID", "id"]
 			},
+			rest: "GET /:id",
 			params: {
 				id: { type: "string" }
 			},
@@ -316,6 +323,7 @@ module.exports = {
 		 */
 		remove: {
 			auth: "required",
+			rest: "DELETE /:id",
 			params: {
 				id: { type: "any" }
 			},
@@ -349,6 +357,7 @@ module.exports = {
 		 */
 		favorite: {
 			auth: "required",
+			rest: "POST /:slug/favorite",
 			params: {
 				slug: { type: "string" }
 			},
@@ -374,6 +383,7 @@ module.exports = {
 		 */
 		unfavorite: {
 			auth: "required",
+			rest: "DELETE /:slug/favorite",
 			params: {
 				slug: { type: "string" }
 			},
@@ -394,6 +404,10 @@ module.exports = {
 		 * @returns {Object} Tag list
 		 */
 		tags: {
+			rest: {
+				method: "DELETE",
+				fullPath: "/api/tags",
+			},
 			cache: {
 				keys: []
 			},
@@ -418,6 +432,7 @@ module.exports = {
 			cache: {
 				keys: ["#userID", "slug"]
 			},
+			rest: "GET /:slug/comments",
 			params: {
 				slug: { type: "string" }
 			},
@@ -442,6 +457,7 @@ module.exports = {
 		 */
 		addComment: {
 			auth: "required",
+			rest: "POST /:slug/comments",
 			params: {
 				slug: { type: "string" },
 				comment: { type: "object" }
@@ -468,6 +484,7 @@ module.exports = {
 		 */
 		updateComment: {
 			auth: "required",
+			rest: "PUT /:slug/comments/:commentID",
 			params: {
 				slug: { type: "string" },
 				commentID: { type: "string" },
@@ -494,6 +511,7 @@ module.exports = {
 		 */
 		removeComment: {
 			auth: "required",
+			rest: "DELETE /:slug/comments/:commentID",
 			params: {
 				slug: { type: "string" },
 				commentID: { type: "string" }
