@@ -18,7 +18,7 @@
     "fakerator": "0.3.0",
     "hashids": "1.1.4",
     "ioredis": "3.2.2",
-    "lodash": "4.17.10",
+    "lodash": "4.17.13",
     "moleculer": "0.13.0",
     "moleculer-console-tracer": "0.1.1",
     "moleculer-db": "0.7.3",
