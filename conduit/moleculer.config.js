@@ -5,7 +5,6 @@ module.exports = {
 	//transporter: "TCP",
 	logger: true,
 	logLevel: "info",
-	logFormatter: "short",
 	cacher: {
 		type: "memory",
 		options: {
