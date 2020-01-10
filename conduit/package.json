@@ -18,10 +18,10 @@
   ],
   "author": "",
   "devDependencies": {
-    "eslint": "^6.6.0",
+    "eslint": "^6.8.0",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
-    "moleculer-repl": "^0.6.1",
+    "moleculer-repl": "^0.6.2",
     "npm-check": "5.9.0"
   },
   "dependencies": {
@@ -30,10 +30,10 @@
     "jsonwebtoken": "8.5.1",
     "lodash": "^4.17.15",
     "moleculer": "github:moleculerjs/moleculer#next",
-    "moleculer-db": "^0.8.3",
+    "moleculer-db": "^0.8.4",
     "moleculer-db-adapter-mongo": "^0.4.6",
-    "moleculer-web": "^0.9.0-beta6",
-    "slug": "1.1.0"
+    "moleculer-web": "^0.9.0-beta7",
+    "slug": "^2.1.0"
   },
   "engines": {
     "node": ">= 8.x.x"

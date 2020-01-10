@@ -187,13 +187,13 @@ module.exports = {
 				if (ctx.params.tag)
 					params.query.tagList = { "$in" : [ctx.params.tag] };
 
-				if (ctx.params.author) {
+				/* if (ctx.params.author) {
 					const users = await ctx.call("users.find", { query: { username: ctx.params.author } });
 					if (users.length == 0)
 						throw new MoleculerClientError("Author not found");
 
 					params.query.author = users[0]._id;
-				}
+				} 
 				if (ctx.params.favorited) {
 					const users = await ctx.call("users.find", { query: { username: ctx.params.favorited } });
 					if (users.length == 0)
@@ -201,7 +201,7 @@ module.exports = {
 
 					const list = await ctx.call("favorites.find", { fields: ["article"], query: { user: users[0]._id } });
 					params.query._id = { $in: list.map(o => o.article) };
-				}
+				}*/
 
 				countParams = Object.assign({}, params);
 				// Remove pagination params
