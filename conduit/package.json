@@ -29,10 +29,11 @@
     "ioredis": "^4.14.1",
     "jsonwebtoken": "8.5.1",
     "lodash": "^4.17.15",
-    "moleculer": "github:moleculerjs/moleculer#next",
+    "moleculer": "^0.14.0-beta7",
     "moleculer-db": "^0.8.4",
     "moleculer-db-adapter-mongo": "^0.4.6",
     "moleculer-web": "^0.9.0-beta7",
+    "redlock": "^4.1.0",
     "slug": "^2.1.0"
   },
   "engines": {
