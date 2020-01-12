@@ -47,7 +47,49 @@ module.exports = {
 	},
 
 	methods: {
-		seedDB() {
+		async seedDB() {
+			try {
+				this.logger.info("Seed Users DB...");
+				// Create authors
+				await this.adapter.insert({
+					username: "john",
+					password: "john1234",
+					fullName: "John Doe",
+					email: "john.doe@blog.moleculer.services",
+					avatar: fake.internet.avatar(),
+					author: true,
+				})
+				
+				await this.adapter.insert({
+					username: "jane",
+					password: "jane1234",
+					fullName: "Jane Doe",
+					email: "jane.doe@blog.moleculer.services",
+					avatar: fake.internet.avatar(),
+					author: true
+				})
+
+				// Create fake commenter users
+				let users =  await this.adapter.insertMany(_.times(30, () => {
+					let fakeUser = fake.entity.user();
+					return {
+						username: fakeUser.userName,
+						password: fakeUser.password,
+						fullName: fakeUser.firstName + " " + fakeUser.lastName,
+						email: fakeUser.email,
+						avatar: fakeUser.avatar,
+						author: false
+					};
+				}))
+
+				this.logger.info(`Generated ${users.length} users!`);
+				return this.clearCache();
+
+			} catch (error) {
+				throw error;
+			}
+
+			/*
 			this.logger.info("Seed Users DB...");
 			// Create authors
 			return Promise.resolve()
@@ -84,15 +126,23 @@ module.exports = {
 					this.logger.info(`Generated ${users.length} users!`);
 					this.clearCache();
 				});
+			*/
 		}
 	},
 
-	afterConnected() {
+	async afterConnected() {
+		const count = await this.adapter.count()
+		if (count == 0) {
+			return this.seedDB();
+		}
+
+		/*
 		return this.adapter.count().then(count => {
 			if (count == 0) {
 				this.seedDB();
 			}
 		});
+		*/
 	}
 
 };
