@@ -44,20 +44,20 @@ services:
     #deploy:
     #  replicas: 2
 
-  metrics:
-    build:
-      context: ../..
-    image: moleculer-blog
-    env_file: env
-    environment:
-      NODEID: "node-metrics"
-      SERVICES: metrics
-    links:
-      - nats
-      - redis
-    depends_on:
-      - nats
-      - redis
+  #metrics:
+  #  build:
+  #    context: ../..
+  #  image: moleculer-blog
+  #  env_file: env
+  #  environment:
+  #    NODEID: "node-metrics"
+  #    SERVICES: metrics
+  #  links:
+  #    - nats
+  #    - redis
+  #  depends_on:
+  #    - nats
+  #      - redis
 
   nats:
     image: nats
