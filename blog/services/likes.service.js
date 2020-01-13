@@ -11,7 +11,7 @@ const fake = new Fakerator();
 module.exports = {
 	name: "likes",
 	mixins: [DbService, CacheCleaner(["users", "posts"])],
-	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
+	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog", { useNewUrlParser: true, useUnifiedTopology: true }),
 	model: Like,
 
 	settings: {

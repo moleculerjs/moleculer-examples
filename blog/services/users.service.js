@@ -30,7 +30,7 @@ function hashPassword(password) {
 module.exports = {
 	name: "users",
 	mixins: [DbService, CacheCleaner(["users"])],
-	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
+	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog", { useNewUrlParser: true, useUnifiedTopology: true }),
 	model: User,
 
 	settings: {

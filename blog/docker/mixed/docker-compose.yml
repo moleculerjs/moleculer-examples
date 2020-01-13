@@ -71,7 +71,7 @@ services:
     #   - ../../db:/data/db
 
   traefik:
-    image: traefik
+    image: traefik:1.7
     command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
     ports:
       - "3000:80"
