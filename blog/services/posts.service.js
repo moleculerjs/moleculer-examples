@@ -11,7 +11,7 @@ const fake = new Fakerator();
 module.exports = {
 	name: "posts",
 	mixins: [DbService, CacheCleaner(["users", "likes"])],
-	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
+	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog", { useNewUrlParser: true, useUnifiedTopology: true }),
 	model: Post,
 
 	settings: {
@@ -50,53 +50,52 @@ module.exports = {
 	},
 
 	methods: {
-		seedDB() {
-			this.logger.info("Seed Posts collection...");
-			return this.waitForServices(["users"])
-				.then(() => this.broker.call("users.find"))
-				.then(users => {
-					let authors = users.filter(u => u.author);
+		async seedDB() {
+			try {
+				this.logger.info("Seed Posts collection...");	
+				await this.waitForServices(["users"])
 
-					if (authors.length == 0) {
-						this.logger.info("Waiting for `users` seed...");
-						setTimeout(this.seedDB, 1000);
-						return;
-					}
+				let users = await this.broker.call("users.find")
 
-					// Create fake posts
-					return this.adapter.insertMany(_.times(20, () => {
-						let fakePost = fake.entity.post();
-						return {
-							title: fakePost.title,
-							content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
-							category: fake.random.arrayElement(["General", "Tech", "Social", "News"]),
-							author: fake.random.arrayElement(authors)._id,
-							coverPhoto: fake.random.number(1, 20) + ".jpg",
-							createdAt: fakePost.created
-						};
-					})).then(posts => {
-						this.logger.info(`Generated ${posts.length} posts!`);
-						this.clearCache();
-					});
+				let authors = users.filter(u => u.author);
 
-				}).catch(err => {
-					if (err.name == "ServiceNotFoundError") {
-						this.logger.info("Waiting for `users` service...");
-						setTimeout(this.seedDB, 1000);
-						return;
-					} else
-						return Promise.reject(err);
-				});
+				if (authors.length == 0) {
+					this.logger.info("Waiting for `users` seed...");
+					setTimeout(this.seedDB, 1000);
+					return;
+				}
 
+				// Create fake posts
+				let posts = await this.adapter.insertMany(_.times(20, () => {
+					let fakePost = fake.entity.post();
+					return {
+						title: fakePost.title,
+						content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
+						category: fake.random.arrayElement(["General", "Tech", "Social", "News"]),
+						author: fake.random.arrayElement(authors)._id,
+						coverPhoto: fake.random.number(1, 20) + ".jpg",
+						createdAt: fakePost.created
+					};
+				}))
+
+				this.logger.info(`Generated ${posts.length} posts!`);
+				return this.clearCache();
+			} catch (error) {
+				if (error.name == "ServiceNotFoundError") {
+					this.logger.info("Waiting for `users` service...");
+					setTimeout(this.seedDB, 1000);
+					return;
+				} else
+					throw error;
+			}
 		}
 	},
 
-	afterConnected() {
-		return this.adapter.count().then(count => {
-			if (count == 0) {
-				this.seedDB();
-			}
-		});
+	async afterConnected() {
+		const count = await this.adapter.count()
+		if (count == 0) {
+			return this.seedDB();
+		}
 	}
 
 };

@@ -55,7 +55,7 @@ module.exports = {
 				const errObj = _.pick(err, ["name", "message", "code", "type", "data"]);
 				res.end(JSON.stringify(errObj, null, 2));
 			}
-			this.logResponse(req, res, err? err.ctx : null);
+			this.logResponse(req, res, err ? err.ctx : null);
 		}
 
 	},
@@ -89,8 +89,8 @@ module.exports = {
 						ctx.meta.token = token;
 						ctx.meta.userID = user._id;
 					}
-				} catch(err) {
-					// Ignored because we continue processing if user is not exist
+				} catch (err) {
+					// Ignored because we continue processing if user doesn't exists
 				}
 			}
 

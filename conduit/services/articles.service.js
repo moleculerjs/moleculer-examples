@@ -187,6 +187,7 @@ module.exports = {
 				if (ctx.params.tag)
 					params.query.tagList = { "$in" : [ctx.params.tag] };
 
+				/*
 				if (ctx.params.author) {
 					const users = await ctx.call("users.find", { query: { username: ctx.params.author } });
 					if (users.length == 0)
@@ -202,6 +203,7 @@ module.exports = {
 					const list = await ctx.call("favorites.find", { fields: ["article"], query: { user: users[0]._id } });
 					params.query._id = { $in: list.map(o => o.article) };
 				}
+				*/
 
 				countParams = Object.assign({}, params);
 				// Remove pagination params
@@ -335,7 +337,7 @@ module.exports = {
 				if (entity.author !== ctx.meta.user._id.toString())
 					throw new ForbiddenError();
 
-				// Remove favorite entitites
+				// Remove favorite entities
 				await ctx.call("favorites.removeByArticle", { article: entity._id });
 
 				// Remove article entity
@@ -411,7 +413,7 @@ module.exports = {
 			cache: {
 				keys: []
 			},
-			async handler(ctx) {
+			async handler() {
 				const list = await this.adapter.find({ fields: ["tagList"], sort: ["createdAt"] });
 				return {
 					tags: _.uniq(_.compact(_.flattenDeep(list.map(o => o.tagList))))

@@ -32,7 +32,7 @@ module.exports = {
 
 		/** Validator schema for entity */
 		entityValidator: {
-			username: { type: "string", min: 2, pattern: /^[a-zA-Z0-9]+$/ },
+			username: { type: "string", min: 2 },
 			password: { type: "string", min: 6 },
 			email: { type: "email" },
 			bio: { type: "string", optional: true },

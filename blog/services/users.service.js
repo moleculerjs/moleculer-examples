@@ -30,7 +30,7 @@ function hashPassword(password) {
 module.exports = {
 	name: "users",
 	mixins: [DbService, CacheCleaner(["users"])],
-	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog"),
+	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/moleculer-blog", { useNewUrlParser: true, useUnifiedTopology: true }),
 	model: User,
 
 	settings: {
@@ -47,29 +47,30 @@ module.exports = {
 	},
 
 	methods: {
-		seedDB() {
-			this.logger.info("Seed Users DB...");
-			// Create authors
-			return Promise.resolve()
-				.then(() => this.adapter.insert({
+		async seedDB() {
+			try {
+				this.logger.info("Seed Users DB...");
+				// Create authors
+				await this.adapter.insert({
 					username: "john",
 					password: "john1234",
 					fullName: "John Doe",
 					email: "john.doe@blog.moleculer.services",
 					avatar: fake.internet.avatar(),
 					author: true,
-				}))
-				.then(() => this.adapter.insert({
+				})
+				
+				await this.adapter.insert({
 					username: "jane",
 					password: "jane1234",
 					fullName: "Jane Doe",
 					email: "jane.doe@blog.moleculer.services",
 					avatar: fake.internet.avatar(),
 					author: true
-				}))
+				})
 
 				// Create fake commenter users
-				.then(() => this.adapter.insertMany(_.times(30, () => {
+				let users =  await this.adapter.insertMany(_.times(30, () => {
 					let fakeUser = fake.entity.user();
 					return {
 						username: fakeUser.userName,
@@ -79,20 +80,22 @@ module.exports = {
 						avatar: fakeUser.avatar,
 						author: false
 					};
-				})))
-				.then(users => {
-					this.logger.info(`Generated ${users.length} users!`);
-					this.clearCache();
-				});
+				}))
+
+				this.logger.info(`Generated ${users.length} users!`);
+				return this.clearCache();
+
+			} catch (error) {
+				throw error;
+			}
 		}
 	},
 
-	afterConnected() {
-		return this.adapter.count().then(count => {
-			if (count == 0) {
-				this.seedDB();
-			}
-		});
+	async afterConnected() {
+		const count = await this.adapter.count()
+		if (count == 0) {
+			return this.seedDB();
+		}
 	}
 
 };

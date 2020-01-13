@@ -1,4 +1,4 @@
-version: "3.0"
+version: "3.2"
 
 services:
 
@@ -107,7 +107,7 @@ services:
     image: redis:alpine
 
   mongo:
-    image: mongo
+    image: mongo:3
     volumes:
       - ./db:/data/db
 

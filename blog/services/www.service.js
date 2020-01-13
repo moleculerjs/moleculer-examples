@@ -2,12 +2,17 @@
 
 const { MoleculerError } = require("moleculer").Errors;
 const path = require("path");
+/**
+ * Define Express Req. and Res. Types
+ * @typedef {import('express').Request} Request
+ * @typedef {import('express').Response} Response
+ */
 const express = require("express");
 const morgan = require("morgan");
 const _ = require("lodash");
 const moment = require("moment");
 const slugify = require("slugify");
-const Hashids = require("hashids");
+const Hashids = require("hashids/cjs");
 const hashids = new Hashids("secret hash", 6);
 
 function encodeObjectID(id) {
@@ -35,113 +40,146 @@ module.exports = {
 			app.get("/post/:id/:title?", this.getPost);
 		},
 
-		allPosts(req, res) {
+		/**
+		 * 
+		 * @param {Request} req 
+		 * @param {Response} res 
+		 */
+		async allPosts(req, res) {
 			const pageSize = this.settings.pageSize;
-			let page = Number(req.query.page || 1);
+			const page = Number(req.query.page || 1);
+			try {
+				const data = await this.broker.call("posts.list", { page, pageSize, populate: ["author", "likes"] })
 
-			return Promise.resolve({ page })
-				.then(data => {
-					return this.broker.call("posts.list", { page, pageSize, populate: ["author", "likes"] }).then(res => {
-						data.posts = res.rows;
-						data.totalPages = res.totalPages;
-						return data;
-					});
-				})
-				.then(this.appendAdditionalData)
-				.then(data => res.render("index", data))
-
-				.catch(this.handleErr(res));
+				let pageContents = {
+					posts : data.rows,
+					totalPages: data.totalPages
+				}
+				pageContents = await this.appendAdditionalData(pageContents)
+				return res.render("index", pageContents)
+			} catch (error) {
+				return this.handleErr(error)
+			}
 		},
 
-		categoryPosts(req, res) {
+		/**
+		 * 
+		 * @param {Request} req 
+		 * @param {Response} res 
+		 */
+		async categoryPosts(req, res) {
 			const pageSize = this.settings.pageSize;
-			let page = Number(req.query.page || 1);
-			let category = req.params.category;
+			const page = Number(req.query.page || 1);
+			const category = req.params.category;
 
-			return Promise.resolve({ page })
-				.then(data => {
-					return this.broker.call("posts.list", { query: { category }, page, pageSize, populate: ["author", "likes"] }).then(res => {
-						data.posts = res.rows;
-						data.totalPages = res.totalPages;
-						return data;
-					});
-				})
-				.then(this.appendAdditionalData)
-				.then(data => res.render("index", data))
+			try {
+				const data = await this.broker.call("posts.list", { query: { category }, page, pageSize, populate: ["author", "likes"] })
 
-				.catch(this.handleErr(res));
+				let pageContents = {
+					posts : data.rows,
+					totalPages: data.totalPages
+				}
+				pageContents = await this.appendAdditionalData(pageContents)
+				return res.render("index", pageContents)
+			} catch (error) {
+				return this.handleErr(error)
+			}
 		},
 
-		authorPosts(req, res) {
+		/**
+		 * 
+		 * @param {Request} req 
+		 * @param {Response} res 
+		 */
+		async authorPosts(req, res) {
 			const pageSize = this.settings.pageSize;
 			let page = Number(req.query.page || 1);
 			let author = decodeObjectID(req.params.author);
 			if (!author || author.length == 0)
-				return this.handleErr(res)(this.Promise.reject(new MoleculerError("Invalid author ID", 404, "INVALID_AUTHOR_ID", { author: req.params.author })));
+				throw this.handleErr(res)(new MoleculerError("Invalid author ID", 404, "INVALID_AUTHOR_ID", { author: req.params.author }));
 
-			return Promise.resolve({ page })
-				.then(data => {
-					return this.broker.call("posts.list", { query: { author }, page, pageSize, populate: ["author", "likes"] }).then(res => {
-						data.posts = res.rows;
-						data.totalPages = res.totalPages;
-						return data;
-					});
-				})
-				.then(this.appendAdditionalData)
-				.then(data => res.render("index", data))
+			try {
+				const data = await this.broker.call("posts.list", { query: { author }, page, pageSize, populate: ["author", "likes"] })
 
-				.catch(this.handleErr(res));
+				let pageContents = {
+					posts : data.rows,
+					totalPages: data.totalPages
+				}
+				pageContents = await this.appendAdditionalData(pageContents)
+				return res.render("index", pageContents)
+			} catch (error) {
+				return this.handleErr(error)
+			}
 		},
 
-		searchPosts(req, res) {
+		/**
+		 * 
+		 * @param {Request} req 
+		 * @param {Response} res 
+		 */
+		async searchPosts(req, res) {
 			const pageSize = this.settings.pageSize;
 			let page = Number(req.query.page || 1);
 			let search = req.query.query;
 			if (!search)
 				return res.redirect("/");
 
-			return Promise.resolve({ page })
-				.then(data => {
-					return this.broker.call("posts.list", { search, page, pageSize, populate: ["author", "likes"] }).then(res => {
-						data.query = search;
-						data.posts = res.rows;
-						data.totalPages = res.totalPages;
-						return data;
-					});
-				})
-				.then(this.appendAdditionalData)
-				.then(data => res.render("index", data))
+			try {
+				const data = await this.broker.call("posts.list", { search, page, pageSize, populate: ["author", "likes"] })
 
-				.catch(this.handleErr(res));
+				let pageContents = {
+					query : search,
+					posts : data.rows,
+					totalPages: data.totalPages
+				}
+				pageContents = await this.appendAdditionalData(pageContents)
+				return res.render("index", pageContents)
+			} catch (error) {
+				return this.handleErr(error)
+			}
 		},
 
-		getPost(req, res) {
+		/**
+		 * Get post by ID
+		 * @param {Request} req 
+		 * @param {Response} res 
+		 */
+		async getPost(req, res) {
 			let id = decodeObjectID(req.params.id);
 			if (!id || id.length == 0)
 				return this.handleErr(res)(this.Promise.reject(new MoleculerError("Invalid POST ID", 404, "INVALID_POST_ID", { id: req.params.id })));
 
-			return Promise.resolve({ })
-				.then(data => this.broker.call("posts.get", { id, populate: ["author", "likes"] }).then(post => {
-					if (!post)
-						return this.Promise.reject(new MoleculerError("Post not found", 404, "NOT_FOUND_POST", { id: req.params.id }));
+			try {
+				const post = await this.broker.call("posts.get", { id, populate: ["author", "likes"] })
 
-					data.post = post;
-					data.title = post.title;
-					return data;
-				}))
-				.then(this.appendAdditionalData)
-				.then(data => res.render("post", data))
+				if (!post)
+					throw new MoleculerError("Post not found", 404, "NOT_FOUND_POST", { id: req.params.id });
 
-				.catch(this.handleErr(res));			
+
+				let pageContents = {
+					post : post,
+					title : post.title,
+				}
+				pageContents = await this.appendAdditionalData(pageContents)
+				return res.render("post", pageContents)
+			} catch (error) {
+				return this.handleErr(error)
+			}	
 		},
 
-		appendAdditionalData(data) {
-			return this.broker.call("posts.find", { limit: 5, sort: "-createdAt" }).then(posts => {
-				data.bestOfPosts = posts;
-				return data;
-			});
+		async appendAdditionalData(data) {
+			try {
+				let posts = await this.broker.call("posts.find", { limit: 5, sort: "-createdAt" })
+				data.bestOfPosts = posts
+				return data
+			} catch (error) {
+				throw error
+			}
 		},
 
+		/**
+		 * @param {Response} res 
+		 */
 		handleErr(res) {
 			return err => {
 				this.logger.error("Request error!", err);
