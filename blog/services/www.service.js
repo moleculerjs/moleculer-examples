@@ -12,7 +12,7 @@ const morgan = require("morgan");
 const _ = require("lodash");
 const moment = require("moment");
 const slugify = require("slugify");
-const Hashids = require("hashids");
+const Hashids = require("hashids/cjs");
 const hashids = new Hashids("secret hash", 6);
 
 function encodeObjectID(id) {
