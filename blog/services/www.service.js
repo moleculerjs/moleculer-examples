@@ -60,21 +60,6 @@ module.exports = {
 			} catch (error) {
 				return this.handleErr(error)
 			}
-
-			/*
-			return Promise.resolve({ page })
-				.then(data => {
-					return this.broker.call("posts.list", { page, pageSize, populate: ["author", "likes"] }).then(res => {
-						data.posts = res.rows;
-						data.totalPages = res.totalPages;
-						return data;
-					});
-				})
-				.then(this.appendAdditionalData)
-				.then(data => res.render("index", data))
-
-				.catch(this.handleErr(res));
-			*/
 		},
 
 		/**
@@ -99,21 +84,6 @@ module.exports = {
 			} catch (error) {
 				return this.handleErr(error)
 			}
-
-			/*
-						return Promise.resolve({ page })
-				.then(data => {
-					return this.broker.call("posts.list", { query: { category }, page, pageSize, populate: ["author", "likes"] }).then(res => {
-						data.posts = res.rows;
-						data.totalPages = res.totalPages;
-						return data;
-					});
-				})
-				.then(this.appendAdditionalData)
-				.then(data => res.render("index", data))
-
-				.catch(this.handleErr(res));
-			*/
 		},
 
 		/**
@@ -126,7 +96,7 @@ module.exports = {
 			let page = Number(req.query.page || 1);
 			let author = decodeObjectID(req.params.author);
 			if (!author || author.length == 0)
-				return this.handleErr(res)(this.Promise.reject(new MoleculerError("Invalid author ID", 404, "INVALID_AUTHOR_ID", { author: req.params.author })));
+				throw this.handleErr(res)(new MoleculerError("Invalid author ID", 404, "INVALID_AUTHOR_ID", { author: req.params.author }));
 
 			try {
 				const data = await this.broker.call("posts.list", { query: { author }, page, pageSize, populate: ["author", "likes"] })
@@ -140,21 +110,6 @@ module.exports = {
 			} catch (error) {
 				return this.handleErr(error)
 			}
-			
-			/*
-						return Promise.resolve({ page })
-				.then(data => {
-					return this.broker.call("posts.list", { query: { author }, page, pageSize, populate: ["author", "likes"] }).then(res => {
-						data.posts = res.rows;
-						data.totalPages = res.totalPages;
-						return data;
-					});
-				})
-				.then(this.appendAdditionalData)
-				.then(data => res.render("index", data))
-
-				.catch(this.handleErr(res));
-			*/
 		},
 
 		/**
@@ -181,23 +136,7 @@ module.exports = {
 				return res.render("index", pageContents)
 			} catch (error) {
 				return this.handleErr(error)
-			}	
-
-/*
-			return Promise.resolve({ page })
-				.then(data => {
-					return this.broker.call("posts.list", { search, page, pageSize, populate: ["author", "likes"] }).then(res => {
-						data.query = search;
-						data.posts = res.rows;
-						data.totalPages = res.totalPages;
-						return data;
-					});
-				})
-				.then(this.appendAdditionalData)
-				.then(data => res.render("index", data))
-
-				.catch(this.handleErr(res));
-*/
+			}
 		},
 
 		/**
@@ -226,22 +165,6 @@ module.exports = {
 			} catch (error) {
 				return this.handleErr(error)
 			}	
-			
-			/*
-			return Promise.resolve({ })
-				.then(data => this.broker.call("posts.get", { id, populate: ["author", "likes"] }).then(post => {
-					if (!post)
-						return this.Promise.reject(new MoleculerError("Post not found", 404, "NOT_FOUND_POST", { id: req.params.id }));
-
-					data.post = post;
-					data.title = post.title;
-					return data;
-				}))
-				.then(this.appendAdditionalData)
-				.then(data => res.render("post", data))
-
-				.catch(this.handleErr(res));
-			*/	
 		},
 
 		async appendAdditionalData(data) {
@@ -252,12 +175,6 @@ module.exports = {
 			} catch (error) {
 				throw error
 			}
-			/*
-			return this.broker.call("posts.find", { limit: 5, sort: "-createdAt" }).then(posts => {
-				data.bestOfPosts = posts;
-				return data;
-			});
-			*/
 		},
 
 		/**

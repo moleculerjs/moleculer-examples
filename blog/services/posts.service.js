@@ -80,11 +80,6 @@ module.exports = {
 
 				this.logger.info(`Generated ${posts.length} posts!`);
 				return this.clearCache();
-				/* .then(posts => {
-					this.logger.info(`Generated ${posts.length} posts!`);
-					this.clearCache();
-				});
-				*/
 			} catch (error) {
 				if (error.name == "ServiceNotFoundError") {
 					this.logger.info("Waiting for `users` service...");
@@ -93,44 +88,6 @@ module.exports = {
 				} else
 					throw error;
 			}
-		/*	
-			this.logger.info("Seed Posts collection...");
-			return this.waitForServices(["users"])
-				.then(() => this.broker.call("users.find"))
-				.then(users => {
-					let authors = users.filter(u => u.author);
-
-					if (authors.length == 0) {
-						this.logger.info("Waiting for `users` seed...");
-						setTimeout(this.seedDB, 1000);
-						return;
-					}
-
-					// Create fake posts
-					return this.adapter.insertMany(_.times(20, () => {
-						let fakePost = fake.entity.post();
-						return {
-							title: fakePost.title,
-							content: fake.times(fake.lorem.paragraph, 10).join("\r\n"),
-							category: fake.random.arrayElement(["General", "Tech", "Social", "News"]),
-							author: fake.random.arrayElement(authors)._id,
-							coverPhoto: fake.random.number(1, 20) + ".jpg",
-							createdAt: fakePost.created
-						};
-					})).then(posts => {
-						this.logger.info(`Generated ${posts.length} posts!`);
-						this.clearCache();
-					});
-
-				}).catch(err => {
-					if (err.name == "ServiceNotFoundError") {
-						this.logger.info("Waiting for `users` service...");
-						setTimeout(this.seedDB, 1000);
-						return;
-					} else
-						return Promise.reject(err);
-				});
-		*/
 		}
 	},
 
@@ -139,14 +96,6 @@ module.exports = {
 		if (count == 0) {
 			return this.seedDB();
 		}
-
-		/*
-		return this.adapter.count().then(count => {
-			if (count == 0) {
-				this.seedDB();
-			}
-		});
-		*/
 	}
 
 };

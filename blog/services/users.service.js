@@ -88,45 +88,6 @@ module.exports = {
 			} catch (error) {
 				throw error;
 			}
-
-			/*
-			this.logger.info("Seed Users DB...");
-			// Create authors
-			return Promise.resolve()
-				.then(() => this.adapter.insert({
-					username: "john",
-					password: "john1234",
-					fullName: "John Doe",
-					email: "john.doe@blog.moleculer.services",
-					avatar: fake.internet.avatar(),
-					author: true,
-				}))
-				.then(() => this.adapter.insert({
-					username: "jane",
-					password: "jane1234",
-					fullName: "Jane Doe",
-					email: "jane.doe@blog.moleculer.services",
-					avatar: fake.internet.avatar(),
-					author: true
-				}))
-
-				// Create fake commenter users
-				.then(() => this.adapter.insertMany(_.times(30, () => {
-					let fakeUser = fake.entity.user();
-					return {
-						username: fakeUser.userName,
-						password: fakeUser.password,
-						fullName: fakeUser.firstName + " " + fakeUser.lastName,
-						email: fakeUser.email,
-						avatar: fakeUser.avatar,
-						author: false
-					};
-				})))
-				.then(users => {
-					this.logger.info(`Generated ${users.length} users!`);
-					this.clearCache();
-				});
-			*/
 		}
 	},
 
@@ -135,14 +96,6 @@ module.exports = {
 		if (count == 0) {
 			return this.seedDB();
 		}
-
-		/*
-		return this.adapter.count().then(count => {
-			if (count == 0) {
-				this.seedDB();
-			}
-		});
-		*/
 	}
 
 };

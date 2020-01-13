@@ -22,5 +22,10 @@ module.exports = {
 				gaugeWidth: 40
 			}
 		}
-	}
+	},
+
+	errorHandler(err, info) {
+        this.logger.warn("Log the error:", err);
+        throw err; // Throw further
+    }
 };
