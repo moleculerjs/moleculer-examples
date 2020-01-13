@@ -95,20 +95,6 @@ services:
   #     - nats
   #     - redis
   #     - mongo
-  #  metrics:
-  #    build:
-  #      context: ../..
-  #    image: moleculer-blog
-  #    env_file: env
-  #    environment:
-  #      NODEID: "node-metrics"
-  #      SERVICES: metrics
-  #    links:
-  #      - nats
-  #      - redis
-  #    depends_on:
-  #      - nats
-  #      - redis
 
   nats:
     image: nats

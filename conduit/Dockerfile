@@ -5,7 +5,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY package.json .
+COPY package*.json ./
 
 RUN npm install --silent --progress=false --production
 
