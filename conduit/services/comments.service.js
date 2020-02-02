@@ -207,7 +207,7 @@ module.exports = {
 		 */
 		async transformResult(ctx, entities, user) {
 			if (Array.isArray(entities)) {
-				const comments = await this.Promise.map(entities, item => this.transformEntity(ctx, item, user));
+				const comments = await this.Promise.all(entities.map(item => this.transformEntity(ctx, item, user)));
 				return { comments };
 			} else {
 				const comment = await this.transformEntity(ctx, entities, user);

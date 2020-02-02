@@ -20,8 +20,6 @@ services:
       - "traefik.port=3000"
       - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=PathPrefix:/"
-    #deploy:
-    #  replicas: 2
 
   articles:
     build:
@@ -36,8 +34,6 @@ services:
     depends_on:
       - redis
       - mongo
-    #deploy:
-    #  replicas: 2
 
   comments:
     build:
@@ -52,8 +48,6 @@ services:
     depends_on:
       - redis
       - mongo
-    #deploy:
-    #  replicas: 2
 
   favorites:
     build:
@@ -68,8 +62,6 @@ services:
     depends_on:
       - redis
       - mongo
-    #deploy:
-    #  replicas: 2
 
   follows:
     build:
@@ -84,8 +76,6 @@ services:
     depends_on:
       - redis
       - mongo
-    #deploy:
-    #  replicas: 2
 
   users:
     build:
@@ -100,8 +90,6 @@ services:
     depends_on:
       - redis
       - mongo
-    #deploy:
-    #  replicas: 2
 
   redis:
     image: redis:alpine
