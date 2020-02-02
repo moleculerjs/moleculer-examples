@@ -95,7 +95,7 @@ services:
     image: redis:alpine
 
   mongo:
-    image: mongo:3
+    image: mongo
     volumes:
       - ./db:/data/db
 
