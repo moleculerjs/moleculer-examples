@@ -31,21 +31,21 @@ module.exports = {
 			this.logger.info("Seed Likes DB...");
 
 			try {
-				await this.waitForServices(["posts", "users"])
+				await this.waitForServices(["posts", "users"]);
 
 				let {users, posts} = await this.broker.mcall({
 					users: { action: "users.find" },
 					posts: { action: "posts.find" }
-				})
-	
+				});
+
 				if (users.length == 0 || posts.length == 0) {
 					this.logger.info("Waiting for `users` & 'posts' seed...");
 					setTimeout(this.seedDB, 1000);
 					return;
 				}
-	
+
 				let promises = [];
-	
+
 				users.forEach(user => {
 					let c = fake.random.number(8, 15);
 					let postIDs = fake.utimes(fake.random.arrayElement, c, posts).map(post => post._id);
@@ -56,12 +56,12 @@ module.exports = {
 						};
 					})));
 				});
-	
-				await this.Promise.all(promises)
-				const count = await this.adapter.count()
+
+				await this.Promise.all(promises);
+				const count = await this.adapter.count();
 
 				this.logger.info(`Generated ${count} likes!`);
-				
+
 				return this.clearCache();
 
 			} catch (error) {
@@ -76,7 +76,7 @@ module.exports = {
 	},
 
 	async afterConnected() {
-		const count = await this.adapter.count()
+		const count = await this.adapter.count();
 		if (count == 0) {
 			return this.seedDB();
 		}

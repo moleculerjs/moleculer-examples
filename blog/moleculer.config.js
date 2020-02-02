@@ -25,7 +25,7 @@ module.exports = {
 	},
 
 	errorHandler(err, info) {
-        this.logger.warn("Log the error:", err);
-        throw err; // Throw further
-    }
+		this.logger.warn("Log the error:", err);
+		throw err; // Throw further
+	}
 };

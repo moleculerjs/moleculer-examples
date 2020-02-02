@@ -48,51 +48,46 @@ module.exports = {
 
 	methods: {
 		async seedDB() {
-			try {
-				this.logger.info("Seed Users DB...");
-				// Create authors
-				await this.adapter.insert({
-					username: "john",
-					password: "john1234",
-					fullName: "John Doe",
-					email: "john.doe@blog.moleculer.services",
-					avatar: fake.internet.avatar(),
-					author: true,
-				})
-				
-				await this.adapter.insert({
-					username: "jane",
-					password: "jane1234",
-					fullName: "Jane Doe",
-					email: "jane.doe@blog.moleculer.services",
-					avatar: fake.internet.avatar(),
-					author: true
-				})
+			this.logger.info("Seed Users DB...");
+			// Create authors
+			await this.adapter.insert({
+				username: "john",
+				password: "john1234",
+				fullName: "John Doe",
+				email: "john.doe@blog.moleculer.services",
+				avatar: fake.internet.avatar(),
+				author: true,
+			});
 
-				// Create fake commenter users
-				let users =  await this.adapter.insertMany(_.times(30, () => {
-					let fakeUser = fake.entity.user();
-					return {
-						username: fakeUser.userName,
-						password: fakeUser.password,
-						fullName: fakeUser.firstName + " " + fakeUser.lastName,
-						email: fakeUser.email,
-						avatar: fakeUser.avatar,
-						author: false
-					};
-				}))
+			await this.adapter.insert({
+				username: "jane",
+				password: "jane1234",
+				fullName: "Jane Doe",
+				email: "jane.doe@blog.moleculer.services",
+				avatar: fake.internet.avatar(),
+				author: true
+			});
 
-				this.logger.info(`Generated ${users.length} users!`);
-				return this.clearCache();
+			// Create fake commenter users
+			let users =  await this.adapter.insertMany(_.times(30, () => {
+				let fakeUser = fake.entity.user();
+				return {
+					username: fakeUser.userName,
+					password: fakeUser.password,
+					fullName: fakeUser.firstName + " " + fakeUser.lastName,
+					email: fakeUser.email,
+					avatar: fakeUser.avatar,
+					author: false
+				};
+			}));
 
-			} catch (error) {
-				throw error;
-			}
+			this.logger.info(`Generated ${users.length} users!`);
+			return this.clearCache();
 		}
 	},
 
 	async afterConnected() {
-		const count = await this.adapter.count()
+		const count = await this.adapter.count();
 		if (count == 0) {
 			return this.seedDB();
 		}

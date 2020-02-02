@@ -52,10 +52,10 @@ module.exports = {
 	methods: {
 		async seedDB() {
 			try {
-				this.logger.info("Seed Posts collection...");	
-				await this.waitForServices(["users"])
+				this.logger.info("Seed Posts collection...");
+				await this.waitForServices(["users"]);
 
-				let users = await this.broker.call("users.find")
+				let users = await this.broker.call("users.find");
 
 				let authors = users.filter(u => u.author);
 
@@ -76,7 +76,7 @@ module.exports = {
 						coverPhoto: fake.random.number(1, 20) + ".jpg",
 						createdAt: fakePost.created
 					};
-				}))
+				}));
 
 				this.logger.info(`Generated ${posts.length} posts!`);
 				return this.clearCache();
@@ -92,7 +92,7 @@ module.exports = {
 	},
 
 	async afterConnected() {
-		const count = await this.adapter.count()
+		const count = await this.adapter.count();
 		if (count == 0) {
 			return this.seedDB();
 		}

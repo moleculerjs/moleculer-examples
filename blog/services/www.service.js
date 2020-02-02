@@ -41,31 +41,31 @@ module.exports = {
 		},
 
 		/**
-		 * 
-		 * @param {Request} req 
-		 * @param {Response} res 
+		 *
+		 * @param {Request} req
+		 * @param {Response} res
 		 */
 		async allPosts(req, res) {
 			const pageSize = this.settings.pageSize;
 			const page = Number(req.query.page || 1);
 			try {
-				const data = await this.broker.call("posts.list", { page, pageSize, populate: ["author", "likes"] })
+				const data = await this.broker.call("posts.list", { page, pageSize, populate: ["author", "likes"] });
 
 				let pageContents = {
 					posts : data.rows,
 					totalPages: data.totalPages
-				}
-				pageContents = await this.appendAdditionalData(pageContents)
-				return res.render("index", pageContents)
+				};
+				pageContents = await this.appendAdditionalData(pageContents);
+				return res.render("index", pageContents);
 			} catch (error) {
-				return this.handleErr(error)
+				return this.handleErr(error);
 			}
 		},
 
 		/**
-		 * 
-		 * @param {Request} req 
-		 * @param {Response} res 
+		 *
+		 * @param {Request} req
+		 * @param {Response} res
 		 */
 		async categoryPosts(req, res) {
 			const pageSize = this.settings.pageSize;
@@ -73,23 +73,23 @@ module.exports = {
 			const category = req.params.category;
 
 			try {
-				const data = await this.broker.call("posts.list", { query: { category }, page, pageSize, populate: ["author", "likes"] })
+				const data = await this.broker.call("posts.list", { query: { category }, page, pageSize, populate: ["author", "likes"] });
 
 				let pageContents = {
 					posts : data.rows,
 					totalPages: data.totalPages
-				}
-				pageContents = await this.appendAdditionalData(pageContents)
-				return res.render("index", pageContents)
+				};
+				pageContents = await this.appendAdditionalData(pageContents);
+				return res.render("index", pageContents);
 			} catch (error) {
-				return this.handleErr(error)
+				return this.handleErr(error);
 			}
 		},
 
 		/**
-		 * 
-		 * @param {Request} req 
-		 * @param {Response} res 
+		 *
+		 * @param {Request} req
+		 * @param {Response} res
 		 */
 		async authorPosts(req, res) {
 			const pageSize = this.settings.pageSize;
@@ -99,23 +99,23 @@ module.exports = {
 				throw this.handleErr(res)(new MoleculerError("Invalid author ID", 404, "INVALID_AUTHOR_ID", { author: req.params.author }));
 
 			try {
-				const data = await this.broker.call("posts.list", { query: { author }, page, pageSize, populate: ["author", "likes"] })
+				const data = await this.broker.call("posts.list", { query: { author }, page, pageSize, populate: ["author", "likes"] });
 
 				let pageContents = {
 					posts : data.rows,
 					totalPages: data.totalPages
-				}
-				pageContents = await this.appendAdditionalData(pageContents)
-				return res.render("index", pageContents)
+				};
+				pageContents = await this.appendAdditionalData(pageContents);
+				return res.render("index", pageContents);
 			} catch (error) {
-				return this.handleErr(error)
+				return this.handleErr(error);
 			}
 		},
 
 		/**
-		 * 
-		 * @param {Request} req 
-		 * @param {Response} res 
+		 *
+		 * @param {Request} req
+		 * @param {Response} res
 		 */
 		async searchPosts(req, res) {
 			const pageSize = this.settings.pageSize;
@@ -125,24 +125,24 @@ module.exports = {
 				return res.redirect("/");
 
 			try {
-				const data = await this.broker.call("posts.list", { search, page, pageSize, populate: ["author", "likes"] })
+				const data = await this.broker.call("posts.list", { search, page, pageSize, populate: ["author", "likes"] });
 
 				let pageContents = {
 					query : search,
 					posts : data.rows,
 					totalPages: data.totalPages
-				}
-				pageContents = await this.appendAdditionalData(pageContents)
-				return res.render("index", pageContents)
+				};
+				pageContents = await this.appendAdditionalData(pageContents);
+				return res.render("index", pageContents);
 			} catch (error) {
-				return this.handleErr(error)
+				return this.handleErr(error);
 			}
 		},
 
 		/**
 		 * Get post by ID
-		 * @param {Request} req 
-		 * @param {Response} res 
+		 * @param {Request} req
+		 * @param {Response} res
 		 */
 		async getPost(req, res) {
 			let id = decodeObjectID(req.params.id);
@@ -150,7 +150,7 @@ module.exports = {
 				return this.handleErr(res)(this.Promise.reject(new MoleculerError("Invalid POST ID", 404, "INVALID_POST_ID", { id: req.params.id })));
 
 			try {
-				const post = await this.broker.call("posts.get", { id, populate: ["author", "likes"] })
+				const post = await this.broker.call("posts.get", { id, populate: ["author", "likes"] });
 
 				if (!post)
 					throw new MoleculerError("Post not found", 404, "NOT_FOUND_POST", { id: req.params.id });
@@ -159,26 +159,21 @@ module.exports = {
 				let pageContents = {
 					post : post,
 					title : post.title,
-				}
-				pageContents = await this.appendAdditionalData(pageContents)
-				return res.render("post", pageContents)
+				};
+				pageContents = await this.appendAdditionalData(pageContents);
+				return res.render("post", pageContents);
 			} catch (error) {
-				return this.handleErr(error)
-			}	
-		},
-
-		async appendAdditionalData(data) {
-			try {
-				let posts = await this.broker.call("posts.find", { limit: 5, sort: "-createdAt" })
-				data.bestOfPosts = posts
-				return data
-			} catch (error) {
-				throw error
+				return this.handleErr(error);
 			}
 		},
 
+		async appendAdditionalData(data) {
+			data.bestOfPosts = await this.broker.call("posts.find", { limit: 5, sort: "-createdAt" });
+			return data;
+		},
+
 		/**
-		 * @param {Response} res 
+		 * @param {Response} res
 		 */
 		handleErr(res) {
 			return err => {
@@ -225,7 +220,7 @@ module.exports = {
 			app.set("view cache", true);
 		} else {
 			// Disable views cache
-			app.set("view cache", false);			
+			app.set("view cache", false);
 		}
 
 		this.initRoutes(app);
