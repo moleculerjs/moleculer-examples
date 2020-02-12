@@ -41,17 +41,13 @@ module.exports = {
 				article: { type: "string" },
 				user: { type: "string" },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { article, user } = ctx.params;
-				return this.findByArticleAndUser(article, user)
-					.then(item => {
-						if (item)
-							return this.Promise.reject(new MoleculerClientError("Articles has already favorited"));
+				const item = await this.findByArticleAndUser(article, user);
+				if (item)
+					throw new MoleculerClientError("Articles has already favorited");
 
-						return this.adapter.insert({ article, user, createdAt: new Date() })
-							.then(json => this.entityChanged("created", json, ctx).then(() => json));
-
-					});
+				return await this._create(ctx, { article, user, createdAt: new Date() });
 			}
 		},
 
@@ -72,10 +68,10 @@ module.exports = {
 				article: { type: "string" },
 				user: { type: "string" },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { article, user } = ctx.params;
-				return this.findByArticleAndUser(article, user)
-					.then(item => !!item);
+				const item = await this.findByArticleAndUser(article, user);
+				return !!item;
 			}
 		},
 
@@ -96,7 +92,7 @@ module.exports = {
 				article: { type: "string", optional: true },
 				user: { type: "string", optional: true },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				let query = {};
 				if (ctx.params.article)
 					query = { article: ctx.params.article };
@@ -104,7 +100,7 @@ module.exports = {
 				if (ctx.params.user)
 					query = { user: ctx.params.user };
 
-				return this.adapter.count({ query });
+				return await this._count(ctx, { query });
 			}
 		},
 
@@ -122,16 +118,13 @@ module.exports = {
 				article: { type: "string" },
 				user: { type: "string" },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { article, user } = ctx.params;
-				return this.findByArticleAndUser(article, user)
-					.then(item => {
-						if (!item)
-							return this.Promise.reject(new MoleculerClientError("Articles has not favorited yet"));
+				const item = await this.findByArticleAndUser(article, user);
+				if (!item)
+					throw new MoleculerClientError("Articles has not favorited yet");
 
-						return this.adapter.removeById(item._id)
-							.then(json => this.entityChanged("removed", json, ctx).then(() => json));
-					});
+				return await this._remove(ctx, { id: item._id });
 			}
 		},
 

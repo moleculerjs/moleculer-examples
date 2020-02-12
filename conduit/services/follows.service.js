@@ -40,16 +40,13 @@ module.exports = {
 				user: { type: "string" },
 				follow: { type: "string" },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { follow, user } = ctx.params;
-				return this.findByFollowAndUser(follow, user)
-					.then(item => {
-						if (item)
-							return this.Promise.reject(new MoleculerClientError("User has already followed"));
+				const item = await this.findByFollowAndUser(follow, user);
+				if (item)
+					throw new MoleculerClientError("User has already followed");
 
-						return this.adapter.insert({ follow, user, createdAt: new Date() })
-							.then(json => this.entityChanged("created", json, ctx).then(() => json));
-					});
+				return await this._create(ctx, { follow, user, createdAt: new Date() });
 			}
 		},
 
@@ -70,9 +67,9 @@ module.exports = {
 				user: { type: "string" },
 				follow: { type: "string" },
 			},
-			handler(ctx) {
-				return this.findByFollowAndUser(ctx.params.follow, ctx.params.user)
-					.then(item => !!item);
+			async handler(ctx) {
+				const item = await this.findByFollowAndUser(ctx.params.follow, ctx.params.user);
+				return !!item;
 			}
 		},
 
@@ -93,7 +90,7 @@ module.exports = {
 				follow: { type: "string", optional: true },
 				user: { type: "string", optional: true },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				let query = {};
 				if (ctx.params.follow)
 					query = { follow: ctx.params.follow };
@@ -101,7 +98,7 @@ module.exports = {
 				if (ctx.params.user)
 					query = { user: ctx.params.user };
 
-				return this.adapter.count({ query });
+				return await this._count(ctx, { query });
 			}
 		},
 
@@ -119,16 +116,13 @@ module.exports = {
 				user: { type: "string" },
 				follow: { type: "string" },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { follow, user } = ctx.params;
-				return this.findByFollowAndUser(follow, user)
-					.then(item => {
-						if (!item)
-							return this.Promise.reject(new MoleculerClientError("User has not followed yet"));
+				const item = await this.findByFollowAndUser(follow, user);
+				if (!item)
+					throw new MoleculerClientError("User has not followed yet");
 
-						return this.adapter.removeById(item._id)
-							.then(json => this.entityChanged("removed", json, ctx).then(() => json));
-					});
+				return await this._remove(ctx, { id: item._id });
 			}
 		}
 	},

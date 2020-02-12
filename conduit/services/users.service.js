@@ -2,8 +2,7 @@
 
 const { MoleculerClientError } = require("moleculer").Errors;
 
-//const crypto 		= require("crypto");
-const bcrypt 		= require("bcrypt");
+const bcrypt 		= require("bcryptjs");
 const jwt 			= require("jsonwebtoken");
 
 const DbService = require("../mixins/db.mixin");
@@ -23,6 +22,8 @@ module.exports = {
 	 * Default settings
 	 */
 	settings: {
+		/** REST Basepath */
+		rest: "/",
 		/** Secret for JWT */
 		JWT_SECRET: process.env.JWT_SECRET || "jwt-conduit-secret",
 
@@ -31,7 +32,7 @@ module.exports = {
 
 		/** Validator schema for entity */
 		entityValidator: {
-			username: { type: "string", min: 2, pattern: /^[a-zA-Z0-9]+$/ },
+			username: { type: "string", min: 2 },
 			password: { type: "string", min: 6 },
 			email: { type: "email" },
 			bio: { type: "string", optional: true },
@@ -52,41 +53,35 @@ module.exports = {
 		 * @returns {Object} Created entity & token
 		 */
 		create: {
+			rest: "POST /users",
 			params: {
 				user: { type: "object" }
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				let entity = ctx.params.user;
-				return this.validateEntity(entity)
-					.then(() => {
-						if (entity.username)
-							return this.adapter.findOne({ username: entity.username })
-								.then(found => {
-									if (found)
-										return Promise.reject(new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist"}]));
+				await this.validateEntity(entity);
+				if (entity.username) {
+					const found = await this.adapter.findOne({ username: entity.username });
+					if (found)
+						throw new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist" }]);
+				}
 
-								});
-					})
-					.then(() => {
-						if (entity.email)
-							return this.adapter.findOne({ email: entity.email })
-								.then(found => {
-									if (found)
-										return Promise.reject(new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist"}]));
-								});
+				if (entity.email) {
+					const found = await this.adapter.findOne({ email: entity.email });
+					if (found)
+						throw new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist" }]);
+				}
 
-					})
-					.then(() => {
-						entity.password = bcrypt.hashSync(entity.password, 10);
-						entity.bio = entity.bio || "";
-						entity.image = entity.image || null;
-						entity.createdAt = new Date();
+				entity.password = bcrypt.hashSync(entity.password, 10);
+				entity.bio = entity.bio || "";
+				entity.image = entity.image || null;
+				entity.createdAt = new Date();
 
-						return this.adapter.insert(entity)
-							.then(doc => this.transformDocuments(ctx, {}, doc))
-							.then(user => this.transformEntity(user, true, ctx.meta.token))
-							.then(json => this.entityChanged("created", json, ctx).then(() => json));
-					});
+				const doc = await this.adapter.insert(entity);
+				const user = await this.transformDocuments(ctx, {}, doc);
+				const json = await this.transformEntity(user, true, ctx.meta.token);
+				await this.entityChanged("created", json, ctx);
+				return json;
 			}
 		},
 
@@ -99,30 +94,27 @@ module.exports = {
 		 * @returns {Object} Logged in user with token
 		 */
 		login: {
+			rest: "POST /users/login",
 			params: {
 				user: { type: "object", props: {
 					email: { type: "email" },
 					password: { type: "string", min: 1 }
-				}}
+				} }
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const { email, password } = ctx.params.user;
 
-				return this.Promise.resolve()
-					.then(() => this.adapter.findOne({ email }))
-					.then(user => {
-						if (!user)
-							return this.Promise.reject(new MoleculerClientError("Email or password is invalid!", 422, "", [{ field: "email", message: "is not found"}]));
+				const user = await this.adapter.findOne({ email });
+				if (!user)
+					throw new MoleculerClientError("Email or password is invalid!", 422, "", [{ field: "email", message: "is not found" }]);
 
-						return bcrypt.compare(password, user.password).then(res => {
-							if (!res)
-								return Promise.reject(new MoleculerClientError("Wrong password!", 422, "", [{ field: "email", message: "is not found"}]));
+				const res = await bcrypt.compare(password, user.password);
+				if (!res)
+					throw new MoleculerClientError("Wrong password!", 422, "", [{ field: "email", message: "is not found" }]);
 
-							// Transform user entity (remove password and all protected fields)
-							return this.transformDocuments(ctx, {}, user);
-						});
-					})
-					.then(user => this.transformEntity(user, true, ctx.meta.token));
+				// Transform user entity (remove password and all protected fields)
+				const doc = await this.transformDocuments(ctx, {}, user);
+				return await this.transformEntity(doc, true, ctx.meta.token);
 			}
 		},
 
@@ -142,20 +134,18 @@ module.exports = {
 			params: {
 				token: "string"
 			},
-			handler(ctx) {
-				return new this.Promise((resolve, reject) => {
+			async handler(ctx) {
+				const decoded = await new this.Promise((resolve, reject) => {
 					jwt.verify(ctx.params.token, this.settings.JWT_SECRET, (err, decoded) => {
 						if (err)
 							return reject(err);
 
 						resolve(decoded);
 					});
+				});
 
-				})
-					.then(decoded => {
-						if (decoded.id)
-							return this.getById(decoded.id);
-					});
+				if (decoded.id)
+					return this.getById(decoded.id);
 			}
 		},
 
@@ -169,18 +159,17 @@ module.exports = {
 		 */
 		me: {
 			auth: "required",
+			rest: "GET /user",
 			cache: {
 				keys: ["#userID"]
 			},
-			handler(ctx) {
-				return this.getById(ctx.meta.user._id)
-					.then(user => {
-						if (!user)
-							return this.Promise.reject(new MoleculerClientError("User not found!", 400));
+			async handler(ctx) {
+				const user = await this.getById(ctx.meta.user._id);
+				if (!user)
+					throw new MoleculerClientError("User not found!", 400);
 
-						return this.transformDocuments(ctx, {}, user);
-					})
-					.then(user => this.transformEntity(user, true, ctx.meta.token));
+				const doc = await this.transformDocuments(ctx, {}, user);
+				return await this.transformEntity(doc, true, ctx.meta.token);
 			}
 		},
 
@@ -195,6 +184,7 @@ module.exports = {
 		 */
 		updateMyself: {
 			auth: "required",
+			rest: "PUT /user",
 			params: {
 				user: { type: "object", props: {
 					username: { type: "string", min: 2, optional: true, pattern: /^[a-zA-Z0-9]+$/ },
@@ -202,42 +192,50 @@ module.exports = {
 					email: { type: "email", optional: true },
 					bio: { type: "string", optional: true },
 					image: { type: "string", optional: true },
-				}}
+				} }
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const newData = ctx.params.user;
-				return this.Promise.resolve()
-					.then(() => {
-						if (newData.username)
-							return this.adapter.findOne({ username: newData.username })
-								.then(found => {
-									if (found && found._id.toString() !== ctx.meta.user._id.toString())
-										return Promise.reject(new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist"}]));
+				if (newData.username) {
+					const found = await this.adapter.findOne({ username: newData.username });
+					if (found && found._id.toString() !== ctx.meta.user._id.toString())
+						throw new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist" }]);
+				}
 
-								});
-					})
-					.then(() => {
-						if (newData.email)
-							return this.adapter.findOne({ email: newData.email })
-								.then(found => {
-									if (found && found._id.toString() !== ctx.meta.user._id.toString())
-										return Promise.reject(new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist"}]));
-								});
+				if (newData.email) {
+					const found = await this.adapter.findOne({ email: newData.email });
+					if (found && found._id.toString() !== ctx.meta.user._id.toString())
+						throw new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist" }]);
+				}
+				newData.updatedAt = new Date();
+				const update = {
+					"$set": newData
+				};
+				const doc = await this.adapter.updateById(ctx.meta.user._id, update);
 
-					})
-					.then(() => {
-						newData.updatedAt = new Date();
-						const update = {
-							"$set": newData
-						};
-						return this.adapter.updateById(ctx.meta.user._id, update);
-					})
-					.then(doc => this.transformDocuments(ctx, {}, doc))
-					.then(user => this.transformEntity(user, true, ctx.meta.token))
-					.then(json => this.entityChanged("updated", json, ctx).then(() => json));
-
+				const user = await this.transformDocuments(ctx, {}, doc);
+				const json = await this.transformEntity(user, true, ctx.meta.token);
+				await this.entityChanged("updated", json, ctx);
+				return json;
 			}
 		},
+
+		list: {
+			rest: "GET /users"
+		},
+
+		get: {
+			rest: "GET /users/:id"
+		},
+
+		update: {
+			rest: "PUT /users/:id"
+		},
+
+		remove: {
+			rest: "DELETE /users/:id"
+		},
+
 
 		/**
 		 * Get a user profile.
@@ -251,18 +249,17 @@ module.exports = {
 			cache: {
 				keys: ["#userID", "username"]
 			},
+			rest: "GET /profiles/:username",
 			params: {
 				username: { type: "string" }
 			},
-			handler(ctx) {
-				return this.adapter.findOne({ username: ctx.params.username })
-					.then(user => {
-						if (!user)
-							return this.Promise.reject(new MoleculerClientError("User not found!", 404));
+			async handler(ctx) {
+				const user = await this.adapter.findOne({ username: ctx.params.username });
+				if (!user)
+					throw new MoleculerClientError("User not found!", 404);
 
-						return this.transformDocuments(ctx, {}, user);
-					})
-					.then(user => this.transformProfile(ctx, user, ctx.meta.user));
+				const doc = await this.transformDocuments(ctx, {}, user);
+				return await this.transformProfile(ctx, doc, ctx.meta.user);
 			}
 		},
 
@@ -277,19 +274,18 @@ module.exports = {
 		 */
 		follow: {
 			auth: "required",
+			rest: "POST /profiles/:username/follow",
 			params: {
 				username: { type: "string" }
 			},
-			handler(ctx) {
-				return this.adapter.findOne({ username: ctx.params.username })
-					.then(user => {
-						if (!user)
-							return this.Promise.reject(new MoleculerClientError("User not found!", 404));
+			async handler(ctx) {
+				const user = await this.adapter.findOne({ username: ctx.params.username });
+				if (!user)
+					throw new MoleculerClientError("User not found!", 404);
 
-						return ctx.call("follows.add", { user: ctx.meta.user._id.toString(), follow: user._id.toString() })
-							.then(() => this.transformDocuments(ctx, {}, user));
-					})
-					.then(user => this.transformProfile(ctx, user, ctx.meta.user));
+				await ctx.call("follows.add", { user: ctx.meta.user._id.toString(), follow: user._id.toString() });
+				const doc = await this.transformDocuments(ctx, {}, user);
+				return await this.transformProfile(ctx, doc, ctx.meta.user);
 			}
 		},
 
@@ -304,19 +300,18 @@ module.exports = {
 		 */
 		unfollow: {
 			auth: "required",
+			rest: "DELETE /profiles/:username/follow",
 			params: {
 				username: { type: "string" }
 			},
-			handler(ctx) {
-				return this.adapter.findOne({ username: ctx.params.username })
-					.then(user => {
-						if (!user)
-							return this.Promise.reject(new MoleculerClientError("User not found!", 404));
+			async handler(ctx) {
+				const user = await this.adapter.findOne({ username: ctx.params.username });
+				if (!user)
+					throw new MoleculerClientError("User not found!", 404);
 
-						return ctx.call("follows.delete", { user: ctx.meta.user._id.toString(), follow: user._id.toString() })
-							.then(() => this.transformDocuments(ctx, {}, user));
-					})
-					.then(user => this.transformProfile(ctx, user, ctx.meta.user));
+				await ctx.call("follows.delete", { user: ctx.meta.user._id.toString(), follow: user._id.toString() });
+				const doc = await this.transformDocuments(ctx, {}, user);
+				return await this.transformProfile(ctx, doc, ctx.meta.user);
 			}
 		}
 	},
@@ -366,32 +361,18 @@ module.exports = {
 		 * @param {Object} user
 		 * @param {Object?} loggedInUser
 		 */
-		transformProfile(ctx, user, loggedInUser) {
+		async transformProfile(ctx, user, loggedInUser) {
 			//user.image = user.image || "https://www.gravatar.com/avatar/" + crypto.createHash("md5").update(user.email).digest("hex") + "?d=robohash";
 			user.image = user.image || "https://static.productionready.io/images/smiley-cyrus.jpg";
 
 			if (loggedInUser) {
-				return ctx.call("follows.has", { user: loggedInUser._id.toString(), follow: user._id.toString() })
-					.then(res => {
-						user.following = res;
-						return { profile: user };
-					});
+				const res = await ctx.call("follows.has", { user: loggedInUser._id.toString(), follow: user._id.toString() });
+				user.following = res;
+			} else {
+				user.following = false;
 			}
 
-			user.following = false;
-
 			return { profile: user };
-		}
-	},
-
-	events: {
-		"cache.clean.users"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
-		},
-		"cache.clean.follows"() {
-			if (this.broker.cacher)
-				this.broker.cacher.clean(`${this.name}.*`);
 		}
 	}
 };

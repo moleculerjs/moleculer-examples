@@ -1,5 +1,5 @@
 module.exports = {
-    root: true,
+    "root": true,
     "env": {
         "node": true,
         "commonjs": true,
@@ -10,12 +10,14 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "sourceType": "module"
+        "sourceType": "module",
+		"ecmaVersion": 9
     },
     "rules": {
         "indent": [
             "warn",
-            "tab"
+            "tab",
+            { "SwitchCase": 1 }
         ],
         "quotes": [
             "warn",
@@ -33,6 +35,22 @@ module.exports = {
         ],
         "no-unused-vars": [
             "warn"
-        ]
+        ],
+        "no-mixed-spaces-and-tabs": [
+            "warn"
+        ],
+		"space-before-function-paren": [
+			"warn",
+			{
+				"anonymous": "never",
+				"named": "never",
+				"asyncArrow": "always"
+			}
+		],
+		"object-curly-spacing": [
+			"warn",
+			"always"
+		],
+		"require-atomic-updates": 0
     }
 };

@@ -54,22 +54,21 @@ module.exports = {
 				article: { type: "string" },
 				comment: { type: "object" }
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				let entity = ctx.params.comment;
 				entity.article = ctx.params.article;
 				entity.author = ctx.meta.user._id.toString();
 
-				return this.validateEntity(entity)
-					.then(() => {
+				await this.validateEntity(entity);
 
-						entity.createdAt = new Date();
-						entity.updatedAt = new Date();
+				entity.createdAt = new Date();
+				entity.updatedAt = new Date();
 
-						return this.adapter.insert(entity)
-							.then(doc => this.transformDocuments(ctx, { populate: ["author"]}, doc))
-							.then(entity => this.transformResult(ctx, entity, ctx.meta.user))
-							.then(json => this.entityChanged("created", json, ctx).then(() => json));
-					});
+				const doc = await this.adapter.insert(entity);
+				let json = await this.transformDocuments(ctx, { populate: ["author"] }, doc);
+				json = await this.transformResult(ctx, json, ctx.meta.user);
+				await this.entityChanged("created", json, ctx);
+				return json;
 			}
 		},
 
@@ -91,24 +90,23 @@ module.exports = {
 					body: { type: "string", min: 1 },
 				} }
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				let newData = ctx.params.comment;
 				newData.updatedAt = new Date();
 
-				return this.getById(ctx.params.id)
-					.then(comment => {
-						if (comment.author !== ctx.meta.user._id.toString())
-							return this.Promise.reject(new ForbiddenError());
+				const comment = await this.getById(ctx.params.id);
+				if (comment.author !== ctx.meta.user._id.toString())
+					throw new ForbiddenError();
 
-						const update = {
-							"$set": newData
-						};
+				const update = {
+					"$set": newData
+				};
 
-						return this.adapter.updateById(ctx.params.id, update);
-					})
-					.then(doc => this.transformDocuments(ctx, { populate: ["author"]}, doc))
-					.then(entity => this.transformResult(ctx, entity, ctx.meta.user))
-					.then(json => this.entityChanged("updated", json, ctx).then(() => json));
+				const doc = await this.adapter.updateById(ctx.params.id, update);
+				const entity = await this.transformDocuments(ctx, { populate: ["author"] }, doc);
+				const json = await this.transformResult(ctx, entity, ctx.meta.user);
+				await this.entityChanged("updated", json, ctx);
+				return json;
 			}
 		},
 
@@ -131,7 +129,7 @@ module.exports = {
 				limit: { type: "number", optional: true, convert: true },
 				offset: { type: "number", optional: true, convert: true },
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				const limit = ctx.params.limit ? Number(ctx.params.limit) : 20;
 				const offset = ctx.params.offset ? Number(ctx.params.offset) : 0;
 
@@ -146,31 +144,26 @@ module.exports = {
 				};
 				let countParams;
 
-				return this.Promise.resolve()
-					.then(() => {
-						countParams = Object.assign({}, params);
-						// Remove pagination params
-						if (countParams && countParams.limit)
-							countParams.limit = null;
-						if (countParams && countParams.offset)
-							countParams.offset = null;
-					})
-					.then(() => this.Promise.all([
-						// Get rows
-						this.adapter.find(params),
+				countParams = Object.assign({}, params);
+				// Remove pagination params
+				if (countParams && countParams.limit)
+					countParams.limit = null;
+				if (countParams && countParams.offset)
+					countParams.offset = null;
 
-						// Get count of all rows
-						this.adapter.count(countParams)
+				const res = await this.Promise.all([
+					// Get rows
+					this.adapter.find(params),
 
-					])).then(res => {
-						return this.transformDocuments(ctx, params, res[0])
-							.then(docs => this.transformResult(ctx, docs, ctx.meta.user))
-							.then(r => {
-								r.commentsCount = res[1];
-								return r;
-							});
-					});
+					// Get count of all rows
+					this.adapter.count(countParams)
 
+				]);
+
+				const docs = await this.transformDocuments(ctx, params, res[0]);
+				const r = await this.transformResult(ctx, docs, ctx.meta.user);
+				r.commentsCount = res[1];
+				return r;
 			}
 		},
 
@@ -188,15 +181,14 @@ module.exports = {
 			params: {
 				id: { type: "any" }
 			},
-			handler(ctx) {
-				return this.getById(ctx.params.id)
-					.then(comment => {
-						if (comment.author !== ctx.meta.user._id.toString())
-							return this.Promise.reject(new ForbiddenError());
+			async handler(ctx) {
+				const comment = await this.getById(ctx.params.id);
+				if (comment.author !== ctx.meta.user._id.toString())
+					throw new ForbiddenError();
 
-						return this.adapter.removeById(ctx.params.id)
-							.then(json => this.entityChanged("removed", json, ctx).then(() => json));
-					});
+				const json = await this.adapter.removeById(ctx.params.id);
+				await this.entityChanged("removed", json, ctx);
+				return json;
 			}
 		}
 	},
@@ -213,13 +205,13 @@ module.exports = {
 		 * @param {Array} entities
 		 * @param {Object} user - Logged in user
 		 */
-		transformResult(ctx, entities, user) {
+		async transformResult(ctx, entities, user) {
 			if (Array.isArray(entities)) {
-				return this.Promise.map(entities, item => this.transformEntity(ctx, item, user))
-					.then(comments => ({ comments }));
+				const comments = await this.Promise.all(entities.map(item => this.transformEntity(ctx, item, user)));
+				return { comments };
 			} else {
-				return this.transformEntity(ctx, entities, user)
-					.then(comment => ({ comment }));
+				const comment = await this.transformEntity(ctx, entities, user);
+				return { comment };
 			}
 		},
 
@@ -230,26 +222,20 @@ module.exports = {
 		 * @param {Object} entity
 		 * @param {Object} user - Logged in user
 		 */
-		transformEntity(ctx, entity, loggedInUser) {
+		async transformEntity(ctx, entity, loggedInUser) {
 			if (!entity) return this.Promise.resolve();
 
-			return this.Promise.resolve(entity)
-				.then(entity => {
-					entity.id = entity._id;
+			entity.id = entity._id;
 
-					if (loggedInUser) {
-						return ctx.call("follows.has", { user: loggedInUser._id.toString(), follow: entity.author._id })
-							.then(res => {
-								entity.author.following = res;
-								return entity;
-							});
-					}
+			if (loggedInUser) {
+				const res = await ctx.call("follows.has", { user: loggedInUser._id.toString(), follow: entity.author._id });
+				entity.author.following = res;
+				return entity;
+			}
 
-					entity.author.following = false;
+			entity.author.following = false;
 
-					return entity;
-				});
-
+			return entity;
 		}
 	}
 };

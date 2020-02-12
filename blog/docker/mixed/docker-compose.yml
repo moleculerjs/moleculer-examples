@@ -44,21 +44,6 @@ services:
     #deploy:
     #  replicas: 2
 
-  metrics:
-    build:
-      context: ../..
-    image: moleculer-blog
-    env_file: env
-    environment:
-      NODEID: "node-metrics"
-      SERVICES: metrics
-    links:
-      - nats
-      - redis
-    depends_on:
-      - nats
-      - redis
-
   nats:
     image: nats
 
@@ -71,7 +56,7 @@ services:
     #   - ../../db:/data/db
 
   traefik:
-    image: traefik
+    image: traefik:1.7
     command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
     ports:
       - "3000:80"

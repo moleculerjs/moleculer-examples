@@ -5,12 +5,26 @@ module.exports = {
 	//transporter: "TCP",
 	logger: true,
 	logLevel: "info",
-	logFormatter: "short",
 	cacher: {
 		type: "memory",
 		options: {
 			maxParamsLength: 100
 		}
 	},
-	metrics: true
+	metrics: false,
+
+	tracing: {
+		enabled: true,
+		exporter: [
+			{
+				type: "Console",
+				options: {
+					width: 100,
+					colors: true,
+				}
+			}
+		]
+	},
+
+	validator: true
 };
