@@ -63,13 +63,13 @@ module.exports = {
 				if (entity.username) {
 					const found = await this.adapter.findOne({ username: entity.username });
 					if (found)
-						throw new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist" }]);
+						throw new MoleculerClientError("Username exists!", 422, "", [{ field: "username", message: "already exists" }]);
 				}
 
 				if (entity.email) {
 					const found = await this.adapter.findOne({ email: entity.email });
 					if (found)
-						throw new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist" }]);
+						throw new MoleculerClientError("Email exists!", 422, "", [{ field: "email", message: "already exists" }]);
 				}
 
 				entity.password = bcrypt.hashSync(entity.password, 10);
@@ -199,13 +199,13 @@ module.exports = {
 				if (newData.username) {
 					const found = await this.adapter.findOne({ username: newData.username });
 					if (found && found._id.toString() !== ctx.meta.user._id.toString())
-						throw new MoleculerClientError("Username is exist!", 422, "", [{ field: "username", message: "is exist" }]);
+						throw new MoleculerClientError("Username exists!", 422, "", [{ field: "username", message: "already exists" }]);
 				}
 
 				if (newData.email) {
 					const found = await this.adapter.findOne({ email: newData.email });
 					if (found && found._id.toString() !== ctx.meta.user._id.toString())
-						throw new MoleculerClientError("Email is exist!", 422, "", [{ field: "email", message: "is exist" }]);
+						throw new MoleculerClientError("Email exists!", 422, "", [{ field: "email", message: "already exists" }]);
 				}
 				newData.updatedAt = new Date();
 				const update = {
