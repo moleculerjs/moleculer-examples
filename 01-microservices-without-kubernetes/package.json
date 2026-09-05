@@ -1,0 +1,18 @@
+{
+  "name": "moleculer-example-microservices-without-kubernetes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Node.js microservices without Kubernetes: one process → many processes → scale a copy, resilience as broker options, HTTP gateway, docker-compose",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "echo 'see README.md'"
+  },
+  "dependencies": {
+    "moleculer": "^0.15.2",
+    "moleculer-web": "^0.11.0",
+    "nats": "^2.29.3"
+  }
+}

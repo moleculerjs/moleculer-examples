@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package products;
+
+service Products {
+  rpc Get (GetRequest) returns (Product);
+  rpc List (ListRequest) returns (ProductList);
+}
+
+message GetRequest { int32 id = 1; }
+message ListRequest { int32 limit = 1; }
+
+message Product {
+  int32 id = 1;
+  string name = 2;
+  double price = 3;
+  string served_by = 4;
+}
+
+message ProductList { repeated Product items = 1; }

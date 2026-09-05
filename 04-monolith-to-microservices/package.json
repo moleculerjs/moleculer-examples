@@ -1,0 +1,18 @@
+{
+  "name": "moleculer-example-monolith-to-microservices",
+  "version": "1.0.0",
+  "private": true,
+  "description": "From a modular Express monolith to Moleculer services in three stages: same process, extract one service, split the rest and scale one",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "bash run.sh"
+  },
+  "dependencies": {
+    "moleculer": "^0.15.2",
+    "express": "^5.2.1",
+    "nats": "^2.29.3"
+  }
+}

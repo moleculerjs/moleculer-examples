@@ -1,0 +1,10 @@
+syntax = "proto3";
+package inventory;
+
+// Stands in for a service written in another language (Go, Python, Java…) that speaks gRPC.
+service Inventory {
+  rpc Check (CheckRequest) returns (Stock);
+}
+
+message CheckRequest { string sku = 1; }
+message Stock { string sku = 1; int32 in_stock = 2; string warehouse = 3; }
