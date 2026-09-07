@@ -1,0 +1,20 @@
+{
+  "name": "moleculer-example-event-driven-pubsub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Event-driven architecture: emit vs broadcast, consumer groups, request context across hops, the same code on NATS / Redis / Kafka, and durable channels with retry + dead-letter",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "bash run.sh"
+  },
+  "dependencies": {
+    "moleculer": "^0.15.2",
+    "@moleculer/channels": "^0.3.1",
+    "nats": "^2.29.3",
+    "ioredis": "^5.11.1",
+    "@platformatic/kafka": "^2.11.0"
+  }
+}

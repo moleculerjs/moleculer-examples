@@ -1,0 +1,25 @@
+# docker-compose.yml — the whole "cluster" on one VM. No orchestrator.
+services:
+  nats:
+    image: nats:2
+    command: ["--jetstream=false"]
+
+  products:
+    build: .
+    command: node node.js products
+    environment: { TRANSPORTER: nats://nats:4222 }
+    depends_on: [nats]
+    deploy: { replicas: 2 }          # two instances; the framework balances between them
+
+  orders:
+    build: .
+    command: node node.js orders notifications
+    environment: { TRANSPORTER: nats://nats:4222 }
+    depends_on: [nats]
+
+  gateway:
+    build: .
+    command: node gateway.js
+    environment: { TRANSPORTER: nats://nats:4222 }
+    ports: ["3000:3000"]
+    depends_on: [nats]

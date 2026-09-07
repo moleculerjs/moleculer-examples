@@ -1,0 +1,17 @@
+{
+  "name": "moleculer-example-service-discovery-and-load-balancing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Registry-based service discovery and load balancing: round robin across workers, scaling and crashes with live traffic, strategies (Shard, custom PreferZone), TCP transporter with no broker",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "bash run.sh"
+  },
+  "dependencies": {
+    "moleculer": "^0.15.2",
+    "nats": "^2.29.3"
+  }
+}

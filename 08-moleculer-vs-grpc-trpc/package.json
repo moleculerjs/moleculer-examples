@@ -1,0 +1,27 @@
+{
+  "name": "moleculer-example-moleculer-vs-grpc-trpc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The same products service as gRPC, tRPC and Moleculer; a second / dead / slow / new instance against each; throughput shape; tRPC gateway on a Moleculer node and a gRPC service behind a Moleculer action",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "bash run.sh"
+  },
+  "dependencies": {
+    "moleculer": "^0.15.2",
+    "nats": "^2.29.3",
+    "@grpc/grpc-js": "^1.14.4",
+    "@grpc/proto-loader": "^0.8.1",
+    "@trpc/server": "^11.18.0",
+    "@trpc/client": "^11.18.0",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "@types/node": "^22.20.1"
+  }
+}

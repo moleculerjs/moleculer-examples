@@ -1,0 +1,17 @@
+{
+  "name": "moleculer-example-circuit-breaker-retry-timeout",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Retry, per-endpoint circuit breaker, timeout → failover → cut-off, distributed timeout budget, fallback response and bulkhead — six live demos",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "bash run.sh"
+  },
+  "dependencies": {
+    "moleculer": "^0.15.2",
+    "nats": "^2.29.3"
+  }
+}
